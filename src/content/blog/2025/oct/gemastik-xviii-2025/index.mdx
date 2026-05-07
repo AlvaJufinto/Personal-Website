@@ -2,9 +2,10 @@
 title: "Achievement: 4th Place GEMASTIK XVIII 2025 – Software Development Category"
 description: "My journey in GEMASTIK XVIII 2025, where I secured the 4th place in the Software Development category."
 pubDate: "October 10, 2025"
-heroImage: "https://media.licdn.com/dms/image/v2/D5622AQEkE2C0qb_8uA/feedshare-shrink_2048_1536/B56ZvzX9TvGYAk-/0/1769314702835?e=1773878400&v=beta&t=68vvO8vxcHNXVbg45jRAVUz6f9Md1qgMZo_qSLMwfNM"
+heroImage: "./thumbnail.jpg"
 topics: ["life", "tech", "achivement", "college"]
 ---
+
 import { Image } from "astro:assets";
 import SatteliteData from "@/assets/2025/oct/gemastik-xviii-2025/satellite-data.png";
 import SampleDataset from "@/assets/2025/oct/gemastik-xviii-2025/dataset-sample.png";
@@ -14,6 +15,7 @@ import Strangers from "@/assets/2025/oct/gemastik-xviii-2025/strangers.png";
 import OurMentor from "@/assets/2025/oct/gemastik-xviii-2025/our-mentor.jpg";
 import OnTheSea from "@/assets/2025/oct/gemastik-xviii-2025/on-the-sea.jpg";
 import FourthPlace from "@/assets/2025/oct/gemastik-xviii-2025/4th-place.jpg";
+import ManelaApp from "@/assets/2025/oct/gemastik-xviii-2025/manela-app.jpg";
 
 {/* ========================================================================= */}
 
@@ -24,13 +26,15 @@ My team consisted of two members, my teammate is one of my close friend, his nam
 And our mentor is Sir <a href="https://www.linkedin.com/in/alfhisa/" type="_blank">Alfhi</a>, he is a great mentor, he guided us throughout the competition and provided valuable insights and feedback on our project. He also helped us to improve our presentation skills and prepare for the final round of the competition. 
 
 <Image src={OurMentor} alt="Our Mentor, Pak Alfhi" />
-<center>
+<center class="-mt-4">
 <small><i>A photo with our mentor (the right one).</i></small>
 </center>
 
+<br />
+
 Our project was TemanNelayan (Manela). It was a mobile application that aimed to solve a fishermen's problem. We developed an app that helps fishermen to find the best fishing spots based on weather conditions, sea temperature, ocean depth, and other relevant data.
 
-<img src="https://media.licdn.com/dms/image/v2/D5622AQEkE2C0qb_8uA/feedshare-shrink_2048_1536/B56ZvzX9TvGYAk-/0/1769314702835?e=1773878400&v=beta&t=68vvO8vxcHNXVbg45jRAVUz6f9Md1qgMZo_qSLMwfNM" alt="Manela App" />
+<Image src={ManelaApp} alt="Manela App" />
 
 I'm gonna tell you about the process of developing this app. We started by identifying the problem that fishermen face, which is finding the best fishing spots. We then gathered data from various sources, such as weather forecasts, sea temperature, and ocean depth. We used this data to create an algorithm that predicts the best fishing spots based on the current conditions.
 
@@ -53,7 +57,62 @@ We then gathered data from various sources, such as weather forecasts, sea tempe
 
 data sample from the dataset that we used:
 
-<Image src={SampleDataset} alt="Sample Dataset" />
+{/*<Image src={SampleDataset} alt="Sample Dataset" />*/}
+<table border="1" style="border-collapse: collapse; width: 100%; text-align: center;">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>lat (°)</th>
+      <th>long (°)</th>
+      <th>sst(°C)</th>
+      <th>chl(mg/m³)</th>
+      <th>depth (m)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>-5.1234</td>
+      <td>119.4567</td>
+      <td>28.7</td>
+      <td>0.29</td>
+      <td>150</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>-4.9876</td>
+      <td>119.6789</td>
+      <td>29.2</td>
+      <td>0.25</td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>-6.2345</td>
+      <td>120.3456</td>
+      <td>27.8</td>
+      <td>0.32</td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>-5.8765</td>
+      <td>118.9876</td>
+      <td>30.1</td>
+      <td>0.18</td>
+      <td>900</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>-6.5432</td>
+      <td>121.1234</td>
+      <td>28.5</td>
+      <td>0.30</td>
+      <td>1000</td>
+    </tr>
+  </tbody>
+</table>
+
 
 and the visualized data:
 
@@ -88,7 +147,7 @@ In this final round, we have so MANY submissions to do. We had to prepare a lot 
 We ask for many feedback from our mentor, Sir Alfhi, and also from other people, such as our friends, family, and even strangers. We want to make sure that our final report, paper, app, presentation, and video are the best that they can be. We want to make sure that we can impress the judges and the audience with our project.
 
 <Image src={Strangers} alt="Asking for Feedback from Strangers" />
-<center>
+<center class="-mt-12">
 <small><i>Yes, we even asked for feedback from real fisherman on the shore, hahaha. We just wanted to make sure that our project was good and could be understood by real fisherman⛵.</i></small>
 </center>
 

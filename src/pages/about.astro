@@ -1,61 +1,119 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import BaseHead from "@/components/BaseHead.astro";
+import Layout from "../layouts/BlogPost.astro";
+import Header from "@/components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import Footer from "@/components/Footer.astro";
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main class="custom-container">
+      <section class="prose prose-slate max-w-none">
+        <div class="mb-12">
+          <h1
+            class="font-primary text-3xl font-bold tracking-tight text-slate-900"
+          >
+            About Me
+          </h1>
+          <p class="font-secondary mt-4 text-lg text-slate-600">
+            Welcome to my personal blog and portfolio! I write about technology,
+            life, faith, and my journey as a Catholic, student, and musician.
+          </p>
+        </div>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+        <hr />
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+        <div class="pt-12">
+          <div class="grid md:grid-cols-2 gap-12 mb-12">
+            <div>
+              <h2 class="font-primary text-2xl font-bold text-slate-900 mb-4">
+                Who am I?
+              </h2>
+              <p class="font-secondary text-slate-700 leading-relaxed">
+                I'm a <span class="font-semibold text-slate-900"
+                  >Computer Science student</span
+                >, church organist, and someone who loves to reflect on life's
+                changes and responsibilities. My writings are a mix of <span
+                  class="font-semibold text-slate-900"
+                  >English and Indonesian</span
+                >, depending on the topic and mood.
+              </p>
+            </div>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+            <div>
+              <h2 class="font-primary text-2xl font-bold text-slate-900 mb-4">
+                What do I write?
+              </h2>
+              <ul class="space-y-2 font-secondary text-slate-700">
+                <li class="flex items-start gap-2">
+                  <span class="text-slate-900 font-bold mt-1">#</span>
+                  <span
+                    ><b>Personal Reflections</b> — Life, change, and growth</span
+                  >
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-slate-900 font-bold mt-1">#</span>
+                  <span
+                    ><b>Achievements</b> — Tech competitions & experiences</span
+                  >
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-slate-900 font-bold mt-1">#</span>
+                  <span
+                    ><b>Faith Journey</b> — Catholic reflections & liturgy</span
+                  >
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-slate-900 font-bold mt-1">#</span>
+                  <span><b>Responsibility</b> — Life struggles & gratitude</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+          <div class="mb-12">
+            <h2 class="font-primary text-2xl font-bold text-slate-900 mb-4">
+              Why do I write?
+            </h2>
+            <p class="font-secondary text-slate-700 leading-relaxed">
+              I started this blog to share my journey, both the ups and downs.
+              Sometimes, there's no lesson, just stories. I believe that <span
+                class="font-semibold text-slate-900"
+                >authentic reflection and vulnerability</span
+              > can create meaning and connection. I hope my experiences can resonate
+              with you, whether you're here for tech, faith, or just a slice of life.
+            </p>
+          </div>
+
+          <!--<div class="pt-8">
+            <h2 class="font-primary text-xl font-bold text-slate-900 mb-6">
+              Let's connect!
+            </h2>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <a
+                href="mailto:stanislaus.alva@gmail.com"
+                class="font-secondary inline-flex items-center justify-center px-6 py-3 bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-colors"
+              >
+                Email
+              </a>
+              <a
+                href="https://www.linkedin.com/in/stanislausalva/"
+                class="font-secondary inline-flex items-center justify-center px-6 py-3 border-2 border-slate-900 text-slate-900 font-semibold hover:bg-slate-100 transition-colors"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>-->
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
