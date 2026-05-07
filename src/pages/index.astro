@@ -5,6 +5,13 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import ProfileImg from "@/assets/personal/profile.png";
+import { getCollection } from "astro:content";
+import BlogCard from "@/components/BlogCard.astro";
+
+const posts = (await getCollection("blog"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .filter((post) => !post.data.isDraft)
+  .slice(0, 3);
 ---
 
 <!doctype html>
@@ -14,30 +21,49 @@ import ProfileImg from "@/assets/personal/profile.png";
   </head>
   <body>
     <Header />
-    <main class="custom-container flex gap-20 py-20! min-h-100vh!">
-      <div class="space-y-4">
-        <h1 class="font-primary text-3xl mb-7">
+    <main
+      class="custom-container flex flex-col-reverse items-center gap-12 py-16 md:flex-row md:items-start md:gap-20 min-h-100vh!"
+    >
+      <div class="space-y-6 max-w-2xl text-center md:text-left">
+        <h1
+          class="font-primary text-3xl md:text-4xl mb-4 md:mb-7 leading-tight"
+        >
           Hi, I’m Alva - I build systems, products, and ideas into something
           usable.
         </h1>
 
-        <p class="font-secondary">
+        <p class="font-secondary text-slate-700">
           I believe in the power of creation and the impact we can have through
           our work.
         </p>
 
-        <p class="font-secondary">
+        <p class="font-secondary text-slate-700">
           I'll be sharing my thoughts, projects, and anything else that I find
           interesting. Stay tuned!
         </p>
 
-        <p class="font-secondary">
+        <p class="font-secondary text-slate-700">
           This space is where I document what I’m building, what I’m learning,
           and how I think.
         </p>
       </div>
-      <Image src={ProfileImg} class="w-80" alt="Profile picture" />
+      <Image
+        src={ProfileImg}
+        class="w-64 max-w-full sm:w-72 md:w-80"
+        alt="Profile picture"
+      />
     </main>
+
+    <div class="custom-container mb-16">
+      <h2
+        class="font-primary text-2xl font-bold tracking-tight text-slate-900 mb-8"
+      >
+        Recent Posts
+      </h2>
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => <BlogCard post={post} slug={post.id} />)}
+      </div>
+    </div>
     <Footer />
   </body>
 </html>
