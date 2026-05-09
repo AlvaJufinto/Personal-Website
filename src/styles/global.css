@@ -20,6 +20,11 @@
   padding-bottom: 1rem;
 }
 
+.line {
+  border: none;
+  border-top: 1px solid rgb(226 232 240); /* slate-200 */
+}
+
 @media (min-width: 768px) {
   .custom-container {
     padding-left: 2rem;

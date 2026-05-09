@@ -5,7 +5,7 @@ import BaseHead from "@/components/ui/BaseHead.astro";
 import Footer from "@/components/ui/Footer.astro";
 import FormattedDate from "@/components/ui/FormattedDate.astro";
 import Header from "@/components/ui/Header.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import { SITE_DESCRIPTION, SITE_TITLE, TECH_STACK } from "@/consts";
 import BlogCard from "@/components/Blog/BlogCard.astro";
 
 const posts = (await getCollection("blog"))
@@ -31,7 +31,7 @@ const posts = (await getCollection("blog"))
           Thoughts, insights, and stories from my journey
         </p>
 
-        <hr />
+        <hr class="line" />
       </div>
 
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">

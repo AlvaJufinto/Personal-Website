@@ -1,0 +1,86 @@
+---
+import { TECH_STACK } from "@/consts";
+---
+
+<div class="border border-slate-200">
+  <div id="tech-tabs" class="flex overflow-x-auto border-b border-slate-200">
+    {
+      TECH_STACK.map((tech, index) => (
+        <button
+          class={`tech-tab font-primary capitalize px-5 py-3 text-sm font-medium whitespace-nowrap border-b transition ${
+            index === 0
+              ? "border-slate-900 text-slate-900"
+              : "border-transparent text-slate-500 hover:text-slate-900"
+          }`}
+          data-tab={tech.type}
+        >
+          {tech.type}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="p-6">
+    {
+      TECH_STACK.map((tech, index) => (
+        <div
+          data-content={tech.type}
+          class:list={[
+            "tech-content",
+            "font-secondary",
+            "text-sm",
+            "text-slate-700",
+            index !== 0 && "hidden",
+          ]}
+        >
+          <div class="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {tech.stack.map((stack) => (
+              <div class="flex items-center gap-3 border border-slate-200 p-3 transition hover:bg-slate-50">
+                <img
+                  src={stack.logo}
+                  alt={stack.name}
+                  class="h-8 w-8 object-contain"
+                  loading="lazy"
+                />
+
+                <p class="text-sm text-slate-700">{stack.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const tabs = document.querySelectorAll<HTMLElement>(".tech-tab");
+
+    const contents = document.querySelectorAll<HTMLElement>(".tech-content");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const target = tab.dataset.tab;
+
+        tabs.forEach((t) => {
+          t.classList.remove("border-slate-900", "text-slate-900");
+
+          t.classList.add("border-transparent", "text-slate-500");
+        });
+
+        tab.classList.remove("border-transparent", "text-slate-500");
+
+        tab.classList.add("border-slate-900", "text-slate-900");
+
+        contents.forEach((content) => {
+          content.classList.add("hidden");
+        });
+
+        document
+          .querySelector<HTMLElement>(`[data-content="${target}"]`)
+          ?.classList.remove("hidden");
+      });
+    });
+  });
+</script>
