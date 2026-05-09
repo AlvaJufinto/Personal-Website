@@ -21,4 +21,23 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+const work = defineCollection({
+  // Load Markdown and MDX files in the `src/content/work/` directory.
+  loader: glob({ base: "./src/content/work", pattern: "**/*.{md,mdx}" }),
+  // Type-check frontmatter using a schema
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      category: z.array(z.string()).default([]).optional(),
+      tech: z.array(z.string()).default([]).optional(),
+      heroImage: image().optional(),
+
+      pubDate: z.coerce.date(),
+      updatedDate: z.coerce.date().optional(),
+
+      isDraft: z.boolean().optional().default(false),
+    }),
+});
+
+export const collections = { blog, work };
