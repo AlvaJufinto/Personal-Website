@@ -1,15 +1,33 @@
+---
+import { Image } from "astro:assets";
+import Tags from "@/components/ui/Tags.astro";
+import FormattedDate from "@/components/ui/FormattedDate.astro";
+
+const { work } = Astro.props;
+---
+
 <article
   class="group overflow-hidden border border-slate-200 bg-white transition-colors hover:border-slate-300"
 >
-  <div class="flex flex-col md:flex-row">
+  <a href={`/work/${work.id}/`} class="flex flex-col md:flex-row">
     <div
       class="aspect-video border-b border-slate-200 bg-slate-100 md:w-80 md:min-w-80 md:border-r md:border-b-0"
     >
-      <img
-        src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop"
-        alt="HydroSmart"
-        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-      />
+      {
+        work.data.heroImage ? (
+          <Image
+            src={work.data.heroImage}
+            alt={work.data.title}
+            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+        ) : (
+          <img
+            src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop"
+            alt={work.data.title}
+            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+        )
+      }
     </div>
 
     <div class="flex flex-1 flex-col justify-between p-5">
@@ -19,55 +37,37 @@
             <h2
               class="font-primary text-xl font-semibold tracking-tight text-slate-900"
             >
-              HydroSmart
+              {work.data.title}
             </h2>
 
-            <p
-              class="font-secondary mt-1 text-xs uppercase tracking-wide text-slate-500"
-            >
-              IoT • Monitoring System • Marine Technology
-            </p>
+            {
+              work.data.category?.length > 0 && (
+                <p class="font-secondary mt-1 text-xs uppercase tracking-wide text-slate-500">
+                  {work.data.category.join(" • ")}
+                </p>
+              )
+            }
           </div>
 
           <p class="font-secondary whitespace-nowrap text-sm text-slate-500">
-            2026
+            <FormattedDate date={work.data.pubDate} />
           </p>
         </div>
 
         <p
           class="font-secondary mt-4 max-w-2xl text-sm leading-relaxed text-slate-600"
         >
-          A smart marine monitoring platform focused on environmental analytics,
-          operational visibility, and real-time insights for small-scale
-          fisheries and coastal operations.
+          {work.data.description}
         </p>
       </div>
 
-      <div class="mt-6 flex flex-wrap gap-2">
-        <span
-          class="font-secondary border border-slate-200 px-2.5 py-1 text-xs text-slate-600"
-        >
-          Laravel
-        </span>
-
-        <span
-          class="font-secondary border border-slate-200 px-2.5 py-1 text-xs text-slate-600"
-        >
-          React
-        </span>
-
-        <span
-          class="font-secondary border border-slate-200 px-2.5 py-1 text-xs text-slate-600"
-        >
-          PostgreSQL
-        </span>
-
-        <span
-          class="font-secondary border border-slate-200 px-2.5 py-1 text-xs text-slate-600"
-        >
-          Docker
-        </span>
-      </div>
+      {
+        work.data.tech?.length > 0 && (
+          <div class="mt-6">
+            <Tags tags={work.data.tech} />
+          </div>
+        )
+      }
     </div>
-  </div>
+  </a>
 </article>

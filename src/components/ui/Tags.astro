@@ -1,24 +1,60 @@
 ---
-const { topics, language } = Astro.props;
+interface Props {
+  tags?: string[];
+  topics?: string[];
+  tech?: string[];
+  category?: string[];
+  language?: string;
+  variant?: "default" | "outline" | "soft";
+}
+
+const {
+  tags,
+  topics,
+  tech,
+  category,
+  language,
+  variant = "default",
+} = Astro.props;
+
+const items = [
+  ...(tags ?? []),
+  ...(topics ?? []),
+  ...(tech ?? []),
+  ...(category ?? []),
+];
+
+const uniqueItems = [...new Set(items)];
+
+const variantStyles = {
+  default: "bg-slate-100 text-slate-600",
+  outline: "border border-slate-200 text-slate-600",
+  soft: "bg-slate-50 text-slate-500",
+};
+
+const tagStyle = variantStyles[variant];
 ---
 
-<div class="flex flex-wrap items-center gap-2 my-4">
-  {
-    topics && topics.length > 0 && (
-      <div class="flex flex-wrap gap-2">
-        {topics.map((topic: string) => (
-          <span class="inline-block bg-slate-100 text-slate-600 text-xs px-2 py-1 font-medium">
-            #{topic}
-          </span>
-        ))}
-      </div>
-    )
-  }
-  {
-    language && (
-      <span class="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 font-medium">
-        {language === "id" ? "ID" : "EN"}
-      </span>
-    )
-  }
-</div>
+{
+  (uniqueItems.length > 0 || language) && (
+    <div class="my-4 flex flex-wrap items-center gap-2">
+      {uniqueItems.length > 0 && (
+        <div class="flex flex-wrap gap-2">
+          {uniqueItems.map((item) => (
+            <span
+              class={`inline-flex items-center px-2.5 py-1 text-xs font-medium ${tagStyle}`}
+            >
+              #{item}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {language && (
+        <span class="inline-flex items-center bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700">
+          {language.toUpperCase()}
+        </span>
+      )}
+    </div>
+  )
+}

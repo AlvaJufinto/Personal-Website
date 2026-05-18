@@ -29,14 +29,35 @@ const work = defineCollection({
     z.object({
       title: z.string(),
       description: z.string(),
+
       category: z.array(z.string()).default([]).optional(),
       tech: z.array(z.string()).default([]).optional(),
+
       heroImage: image().optional(),
 
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
 
       isDraft: z.boolean().optional().default(false),
+
+      links: z
+        .array(
+          z.object({
+            label: z.string(),
+            url: z.string().url(),
+            type: z.enum([
+              "github",
+              "gitlab",
+              "deployment",
+              "website",
+              "figma",
+              "documentation",
+              "other",
+            ]),
+          }),
+        )
+        .default([])
+        .optional(),
     }),
 });
 

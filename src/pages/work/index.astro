@@ -9,7 +9,7 @@ import Footer from "@/components/ui/Footer.astro";
 import BaseHead from "@/components/ui/BaseHead.astro";
 import TechStackTabs from "@/components/Work/TechStackTabs.astro";
 
-const works = (await getCollection("blog"))
+const works = (await getCollection("work"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .filter((post) => !post.data.isDraft);
 ---
@@ -36,9 +36,9 @@ const works = (await getCollection("blog"))
 
         <hr class="mt-12 line" />
       </div>
-      <!--<div class="space-y-6">
+      <div class="space-y-6">
         {works.map((work) => <WorkCard work={work} slug={work.id} />)}
-      </div>-->
+      </div>
     </main>
     <Footer />
   </body>
