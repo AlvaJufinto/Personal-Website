@@ -1,104 +1,110 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+
 import HumanBadge from "@/assets/icons/human-badge.png";
 
 const today = new Date();
+
+const socials = [
+  {
+    label: "GitHub",
+    href: "https://github.com/AlvaJufinto",
+    icon: "mdi:github",
+  },
+
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/alva-jufinto/",
+    icon: "mdi:linkedin",
+  },
+
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/alva.jufinto/",
+    icon: "mdi:instagram",
+  },
+];
 ---
 
-<footer class="mt-24 border-t py-8 border-slate-200">
+<footer class="mt-32 -t -slate-200 bg-white">
   <div
-    class="custom-container flex flex-col gap-8 md:flex-row md:items-center md:justify-between"
+    class="custom-container flex flex-col gap-12 py-12 lg:flex-row lg:items-end lg:justify-between"
   >
     <!-- Left -->
-    <div class="space-y-5">
-      <h2
-        class="font-primary text-lg font-semibold tracking-tight text-slate-900"
+    <div class="max-w-xl space-y-6">
+      <div class="space-y-3">
+        <p
+          class="font-secondary text-xs font-medium uppercase tracking-[0.25em] text-slate-400"
+        >
+          Portfolio
+        </p>
+
+        <h2
+          class="font-primary text-2xl font-bold tracking-tight text-slate-900 md:text-3xl"
+        >
+          Stanislaus Alva Jufinto.
+        </h2>
+      </div>
+
+      <p
+        class="font-secondary text-base leading-relaxed text-slate-600 md:text-lg"
       >
-        Stanislaus Alva Jufinto.
-      </h2>
-
-      <p class="font-secondary max-w-md text-sm leading-relaxed text-slate-600">
-        Engineer by Trade. Indie Builder by Nature.
+        Engineer by trade. Indie builder by nature. I build software to make
+        your business goes easier.
       </p>
 
-      <p class="font-secondary text-xs text-slate-500">
-        © {today.getFullYear()} All rights reserved.
-      </p>
+      <div
+        class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-500"
+      >
+        <span>© {today.getFullYear()}</span>
+
+        <span class="hidden h-1 w-1 rounded-full bg-slate-300 md:block"></span>
+
+        <span>Built with Astro</span>
+
+        <span class="hidden h-1 w-1 rounded-full bg-slate-300 md:block"></span>
+
+        <span>All rights reserved</span>
+      </div>
     </div>
 
     <!-- Right -->
-    <div class="flex flex-wrap items-center gap-2">
-      <a
-        href="https://github.com/AlvaJufinto"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group flex items-center gap-2 text-sm text-slate-500 transition hover:text-slate-900"
-        aria-label="GitHub Profile"
-      >
-        <svg
-          viewBox="0 0 16 16"
-          aria-hidden="true"
-          class="h-5 w-5 transition-transform group-hover:-translate-y-0.5"
+    <div class="flex flex-col items-end gap-5">
+      <div class="flex flex-wrap items-end gap-3 w-full">
+        {
+          socials.map((social) => (
+            <a
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.label}
+              class="flex w-full items-center justify-start gap-2 text-sm text-slate-600 transition hover:text-slate-900 lg:justify-end"
+            >
+              <Icon
+                name={social.icon}
+                class="h-4 w-4 transition-transform duration-200"
+              />
+
+              <span class="font-secondary text-right">{social.label}</span>
+            </a>
+          ))
+        }
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="h-px w-10 bg-slate-200"></div>
+
+        <a
+          href="https://notbyai.fyi/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="opacity-70 transition hover:opacity-100"
+          aria-label="Human Made Badge"
         >
-          <path
-            fill="currentColor"
-            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-          ></path>
-        </svg>
-
-        <span class="font-secondary">GitHub</span>
-      </a>
-
-      <a
-        href="https://www.linkedin.com/in/alva-jufinto/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group flex items-center gap-2 text-sm text-slate-500 transition hover:text-slate-900"
-        aria-label="LinkedIn Profile"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          class="h-5 w-5 transition-transform group-hover:-translate-y-0.5"
-        >
-          <path
-            d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.11 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.79v2.19h.07c.67-1.27 2.31-2.61 4.76-2.61C22 7.58 24 10.08 24 14.29V24h-5v-8.45c0-2.01-.04-4.59-2.8-4.59-2.8 0-3.23 2.18-3.23 4.44V24h-5V8z"
-          ></path>
-        </svg>
-
-        <span class="font-secondary">LinkedIn</span>
-      </a>
-
-      <a
-        href="https://www.instagram.com/alva.jufinto/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group flex items-center gap-2 text-sm text-slate-500 transition hover:text-slate-900"
-        aria-label="Instagram Profile"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          class="h-5 w-5 transition-transform group-hover:-translate-y-0.5"
-        >
-          <path
-            d="M7.75 2C4.57 2 2 4.57 2 7.75v8.5C2 19.43 4.57 22 7.75 22h8.5C19.43 22 22 19.43 22 16.25v-8.5C22 4.57 19.43 2 16.25 2h-8.5zm0 2h8.5C18.33 4 20 5.67 20 7.75v8.5C20 18.33 18.33 20 16.25 20h-8.5C5.67 20 4 18.33 4 16.25v-8.5C4 5.67 5.67 4 7.75 4zm8.75 1a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z"
-          ></path>
-        </svg>
-
-        <span class="font-secondary">Instagram</span>
-      </a>
-
-      <div class="h-4 w-px bg-slate-200"></div>
-
-      <a
-        href="https://notbyai.fyi/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="opacity-70 transition hover:opacity-100"
-      >
-        <Image height={24} src={HumanBadge} alt="Human Made Badge" />
-      </a>
+          <Image height={28} src={HumanBadge} alt="Human Made Badge" />
+        </a>
+      </div>
     </div>
   </div>
 </footer>

@@ -34,6 +34,7 @@ const work = defineCollection({
       tech: z.array(z.string()).default([]).optional(),
 
       heroImage: image().optional(),
+      logo: image().optional(),
 
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
