@@ -1,0 +1,151 @@
+---
+title: "LaperBang"
+description: "A demand-driven routing platform designed to help mobile street food vendors and consumers connect in real-time using geospatial clustering and smart demand aggregation."
+category:
+  - "Side Project"
+  - "Smart City"
+  - "Geospatial System"
+  - "Real-Time Platform"
+  - "Mobile Application"
+
+tech:
+  - "Flutter"
+  - "Node.js"
+  - "Express.js"
+  - "Supabase"
+  - "PostGIS"
+  - "Redis"
+  - "Mapbox"
+  - "Firebase Cloud Messaging"
+  - "DBSCAN"
+
+pubDate: 2026-01-01
+updatedDate: 2026-01-01
+isDraft: false
+---
+
+## Overview
+
+LaperBang is a demand-driven routing platform designed specifically to support mobile street food vendors in real-time.
+
+The platform was inspired by a common everyday problem: people often suddenly crave specific street foods or traditional snacks — such as batagor or es doger — but have difficulty locating nearby mobile vendors. LaperBang aims to bridge this information gap by helping consumers discover nearby vendors while simultaneously helping vendors reach actual areas of demand more efficiently.
+
+The system creates a mutually beneficial ecosystem:
+- Consumers can access desired food vendors more easily
+- Vendors can optimize routes and reduce inefficient roaming
+
+The platform primarily targets:
+- Traditional mobile food vendors
+- Residential complex communities
+- Urban consumers such as office workers and university students
+
+---
+
+## Core Features
+
+### Craving Signal
+
+Consumers can simply press a button to send a real-time signal indicating that they want a specific type of food or snack.
+
+The system aggregates these individual signals into collective demand data.
+
+### Smart Demand Clustering
+
+Demand signals are processed using geospatial clustering techniques to identify high-demand areas or “hotspots”.
+
+The clustering process is powered by the DBSCAN (Density-Based Spatial Clustering of Applications with Noise) algorithm.
+
+Key behaviors include:
+- Detecting dense consumer request clusters
+- Identifying meaningful demand zones
+- Ignoring isolated requests categorized as noise
+
+### Real-Time Vendor Matching
+
+Once a hotspot is detected, nearby relevant vendors are matched and notified instantly.
+
+The system helps vendors prioritize areas with actual demand rather than moving randomly without market visibility.
+
+---
+
+## Technical Architecture
+
+The system was designed using a modern geospatial and real-time architecture stack.
+
+### Frontend
+
+- Flutter
+
+### Backend
+
+- Node.js
+- Express.js
+
+### Database & Spatial Processing
+
+- Supabase
+- PostGIS Extension
+- Redis Cache
+
+### Maps & Navigation
+
+- Mapbox
+- OpenStreetMap / Leaflet
+
+### Real-Time Communication
+
+- Firebase Cloud Messaging (FCM)
+- Pusher
+
+---
+
+## Geospatial Clustering System
+
+The clustering mechanism operates through the following workflow:
+
+1. Consumers send craving signals through the application
+2. The server stores location coordinates
+3. DBSCAN analyzes spatial density patterns
+4. High-density request areas are identified as hotspots
+5. Vendors receive real-time notifications for nearby hotspots
+
+Requests that do not form meaningful spatial density are treated as noise and ignored to avoid inefficient routing recommendations.
+
+---
+
+## Responsibilities
+
+- Designed the overall system architecture and real-time demand flow
+- Planned geospatial clustering implementation using DBSCAN
+- Structured backend communication and notification workflows
+- Designed mobile-first user interaction concepts
+- Planned integration between:
+  - Spatial database systems
+  - Real-time notifications
+  - Vendor matching logic
+  - Geospatial visualization systems
+
+---
+
+## Impact
+
+LaperBang explores how geospatial intelligence and demand aggregation systems can improve informal urban food distribution ecosystems.
+
+Potential benefits include:
+- Faster discovery of mobile food vendors
+- More efficient vendor movement and fuel usage
+- Reduced idle roaming for vendors
+- Improved consumer convenience
+- Better utilization of real-time urban demand data
+
+---
+
+## Key Takeaways
+
+This project strengthened experience in:
+- Real-time system architecture
+- Geospatial clustering algorithms
+- Spatial databases with PostGIS
+- Mobile-first platform design
+- Event-driven backend workflows
+- Designing scalable demand aggregation systems
