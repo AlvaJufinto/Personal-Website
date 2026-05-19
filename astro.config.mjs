@@ -2,6 +2,7 @@
 
 // @ts-check
 
+import icon from "astro-icon";
 import { defineConfig } from "astro/config";
 
 import mdx from "@astrojs/mdx";
@@ -11,7 +12,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
   site: "https://alvajufinto.vercel.app/",
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap(), icon()],
   vite: {
     plugins: [tailwindcss()],
     resolve: {

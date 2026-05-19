@@ -7,6 +7,51 @@ import Footer from "@/components/ui/Footer.astro";
 import FormattedDate from "@/components/ui/FormattedDate.astro";
 import Header from "@/components/ui/Header.astro";
 
+import { Icon } from "astro-icon/components";
+
+const linkStyles = {
+  github: {
+    class:
+      "border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300",
+    icon: "mdi:github",
+  },
+
+  gitlab: {
+    class:
+      "border-orange-200 text-orange-700 hover:bg-orange-50 hover:border-orange-300",
+    icon: "mdi:gitlab",
+  },
+
+  deployment: {
+    class:
+      "border-emerald-200 text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300",
+    icon: "mdi:rocket-launch",
+  },
+
+  website: {
+    class:
+      "border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300",
+    icon: "mdi:web",
+  },
+
+  figma: {
+    class:
+      "border-pink-200 text-pink-700 hover:bg-pink-50 hover:border-pink-300",
+    icon: "mdi:figma",
+  },
+
+  documentation: {
+    class:
+      "border-purple-200 text-purple-700 hover:bg-purple-50 hover:border-purple-300",
+    icon: "mdi:file-document-outline",
+  },
+
+  other: {
+    class:
+      "border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300",
+    icon: "mdi:open-in-new",
+  },
+};
 type Props = CollectionEntry<"work">["data"];
 
 const {
@@ -19,22 +64,6 @@ const {
   tech = [],
   links = [],
 } = Astro.props;
-
-const linkStyles = {
-  github:
-    "border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300",
-  gitlab:
-    "border-orange-200 text-orange-700 hover:bg-orange-50 hover:border-orange-300",
-  deployment:
-    "border-emerald-200 text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300",
-  website:
-    "border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300",
-  figma: "border-pink-200 text-pink-700 hover:bg-pink-50 hover:border-pink-300",
-  documentation:
-    "border-purple-200 text-purple-700 hover:bg-purple-50 hover:border-purple-300",
-  other:
-    "border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300",
-};
 ---
 
 <html lang="en">
@@ -46,10 +75,10 @@ const linkStyles = {
     <Header />
 
     <main class="custom-container py-10">
-      <article class="mx-auto max-w-5xl">
+      <article class="mx-auto max-w-6xl">
         {
           heroImage && (
-            <div class="group relative mb-10 overflow-hidden border border-slate-200 bg-slate-100">
+            <div class="group relative mb-12 overflow-hidden border border-slate-200 bg-slate-100">
               <Image
                 width={1600}
                 height={800}
@@ -61,38 +90,48 @@ const linkStyles = {
           )
         }
 
-        <div class="grid gap-10 lg:grid-cols-[240px_minmax(0,1fr)]">
-          <aside class="space-y-8">
-            <div>
-              <p
-                class="font-secondary mb-2 text-xs font-medium uppercase tracking-[0.2em] text-slate-400"
-              >
-                Published
-              </p>
-
-              <p class="font-secondary text-sm text-slate-600">
-                <FormattedDate date={pubDate} />
-              </p>
+        <div class="space-y-12">
+          <section class="border-b border-slate-200 pb-10">
+            <div
+              class="flex flex-wrap items-center gap-3 text-sm text-slate-500"
+            >
+              <span class="font-secondary">
+                Published <FormattedDate date={pubDate} />
+              </span>
 
               {
                 updatedDate && (
-                  <p class="font-secondary mt-2 text-sm text-slate-500">
-                    Updated <FormattedDate date={updatedDate} />
-                  </p>
+                  <span class="font-secondary">
+                    • Updated <FormattedDate date={updatedDate} />
+                  </span>
                 )
               }
             </div>
 
+            <h1
+              class="font-primary mt-5 text-4xl font-bold tracking-tight text-slate-900 md:text-5xl lg:text-6xl"
+            >
+              {title}
+            </h1>
+
+            {
+              description && (
+                <p class="font-secondary mt-6 max-w-4xl text-lg leading-relaxed text-slate-600 md:text-xl">
+                  {description}
+                </p>
+              )
+            }
+
             {
               category.length > 0 && (
-                <div>
+                <div class="mt-8">
                   <p class="font-secondary mb-3 text-xs font-medium uppercase tracking-[0.2em] text-slate-400">
                     Topics
                   </p>
 
-                  <div class="flex flex-wrap gap-2">
+                  <div class="flex flex-wrap gap-3">
                     {category.map((item) => (
-                      <span class="font-secondary inline-flex items-center border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-600">
+                      <span class="font-secondary inline-flex items-center border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-600">
                         #{item}
                       </span>
                     ))}
@@ -103,14 +142,14 @@ const linkStyles = {
 
             {
               tech.length > 0 && (
-                <div>
+                <div class="mt-8">
                   <p class="font-secondary mb-3 text-xs font-medium uppercase tracking-[0.2em] text-slate-400">
                     Stack
                   </p>
 
-                  <div class="flex flex-wrap gap-2">
+                  <div class="flex flex-wrap gap-3">
                     {tech.map((item) => (
-                      <span class="font-secondary inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
+                      <span class="font-secondary inline-flex items-center border border-blue-200 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700">
                         {item}
                       </span>
                     ))}
@@ -121,53 +160,43 @@ const linkStyles = {
 
             {
               links.length > 0 && (
-                <div>
+                <div class="mt-8">
                   <p class="font-secondary mb-3 text-xs font-medium uppercase tracking-[0.2em] text-slate-400">
                     Project Links
                   </p>
 
-                  <div class="flex flex-col gap-2">
-                    {links.map((link) => (
-                      <a
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class={`font-secondary inline-flex items-center justify-between border px-3 py-2 text-sm transition ${
-                          linkStyles[link.type] ?? linkStyles.other
-                        }`}
-                      >
-                        <span>{link.label}</span>
+                  <div class="flex flex-wrap gap-3">
+                    {links.map((link) => {
+                      const style = linkStyles[link.type] ?? linkStyles.other;
 
-                        <span class="text-xs uppercase opacity-60">
-                          {link.type}
-                        </span>
-                      </a>
-                    ))}
+                      return (
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class={`font-secondary inline-flex items-center gap-3 border px-4 py-2.5 text-sm transition ${style.class}`}
+                        >
+                          <div class="flex items-center gap-2">
+                            <Icon name={style.icon} class="h-4 w-4" />
+
+                            <span>{link.label}</span>
+                          </div>
+
+                          <span class="text-xs uppercase opacity-60">
+                            {link.type}
+                          </span>
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
               )
             }
-          </aside>
+          </section>
 
           <section>
-            <div class="mb-10 border-b border-slate-200 pb-8">
-              <h1
-                class="font-primary mb-5 text-4xl font-bold tracking-tight text-slate-900 md:text-5xl"
-              >
-                {title}
-              </h1>
-
-              {
-                description && (
-                  <p class="font-secondary max-w-3xl text-lg leading-relaxed text-slate-600">
-                    {description}
-                  </p>
-                )
-              }
-            </div>
-
             <div
-              class="prose prose-slate prose-lg max-w-none prose-headings:font-primary prose-headings:tracking-tight prose-p:text-slate-700 prose-a:no-underline hover:prose-a:text-slate-900 prose-code:rounded prose-code:bg-slate-100 prose-code:px-1 prose-code:py-0.5 prose-code:text-sm"
+              class="prose prose-slate prose-lg max-w-none prose-headings:font-primary prose-headings:tracking-tight prose-headings:text-slate-900 prose-p:text-slate-700 prose-p:leading-relaxed prose-a:no-underline hover:prose-a:text-slate-900 prose-code:rounded prose-code:bg-slate-100 prose-code:px-1 prose-code:py-0.5 prose-code:text-sm prose-pre:border prose-pre:border-slate-200 prose-pre:bg-slate-50"
             >
               <slot />
             </div>
