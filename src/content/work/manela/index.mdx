@@ -1,67 +1,117 @@
 ---
 title: "TemanNelayan (Manela)"
 description: "A satellite-data-driven fisheries platform developed for GEMASTIK XVIII to help fishermen identify potential fishing zones and fish types using oceanographic analysis and AI-assisted insights."
+heroImage: "@/assets/2025/oct/gemastik-xviii-2025/manela-app.jpg"
 category:
-  - "Side Project"
-  - "Research Project"
-  - "AI Platform"
-  - "Maritime Technology"
-  - "GEMASTIK XVIII"
+ - "Side Project"
+ - "Research Project"
+ - "Mobile App"
+ - "AI Platform"
+ - "Geospatial Technology"
+ - "GEMASTIK XVIII 2025"
 
 tech:
-  - "Node.js"
-  - "Express.js"
-  - "Python"
-  - "Google Earth Engine"
-  - "Satellite Data"
-  - "AI Integration"
-  - "Offline-First"
+ - "Flutter"
+ - "Node.js"
+ - "Express.js"
+ - "Python"
+ - "Google Earth Engine"
+ - "AI Gemini"
 
 links:
-  - label: "Project Demo"
-    url: "https://example.com"
-    type: "deployment"
+ - label: "Mobile App"
+   type: "deployment"
+   url: "https://drive.google.com/file/d/1u6o62m2v66fqSe_aRxo96ozKFIKYTOLB/view?usp=sharing"
+ - label: "Pitchdeck"
+   type: "documentation"
+   url: "https://docs.google.com/document/d/1XW6DNkrPPZ7jf_Sn3iTwmdJyIAAWAL5O_VLompcZE9A/edit?usp=sharing"
+ - label: "Final Report"
+   type: "documentation"
+   url: "https://docs.google.com/document/d/1XW6DNkrPPZ7jf_Sn3iTwmdJyIAAWAL5O_VLompcZE9A/edit?usp=sharing"
+ - label: "Paper"
+   type: "documentation"
+   url: "https://docs.google.com/document/d/1i4dN0RQK-E0ZXbPwC0m9z4le_RV2kQOp/edit?usp=sharing&ouid=103974896326528226723&rtpof=true&sd=true"
+ - label: "Video"
+   type: "other"
+   url: "https://www.youtube.com/watch?v=zNkWOG-IsEo"
 
-pubDate: 2025-01-01
-updatedDate: 2025-01-01
+pubDate: 2026-10-05
+#updatedDate: 2025-01-01
 isDraft: false
 ---
 
+import { Image } from "astro:assets";
+import SatteliteData from "@/assets/2025/oct/gemastik-xviii-2025/satellite-data.png";
+import SampleDataset from "@/assets/2025/oct/gemastik-xviii-2025/dataset-sample.png";
+import EliminationRound from "@/assets/2025/oct/gemastik-xviii-2025/elimination-round.jpg";
+import Mockup from "@/assets/2025/oct/gemastik-xviii-2025/mockup.png";
+import Strangers from "@/assets/2025/oct/gemastik-xviii-2025/strangers.png";
+import OurMentor from "@/assets/2025/oct/gemastik-xviii-2025/our-mentor.jpg";
+import OnTheSea from "@/assets/2025/oct/gemastik-xviii-2025/on-the-sea.jpg";
+import FourthPlace from "@/assets/2025/oct/gemastik-xviii-2025/4th-place.jpg";
+import ManelaApp from "@/assets/2025/oct/gemastik-xviii-2025/manela-app.jpg";
+
+##### DISCLAIMER: You can see a whole article talking about the competition <a href="/blog/2025/oct/gemastik-xviii-2025/" target="blank">HERE</a>, but I will focus on technical side here.
+--
 ## Overview
 
-TemanNelayan (Manela) is a GEMASTIK XVIII project developed collaboratively with **Alwan Athallah Mumtaz**, achieving **4th place** in the competition.
+TemanNelayan (Manela) is a GEMASTIK XVIII project developed collaboratively with <a href="https://www.linkedin.com/in/alwan-athallah-mumtaz/" target="_blank">Alwan Athallah Mumtaz</a>, achieving **4th place** in the competition.
 
-The platform was designed to help fishermen identify potential fishing locations and fish species by combining satellite-derived oceanographic data with analytical and AI-assisted insights. A major focus of the project was maintaining usability in low-connectivity maritime environments where stable internet access is often unavailable.
+The platform helps fishermen identify potential fishing zones and probable fish species using satellite-derived oceanographic data, analytical processing, and AI-assisted recommendations.
+<br />
 
----
 
 ## Responsibilities
 
 - Conducted collaborative research on methodologies for predicting fish locations and species based on oceanographic indicators.
-- Collected and processed:
-  - Chlorophyll-a (CHL-A)
-  - Bathymetry data
-  - Sea Surface Temperature (SST)
+- Collected, processed, and analyzed::
+<ol class="list-[lower-alpha] pl-20">
+<li>Sea Surface Temperature (SST)</li>
+<li>Chlorophyll-a (CHL-A)</li>
+<li>Bathymetry data</li>
+<li>Fish Zone Prediction</li>
+</ol>
+
+<Image src={SatteliteData} alt="Satellite Data"/>
+
 - Utilized Google Earth Engine for large-scale satellite data acquisition.
 - Processed and structured datasets using Python for analytical workflows.
 - Built backend services using Node.js and Express.js.
-- Contributed to offline-first architecture and low-bandwidth optimization strategies.
+- Designed and implemented offline-first system strategies.
 - Implemented partial rendering techniques to improve usability on low-end devices.
 - Participated in field testing and validation directly with fishermen.
 
----
+<br />
 
 ## Tech Stack
 
+- Flutter
 - Node.js
 - Express.js
 - Python
 - Google Earth Engine
-- Satellite Data Processing
-- AI-Assisted Analytics
-- Offline-First Architecture
 
----
+<br />
+
+
+## App User Interface
+<Image src={Mockup} alt="Final App Mockup" />
+
+<ol class="list-[lower-alpha] pl-10">
+<li>Loading Screen</li>
+<li>Home Screen (Weather condition and closest fishing spot)</li>
+<li>Fishing Zone Prediction Map</li>
+<li>Zone Detail (Zone prediction, distance, sea depth, temperature, wind speed and direction)</li>
+<li>Zone Detail (Fish type probability, Ship fuel calculation)</li>
+<li>Zone Detail (AI Recommendation)</li>
+<li>Map </li>
+<li>Fish Category Library</li>
+<li>Fish Library</li>
+<li>Fish Information</li>
+</ol>
+
+<br />
+
 
 ## Impact
 
@@ -71,16 +121,18 @@ Key outcomes included:
 - Supporting fishermen with accessible fishing zone insights
 - Enabling usability in low-connectivity environments
 - Optimizing performance for lower-end mobile devices
-- Achieving approximately 80% successful validation during field testing for core predictions and functionalities
-- Securing 4th place at GEMASTIK XVIII
+- Achieved approximately 80% validation accuracy during field testing for core predictions and functionalities
+- Securing 4th place at GEMASTIK XVIII 2025
 
----
+<Image src={Strangers} alt="User Testing" />
 
-## Key Takeaways
+<br />
+
+## What I Learn From this Project
 
 This project strengthened experience in:
 - Satellite and oceanographic data processing
-- Research-driven software development
+- Studying fish habitat prediction using oceanographic data
 - Offline-first system architecture
 - Backend engineering for analytical platforms
 - Real-world field validation and user testing
