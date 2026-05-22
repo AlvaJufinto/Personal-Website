@@ -1,28 +1,33 @@
 ---
 title: "MotoIndo Website"
 description: "Developed a modern company website and product landing page for MotoIndo using Next.js and Sanity CMS, focused on maintainability, SEO, and scalable content management."
-category:
-  - "Freelance Project"
-  - "Web Development"
-  - "Company Website"
+category: ["Freelance Project" , "Web Development" , "Company Website", "SEO"]
+tech: ["Next.js", "Sanity CMS", "React", "SEO", "Typescript"]
+heroImage: "@/assets/works/motoindo/thumbnail.png"
 
-tech:
-  - "Next.js"
-  - "Sanity CMS"
-  - "React"
-  - "SEO"
-  - "Headless CMS"
+links:
+ - label: "Website"
+   type: "deployment"
+   url: "https://motoindo.id/"
+ - label: "Code"
+   type: "github"
+   url: "https://github.com/AlvaJufinto/MotoIndo"
+
+
 
 pubDate: 2024-11-03
 #updatedDate: 2023-01-01
 isDraft: false
 ---
 
+import {Image} from "astro:assets"
+import MotoIndoUI from  "@/assets/works/motoindo/UI.png"
+import MotoIndoUI2 from  "@/assets/works/motoindo/UI2.png"
+
+
 ## Overview
 
-MotoIndo required a modern and maintainable company website capable of supporting continuous content updates while improving the company’s online visibility and branding.
-
-The project also included a dedicated landing page for their radio communication product, **Labra V22**, designed to present product information clearly and professionally for potential customers and partners.
+Identified gaps in motoindo’s communication and transformed them into a clear digital experience that explains who they are, what they offer, and why customers should trust them
 
 ---
 
@@ -31,7 +36,6 @@ The project also included a dedicated landing page for their radio communication
 - Led the project from technical planning to production deployment.
 - Designed and implemented the frontend architecture using Next.js.
 - Integrated Sanity Headless CMS to enable flexible and maintainable content management.
-- Developed reusable frontend components for scalability and easier future updates.
 - Optimized the website structure and metadata for better search visibility and SEO performance.
 - Collaborated directly with stakeholders to align the website structure and content with business goals.
 
@@ -48,22 +52,23 @@ The project also included a dedicated landing page for their radio communication
 
 ## Impact
 
-The new MotoIndo website improved the company’s online presence by providing:
-- A more modern and professional visual identity
-- Easier long-term content management
-- Better scalability for future updates
-- Improved ranking for branded search queries
+The new MotoIndo website improved the company’s online presence with:
 
-The project also demonstrated the effectiveness of combining static performance-focused frontend architecture with a flexible headless CMS workflow.
+<span class="text-4xl">
+<span class="font-bold text-4xl text-blue-500">1st</span> on Google Search by optimizing SEO
+</span>
 
----
 
-## Product Landing Page
+<span class="text-4xl">
+<span class="font-bold text-4xl text-blue-500">50%</span>
+Increased brand visibility through website
+development and branding
+</span>
 
-One of the featured deliverables was the landing page for the **Labra V22** radio communication product, built to showcase:
-- Product specifications
-- Key features
-- Company branding
-- Marketing-focused presentation
+<br />
 
-The landing page emphasized clarity, responsiveness, and lightweight performance for broader accessibility across devices.
+<Image src={MotoIndoUI} alt="MotoIndo UI"/>
+
+<br />
+
+<Image src={MotoIndoUI2} alt="MotoIndo UI"/>
