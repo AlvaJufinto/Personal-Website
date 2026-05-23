@@ -1,13 +1,20 @@
 ---
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+
 import BaseHead from "@/components/ui/BaseHead.astro";
 import Footer from "@/components/ui/Footer.astro";
 import FormattedDate from "@/components/ui/FormattedDate.astro";
 import Header from "@/components/ui/Header.astro";
 import Tags from "@/components/ui/Tags.astro";
+import getRecommendedPosts from "@/lib/BlogRecommender";
 
-type Props = CollectionEntry<"blog">["data"];
+type Props = {
+  post: CollectionEntry<"blog">;
+};
+
+const { post } = Astro.props;
 
 const {
   title,
@@ -15,9 +22,13 @@ const {
   pubDate,
   updatedDate,
   heroImage,
-  topics,
+  topics = [],
   language,
-} = Astro.props;
+} = post.data;
+
+const allPosts = await getCollection("blog");
+
+const relatedPosts = getRecommendedPosts(post, allPosts, 3);
 ---
 
 <html lang="en">
@@ -27,6 +38,7 @@ const {
 
   <body>
     <Header />
+
     <main class="custom-container">
       {
         heroImage && (
@@ -36,7 +48,7 @@ const {
               height={510}
               class="w-full h-auto"
               src={heroImage}
-              alt=""
+              alt={title}
             />
           </div>
         )
@@ -47,6 +59,7 @@ const {
           <div class="mb-4">
             <p class="font-secondary text-slate-500 text-sm">
               <FormattedDate date={pubDate} />
+
               {
                 updatedDate && (
                   <span class="ml-2">
@@ -56,11 +69,13 @@ const {
               }
             </p>
           </div>
+
           <h1
             class="font-primary text-3xl font-bold tracking-tight text-slate-900 md:text-4xl mb-4"
           >
             {title}
           </h1>
+
           {
             description && (
               <p class="font-secondary text-lg text-slate-600 leading-relaxed">
@@ -68,13 +83,71 @@ const {
               </p>
             )
           }
+
           <Tags topics={topics} language={language} />
         </div>
-        <div class="border-t border-slate-200 pt-8">
+
+        <div class="markdown border-t border-slate-200 pt-8">
           <slot />
         </div>
+
+        {
+          relatedPosts.length > 0 && (
+            <section class="mt-16 border-t border-slate-200 pt-8">
+              <h2 class="font-primary text-2xl font-bold mb-6">
+                Related Articles
+              </h2>
+
+              <div class="grid gap-6 md:grid-cols-3">
+                {relatedPosts.map((relatedPost) => (
+                  <a
+                    href={`/blog/${relatedPost.id}/`}
+                    class="group overflow-hidden border border-slate-200 transition hover:border-slate-400"
+                  >
+                    {relatedPost.data.heroImage && (
+                      <Image
+                        src={relatedPost.data.heroImage}
+                        alt={relatedPost.data.title}
+                        width={600}
+                        height={320}
+                        class="aspect-video w-full object-cover"
+                      />
+                    )}
+
+                    <div class="p-4">
+                      <p class="mb-2 text-sm text-slate-500">
+                        <FormattedDate date={relatedPost.data.pubDate} />
+                      </p>
+
+                      <h3 class="font-semibold text-slate-900 group-hover:underline">
+                        {relatedPost.data.title}
+                      </h3>
+
+                      {relatedPost.data.description && (
+                        <p class="mt-2 text-sm text-slate-600 line-clamp-3">
+                          {relatedPost.data.description}
+                        </p>
+                      )}
+
+                      {relatedPost.data.topics && (
+                        <div class="mt-4 flex flex-wrap gap-2">
+                          {relatedPost.data.topics.map((topic) => (
+                            <span class="border border-slate-200 px-2 py-1 text-xs text-slate-600">
+                              {topic}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )
+        }
       </div>
     </main>
+
     <Footer />
   </body>
 </html>
