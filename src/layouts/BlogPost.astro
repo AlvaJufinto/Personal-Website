@@ -9,6 +9,7 @@ import FormattedDate from "@/components/ui/FormattedDate.astro";
 import Header from "@/components/ui/Header.astro";
 import Tags from "@/components/ui/Tags.astro";
 import getRecommendedPosts from "@/lib/BlogRecommender";
+import BlogCard from "@/components/Blog/BlogCard.astro";
 
 type Props = {
   post: CollectionEntry<"blog">;
@@ -90,62 +91,22 @@ const relatedPosts = getRecommendedPosts(post, allPosts, 3);
         <div class="markdown border-t border-slate-200 pt-8">
           <slot />
         </div>
-
-        {
-          relatedPosts.length > 0 && (
-            <section class="mt-16 border-t border-slate-200 pt-8">
-              <h2 class="font-primary text-2xl font-bold mb-6">
-                Related Articles
-              </h2>
-
-              <div class="grid gap-6 md:grid-cols-3">
-                {relatedPosts.map((relatedPost) => (
-                  <a
-                    href={`/blog/${relatedPost.id}/`}
-                    class="group overflow-hidden border border-slate-200 transition hover:border-slate-400"
-                  >
-                    {relatedPost.data.heroImage && (
-                      <Image
-                        src={relatedPost.data.heroImage}
-                        alt={relatedPost.data.title}
-                        width={600}
-                        height={320}
-                        class="aspect-video w-full object-cover"
-                      />
-                    )}
-
-                    <div class="p-4">
-                      <p class="mb-2 text-sm text-slate-500">
-                        <FormattedDate date={relatedPost.data.pubDate} />
-                      </p>
-
-                      <h3 class="font-semibold text-slate-900 group-hover:underline">
-                        {relatedPost.data.title}
-                      </h3>
-
-                      {relatedPost.data.description && (
-                        <p class="mt-2 text-sm text-slate-600 line-clamp-3">
-                          {relatedPost.data.description}
-                        </p>
-                      )}
-
-                      {relatedPost.data.topics && (
-                        <div class="mt-4 flex flex-wrap gap-2">
-                          {relatedPost.data.topics.map((topic) => (
-                            <span class="border border-slate-200 px-2 py-1 text-xs text-slate-600">
-                              {topic}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </section>
-          )
-        }
       </div>
+      {
+        relatedPosts.length > 0 && (
+          <section class="mt-16 border-t border-slate-200 pt-8">
+            <h2 class="font-primary text-2xl font-bold mb-6">
+              Related Articles
+            </h2>
+
+            <div class="grid gap-6 md:grid-cols-3">
+              {relatedPosts.map((post) => (
+                <BlogCard post={post} slug={post.id} />
+              ))}
+            </div>
+          </section>
+        )
+      }
     </main>
 
     <Footer />
