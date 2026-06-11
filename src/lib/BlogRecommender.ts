@@ -49,19 +49,16 @@ export default function getRecommendedPosts(
       // cosine similarity
       const similarity = cosineSimilarity(currentVector, vector);
 
-      // shared topic boost
       const sharedTopics = postTopics.filter((topic) =>
         currentTopics.includes(topic),
       ).length;
 
-      // recency boost
       const daysOld =
         (Date.now() - new Date(post.data.pubDate).getTime()) /
         (1000 * 60 * 60 * 24);
 
       const recencyBoost = Math.max(0, 1 - daysOld / 365);
 
-      // final weighted score
       const score = similarity * 0.8 + sharedTopics * 0.1 + recencyBoost * 0.1;
 
       return {
