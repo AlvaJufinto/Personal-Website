@@ -1,0 +1,45 @@
+---
+title: "How I built LaperBang Backend Architecture"
+description: "REAL Technical detail about a fun project with my friend."
+pubDate: "June 11, 2026"
+heroImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDhvkvBafpzTkfsGM1b07Uf3GBzz1bIhYtQ&s"
+topics: ["tech", "college"]
+language: "en"
+---
+
+### Vendor Status
+1. Active / *mangkal* = can be followed AND can be called
+2. Moving / *jalan* = can be followed BUT cannot be called
+3. Idle / *istirahat* = can be followed BUT cannot be called
+4. Close / *tutup* = cannot be followed AND cannot be called
+
+### Clustering Process
+1. Forming / *request*  : <br /> - Pre-early stages, not valid yet, called as an **request** pointed with lat and long. <br /> - To make it active, there must be minimum 2 requests at a certain of time and within 300 meters at maximum
+2. Active / *cluster_assignment* : <br />In this stage, the cluster has its own centroid and vendor can accept it to make it assigned.
+3. Assigned : <br /> - Now called as a cluster. <br /> - Vendor already accept the cluster and now can follow the cluster centroid. 
+4. Fulfilled : <br /> Vendor arrived / done
+5. Expired : <br /> Dead becaused of time
+6. Dissolved : <br /> Forced to be offed because of unexpected things. 
+
+### Main Flow of LaperBang 
+So from the **customer** side, **vendor** can be followed or called if it accepts the requirements from the Vendor Status that you can see above   
+
+####  Follow / *ikuti* Vendor 
+1. Customer can see the static locatiom of the vendors that exist nearby them.
+2. If vendor status is ACTIVE or MOVING or IDLE, then the Customer can follow the selected vendor.
+3. Customer and vendor can see each other real-time location and status
+
+NB: For now, the position of nearby vendors on the map are static and updated only based on interval from Frontend via HTTP GET Request, we still have no clue how to make it technically possible for efficient real-time operations.
+
+#### Call / *panggil* Vendor
+1. Customer can see the static locatiom of the vendors that exist nearby them.
+2. If vendor status is ACTIVE / *mangkal*, then the Customer can follow the selected vendor.
+3. If a customer calls the vendor, ti will create an **cluaster assignment** / forming cluster 
+4. The rest of the process can be seen in the clustering process. 
+
+> But what if the there are no other requests within 300 meters beside a current request? 
+
+We decided to make it still exists as a standalone request and vendor can see the static request position coordinate just to inform the called. 
+
+NB: The reason why "moving" status cannot be called because in this MVP stage, because we don't have separate statuses for **moving with no direction** vs **moving to an active vendor**.
+ 
