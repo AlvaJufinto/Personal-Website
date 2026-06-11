@@ -1,6 +1,6 @@
 ---
 title: "How I built LaperBang Backend Architecture"
-description: "REAL Technical detail about a fun project with my friend."
+description: "REAL Technical detail about fun gojek v2 project with my friend."
 pubDate: "June 11, 2026"
 heroImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDhvkvBafpzTkfsGM1b07Uf3GBzz1bIhYtQ&s"
 topics: ["tech", "college"]
@@ -13,16 +13,30 @@ language: "en"
 3. Idle / *istirahat* = can be followed BUT cannot be called
 4. Close / *tutup* = cannot be followed AND cannot be called
 
-### Clustering Process
-1. Forming / *request*  : <br /> - Pre-early stages, not valid yet, called as an **request** pointed with lat and long. <br /> - To make it active, there must be minimum 2 requests at a certain of time and within 300 meters at maximum
-2. Active / *cluster_assignment* : <br />In this stage, the cluster has its own centroid and vendor can accept it to make it assigned.
-3. Assigned : <br /> - Now called as a cluster. <br /> - Vendor already accept the cluster and now can follow the cluster centroid. 
-4. Fulfilled : <br /> Vendor arrived / done
-5. Expired : <br /> Dead becaused of time
-6. Dissolved : <br /> Forced to be offed because of unexpected things. 
+### Clustering Lifecycle
+1. Forming / *request*  : <br /> - Pre-early stages, not valid yet, called as an **request** pointed with lat and long. <br /> - To make it active, there must be minimum 2 requests at a certain of time and within 300 meters at maximum.
+2. Active : <br /> - Now called as a cluster. <br /> - In this stage, the cluster has its own centroid and vendor can accept it to make it assigned or reject it. 
+3. Assigned :  <br /> - Vendor already accept the cluster and now can follow the cluster **centroid**.
+4. Rejected :  <br /> Vendor rejected the cluster. 
+5. Fulfilled : <br /> Vendor arrived / done.
+6. Expired : <br /> Dead because of time.
+7. Dissolved : <br /> Forced to be offed because of unexpected things. 
+
 
 ### Main Flow of LaperBang 
 So from the **customer** side, **vendor** can be followed or called if it accepts the requirements from the Vendor Status that you can see above   
+
+#### See Nearby Vendor 
+1. User can see nearby vendor on the map 
+2. But they cannot see all existing vendors but only ones within certain radius
+3. Customer can see the detailed vendor information
+4. Or Customer can follow or call the selected vendor.
+
+> We haven't decided the maximum radius yet, but we planned the radius parameter to minimalize misuse/fake call to a faraway vendors   
+
+#### NB:
+- Unfortunately, the customer can only call max. 3 vendors to prevent vendor call spamming.
+- This constraint will be reseted if a **Request** is **expired** or the **Cluster** is **rejected** or **fulfilled** or **expired** or **dissolved** 
 
 ####  Follow / *ikuti* Vendor 
 1. Customer can see the static locatiom of the vendors that exist nearby them.
@@ -39,7 +53,8 @@ NB: For now, the position of nearby vendors on the map are static and updated on
 
 > But what if the there are no other requests within 300 meters beside a current request? 
 
-We decided to make it still exists as a standalone request and vendor can see the static request position coordinate just to inform the called. 
+We decided to make it still exists as a standalone request and vendor can see the static request position coordinate just to inform they are being called. 
 
 NB: The reason why "moving" status cannot be called because in this MVP stage, because we don't have separate statuses for **moving with no direction** vs **moving to an active vendor**.
  
+### Where is the DBSCAN Clustering process is happening? 
