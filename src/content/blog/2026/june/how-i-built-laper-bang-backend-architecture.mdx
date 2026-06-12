@@ -21,6 +21,12 @@ The **user** itself consists of 2 roles:
 
 <ParameterTable
   params={[
+		{
+      name: "name",
+      type: "string",
+      required: false,
+      description: "-",
+    },
     {
       name: "email",
       type: "string",
@@ -77,6 +83,12 @@ Update user profile based on the currently authenticated user's role.
 
 <ParameterTable
   params={[
+		 {
+      name: "name",
+      type: "string",
+      required: false,
+      description: "User name that can be updated by all roles.",
+    },
     {
       name: "email",
       type: "string",
@@ -244,18 +256,15 @@ So from the **customer** side, **vendor** can be followed or called if it accept
 - For now, the position of nearby vendors on the map are static and updated only based on interval from Frontend via HTTP GET Request, we still have no clue how to make it technically possible for efficient real-time operations.
 
 ###  2. Follow / *ikuti* Vendor 
-1. Customer can see the static locatiom of the vendors that exist nearby them.
-2. If vendor status is ACTIVE or MOVING or IDLE, then the Customer can follow the selected vendor.
-3. Customer can see vendor real-time location and status in realtime via pusher
-
-### 2. Follow / *ikuti* Vendor
-
 Follow feature in LaperBang is designed differently from a normal social media follow system.
 
 The purpose of following a vendor is not to create a relationship between users, but to create a **realtime tracking subscription** between Customer and Vendor.
 
 The Customer first discovers a vendor using a normal HTTP request, then subscribes to the vendor's realtime channel using Pusher.
 
+1. Customer can see the static locatiom of the vendors that exist nearby them.
+2. If vendor status is ACTIVE or MOVING or IDLE, then the Customer can follow the selected vendor.
+3. Customer can see vendor real-time location and status in realtime via pusher
 
 ### Follow Vendor Lifecycle
 
