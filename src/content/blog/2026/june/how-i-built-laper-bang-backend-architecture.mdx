@@ -1,60 +1,320 @@
 ---
 title: "How I built LaperBang Backend Architecture"
-description: "REAL Technical detail about fun gojek v2 project with my friend."
+description: "REAL Technical detail about a fun gojek v2 project with my friend."
 pubDate: "June 11, 2026"
 heroImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDhvkvBafpzTkfsGM1b07Uf3GBzz1bIhYtQ&s"
 topics: ["tech", "college"]
 language: "en"
 ---
+import ParameterTable from "@/components/ui/ParameterTable.astro";
 
-### Vendor Status
+
+## Authentication
+The **user** itself consists of 2 role:
+1. Customer : The Buyer
+2. Vendor : The seller
+
+### 1. Register User
+<code>POST /api/v1/auth/register</code>
+
+#### Body Parameter
+
+<ParameterTable
+  params={[
+    {
+      name: "email",
+      type: "string",
+      required: true,
+      description: "-",
+    },
+    {
+      name: "password",
+      type: "string",
+      required: true,
+      description: "-",
+    },
+    {
+      name: "role",
+      type: "string",
+      required: false,
+      description: "vendor | customer",
+    },
+  ]}
+/>
+
+### 2. Login User
+<code>POST /api/v1/auth/register</code>
+
+#### Body Parameter
+
+<ParameterTable
+  params={[
+    {
+      name: "email",
+      type: "string",
+      required: true,
+      description: "-",
+    },
+    {
+      name: "password",
+      type: "string",
+      required: true,
+      description: "-",
+    },
+  ]}
+/>
+
+### 3. Get Self Profile
+<code>GET /api/v1/auth/me</code>
+It will return your detailed information.
+
+### Update User Profile
+<code>PUT /api/v1/auth/profile</code>
+
+Update user profile based on the currently authenticated user's role.
+
+#### 4. Body Parameter 
+
+<ParameterTable
+  params={[
+    {
+      name: "email",
+      type: "string",
+      required: false,
+      description: "User email that can be updated by all roles.",
+    },
+    {
+      name: "password",
+      type: "string",
+      required: false,
+      description: "New user password.",
+    },
+    {
+      name: "name",
+      type: "string",
+      required: false,
+      description: "User name.",
+    },
+    {
+      name: "description",
+      type: "string",
+      required: false,
+      description: "User profile description.",
+    },
+    {
+      name: "vendor_status",
+      type: "string/enum",
+      required: false,
+      description:
+        "Vendor status. Can only be updated by users with the vendor role. Input example: active, moving, idle, close",
+    },
+    {
+      name: "vendor_additional_info",
+      type: "object",
+      required: false,
+      description:
+        "Additional vendor information. Can only be updated by users with the vendor role.",
+    },
+  ]}
+/>
+
+#### Field Constraint
+
+#### Role: `customer`
+
+Customer can only update:
+
+- <code>name</code>
+- <code>email</code>
+- <code>password</code>
+- <code>description</code>
+
+The following fields cannot be updated:
+
+- <code>role</code>
+- <code>vendor_status</code>
+- <code>vendor_additional_info</code>
+
+#### Role: `vendor`
+
+Vendor can update:
+
+- <code>name</code>
+- <code>email</code>
+- <code>password</code>
+- <code>description</code>
+- <code>vendor_status</code>
+- <code>vendor_additional_info</code>
+
+The following field cannot be updated:
+
+- `role`
+
+
+### Example Request (Customer)
+
+```json
+{
+  "name": "Alva",
+  "email": "alva@example.com",
+  "password": "new_password"
+}
+```
+
+## Vendor Status
 1. Active / *mangkal* = can be followed AND can be called
 2. Moving / *jalan* = can be followed BUT cannot be called
 3. Idle / *istirahat* = can be followed BUT cannot be called
 4. Close / *tutup* = cannot be followed AND cannot be called
 
-### Clustering Lifecycle
-1. Forming / *request*  : <br /> - Pre-early stages, not valid yet, called as an **request** pointed with lat and long. <br /> - To make it active, there must be minimum 2 requests at a certain of time and within 300 meters at maximum.
-2. Active : <br /> - Now called as a cluster. <br /> - In this stage, the cluster has its own centroid and vendor can accept it to make it assigned or reject it. 
-3. Assigned :  <br /> - Vendor already accept the cluster and now can follow the cluster **centroid**.
-4. Rejected :  <br /> Vendor rejected the cluster. 
-5. Fulfilled : <br /> Vendor arrived / done.
-6. Expired : <br /> Dead because of time.
-7. Dissolved : <br /> Forced to be offed because of unexpected things. 
+<hr class="line" />
 
+## Clustering Lifecycle
+1. Forming / *request*  : <br /> - Pre-early stages, not valid yet, called as an **request** or *craving location* pointed with lat and long. <br /> - To make it active / assigned cluster, there must be minimum 2 requests at a certain of time and within 10 meters at maximum.
+2. Assigned / Active Cluster : <br /> - Server automatically assign an active cluster to the selected vendor. <br /> - But the vendor has to accept or reject it first.
+4. Accepted : <br /> Vendor already accept the cluster and now can follow the cluster **centroid**.
+5. Rejected :  <br /> Vendor rejected the cluster. 
+6. Fulfilled : <br /> Vendor arrived / done.
+7. Expired : <br /> Dead because of time.
+9. Dissolved : <br /> Forced to be offed because of unexpected things. 
 
-### Main Flow of LaperBang 
-So from the **customer** side, **vendor** can be followed or called if it accepts the requirements from the Vendor Status that you can see above   
+<hr class="line" />
 
-#### See Nearby Vendor 
+## Main Flow of LaperBang 
+So from the **customer** side, **vendor** can be followed or called if it accepts the requirements from the Vendor Status that you can see above.   
+
+### 1. See Nearby Vendor 
+<code>GET /api/v1/vendors/nearby</code>
+
+#### Example Request
+<code>GET /api/v1/vendors/nearby?lat=-6.200000&lng=106.816666&radius=5000</code>
+
+#### Query Parameters
+
+<ParameterTable
+  params={[
+    {
+      name: "lat",
+      type: "number",
+      required: true,
+      description: "Current latitude postition of customer",
+    },
+    {
+      name: "lng",
+      type: "number",
+      required: true,
+      description: "Current longitude position of customer",
+    },
+    {
+      name: "radius",
+      type: "number",
+      required: false,
+      description: "Maxium search radius range in meter, e.g: 100",
+    },
+  ]}
+/>
+
 1. User can see nearby vendor on the map 
 2. But they cannot see all existing vendors but only ones within certain radius
 3. Customer can see the detailed vendor information
 4. Or Customer can follow or call the selected vendor.
 
-> We haven't decided the maximum radius yet, but we planned the radius parameter to minimalize misuse/fake call to a faraway vendors   
+> We haven't decided the maximum radius yet, but we planned to include the radius parameter to minimalize misuse/fake call to a faraway vendors   
 
 #### NB:
 - Unfortunately, the customer can only call max. 3 vendors to prevent vendor call spamming.
 - This constraint will be reseted if a **Request** is **expired** or the **Cluster** is **rejected** or **fulfilled** or **expired** or **dissolved** 
 
-####  Follow / *ikuti* Vendor 
+
+###  2. Follow / *ikuti* Vendor 
 1. Customer can see the static locatiom of the vendors that exist nearby them.
 2. If vendor status is ACTIVE or MOVING or IDLE, then the Customer can follow the selected vendor.
 3. Customer and vendor can see each other real-time location and status
 
 NB: For now, the position of nearby vendors on the map are static and updated only based on interval from Frontend via HTTP GET Request, we still have no clue how to make it technically possible for efficient real-time operations.
 
-#### Call / *panggil* Vendor
-1. Customer can see the static locatiom of the vendors that exist nearby them.
+### 3. Call / *panggil* Vendor
+
+<code>POST /api/v1/requests</code>
+
+#### Request Body
+
+<ParameterTable
+  params={[
+    {
+      name: "lat",
+      type: "number",
+      required: true,
+      description: "Latitude postition of customer when requesting",
+    },
+    {
+      name: "lng",
+      type: "number",
+      required: true,
+      description: "Longitude position of customer when requesting",
+    },
+    {
+      name: "vendor_id",
+      type: "number",
+      required: false,
+      description: "Selected vendor that exists on the map",
+    },
+  ]}
+/>
+
+1. Customer can see the static location of the vendors that exist nearby them.
 2. If vendor status is ACTIVE / *mangkal*, then the Customer can follow the selected vendor.
-3. If a customer calls the vendor, ti will create an **cluaster assignment** / forming cluster 
+3. If a customer calls the vendor, it triggers **cluster assignment** / forming cluster 
 4. The rest of the process can be seen in the clustering process. 
 
-> But what if the there are no other requests within 300 meters beside a current request? 
+> But what if the there are no other requests within 10m meters beside a current request? 
 
 We decided to make it still exists as a standalone request and vendor can see the static request position coordinate just to inform they are being called. 
 
-NB: The reason why "moving" status cannot be called because in this MVP stage, because we don't have separate statuses for **moving with no direction** vs **moving to an active vendor**.
- 
-### Where is the DBSCAN Clustering process is happening? 
+NB: 
+- The reason why "moving" status cannot be called because in this MVP stage, because we don't have separate statuses for **moving with no direction** vs **moving to an active vendor**.
+- I make a 10s debounce before requests form into a new cluster. 
+
+<hr class="line" />
+
+## Where and How is the DBSCAN Clustering process is happening? 
+
+The DBSCAN Clustering itself is happening when:
+1. Customer decides to call a vendor
+2. There are more than 2 customers within 10m radius 
+
+How it works?
+1. It works like k-means clustering,
+2. BUT k-means clustering works with choosing: how manyclusters to exist, instead, DBSCAN works choosing the minimum of hotspots and maximum distance between hotspots.
+3. Take this as an example: Epsilon = 0.001 and requests = 2. it means there must be 2 requests within 10 meters range. 
+
+<hr class="line" />
+
+## Updating Vendor Location
+As I mentioned before, customer can get vendor location, so the vendor itself can update its own location
+
+there are 2 types of updating location mechanism in this app:
+
+### 1. Manual / Non-realtime update via HTTP PATCH Request
+<code>PATCH /api/v1/vendors/location</code>
+
+> Only use this request to update the vendor location rarely, e.g. updating vendor location on map.
+
+<ParameterTable
+  params={[
+    {
+      name: "lat",
+      type: "number",
+      required: true,
+      description: "Latitude (-90 to 90)",
+    },
+    {
+      name: "lng",
+      type: "number",
+      required: true,
+      description: "Longitude (-90 to 90)",
+    }
+  ]}
+/>
+
+### 2. Realtime update via Pusher

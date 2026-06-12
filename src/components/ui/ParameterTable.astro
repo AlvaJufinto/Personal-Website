@@ -1,0 +1,29 @@
+---
+const { params } = Astro.props;
+---
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {
+      params.map((param: any) => (
+        <tr>
+          <td>
+            <code>{param.name}</code>
+          </td>
+          <td>{param.type}</td>
+          <td>{param.required ? "✓" : "✗"}</td>
+          <td>{param.description}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
