@@ -10,7 +10,7 @@ import ParameterTable from "@/components/ui/ParameterTable.astro";
 
 
 ## Authentication
-The **user** itself consists of 2 role:
+The **user** itself consists of 2 roles:
 1. Customer : The Buyer
 2. Vendor : The seller
 
@@ -161,22 +161,39 @@ The following field cannot be updated:
 }
 ```
 
+<hr class="line" />
 ## Vendor Status
-1. Active / *mangkal* = can be followed AND can be called
-2. Moving / *jalan* = can be followed BUT cannot be called
-3. Idle / *istirahat* = can be followed BUT cannot be called
-4. Close / *tutup* = cannot be followed AND cannot be called
+<code>PATCH /api/v1/vendors/status</code>
+
+### Request Body
+```json
+{
+	"status": "active | Moving | Idle | Close"
+}
+
+```
+
+Vendor availability rule:
+
+| Status | Can be Followed | Can be Called |
+|---|---|---|
+| active | ✓ | ✓  | 
+| moving | ✓ | ✗ |
+| idle | ✓ | ✗ |
+| close | ✗ | ✗ |
+
+
 
 <hr class="line" />
 
 ## Clustering Lifecycle
-1. Forming / *request*  : <br /> - Pre-early stages, not valid yet, called as an **request** or *craving location* pointed with lat and long. <br /> - To make it active / assigned cluster, there must be minimum 2 requests at a certain of time and within 10 meters at maximum.
+1. Forming / *request*  : <br /> - Pre-early stages, not valid yet, called as an **request** or *craving location*, pointed with lat and long. <br /> - To make it active / assigned cluster, there must be minimum 2 requests at a certain of time and within 10 meters at maximum.
 2. Assigned / Active Cluster : <br /> - Server automatically assign an active cluster to the selected vendor. <br /> - But the vendor has to accept or reject it first.
-4. Accepted : <br /> Vendor already accept the cluster and now can follow the cluster **centroid**.
+4. Accepted : <br /> - Vendor already accept the cluster and now following the cluster **centroid**.  
 5. Rejected :  <br /> Vendor rejected the cluster. 
-6. Fulfilled : <br /> Vendor arrived / done.
+6. Fulfilled : <br /> Vendor is in the cluster area (centroid) and *mangkal* there. 
 7. Expired : <br /> Dead because of time.
-9. Dissolved : <br /> Forced to be offed because of unexpected things. 
+9. Dissolved : <br /> - Vendor is done with the cluster, <br />- or forced to be offed because of unexpected things. 
 
 <hr class="line" />
 
@@ -214,7 +231,7 @@ So from the **customer** side, **vendor** can be followed or called if it accept
   ]}
 />
 
-1. User can see nearby vendor on the map 
+1. User can see nearby vendors on the map 
 2. But they cannot see all existing vendors but only ones within certain radius
 3. Customer can see the detailed vendor information
 4. Or Customer can follow or call the selected vendor.
@@ -224,14 +241,82 @@ So from the **customer** side, **vendor** can be followed or called if it accept
 #### NB:
 - Unfortunately, the customer can only call max. 3 vendors to prevent vendor call spamming.
 - This constraint will be reseted if a **Request** is **expired** or the **Cluster** is **rejected** or **fulfilled** or **expired** or **dissolved** 
-
+- For now, the position of nearby vendors on the map are static and updated only based on interval from Frontend via HTTP GET Request, we still have no clue how to make it technically possible for efficient real-time operations.
 
 ###  2. Follow / *ikuti* Vendor 
 1. Customer can see the static locatiom of the vendors that exist nearby them.
 2. If vendor status is ACTIVE or MOVING or IDLE, then the Customer can follow the selected vendor.
-3. Customer and vendor can see each other real-time location and status
+3. Customer can see vendor real-time location and status in realtime via pusher
 
-NB: For now, the position of nearby vendors on the map are static and updated only based on interval from Frontend via HTTP GET Request, we still have no clue how to make it technically possible for efficient real-time operations.
+### 2. Follow / *ikuti* Vendor
+
+Follow feature in LaperBang is designed differently from a normal social media follow system.
+
+The purpose of following a vendor is not to create a relationship between users, but to create a **realtime tracking subscription** between Customer and Vendor.
+
+The Customer first discovers a vendor using a normal HTTP request, then subscribes to the vendor's realtime channel using Pusher.
+
+
+### Follow Vendor Lifecycle
+
+Example scenario:
+
+1. Customer GET <code>/api/v1/vendors/nearby</code>
+2. Backend returns nearby vendors
+3. Customer selects Vendor A
+4. Customer POST <code>/api/v1/vendors/:vendor_id/follow</code>
+5. Backend creates follow relationship
+6. Customer subscribes to Pusher channel
+7. Vendor moves / changes status
+8. Pusher sends realtime update
+9. Customer map updates automatically
+
+After selecting a vendor, Customer sends: <code>POST /api/v1/vendors/:vendor_id/follow</code>
+
+
+Example: <code>POST /api/v1/vendors/vendor-uuid/follow</code>
+
+The backend will:
+
+1. Validate that the requester is a Customer
+2. Check the selected user is actually a Vendor
+3. Check vendor status is not `close`
+4. Create a follow subscription record
+
+Database example:
+
+`vendor_follows`
+
+```json
+{
+  "customer_id": "customer-123",
+  "vendor_id": "vendor-uuid"
+}
+```
+
+This table does not store realtime location.
+
+It only stores:
+
+> Customer X wants to receive realtime updates from Vendor Y
+
+### Realtime Subscription with Pusher
+
+After successful follow request, frontend subscribes to:
+
+<code>private-vendor.``{``vendor_id``}``</code>
+
+Example:
+
+<code>private-vendor.vendor-uuid</code>
+
+The customer listens to:
+
+```json
+vendor.location.updated
+
+vendor.status.updated
+```
 
 ### 3. Call / *panggil* Vendor
 
@@ -290,10 +375,25 @@ How it works?
 
 <hr class="line" />
 
-## Updating Vendor Location
-As I mentioned before, customer can get vendor location, so the vendor itself can update its own location
+## Accepting and Rejecting Cluster
+Vendor with assigned cluster can accept and reject a cluster.
 
-there are 2 types of updating location mechanism in this app:
+### Accept:
+<code>POST /api/v1/clusters/:cluster_id/accept</code>
+
+### Reject:
+<code>POST /api/v1/clusters/:cluster_id/reject</code>
+
+### Example request:
+<code>POST /api/v1/clusters/cluster-uuid-123/reject</code> 
+
+<hr class="line" />
+
+
+## Updating Vendor Location
+The vendor itself can update its own location automatically from frontend.
+
+There are 2 types of updating location mechanism in this app:
 
 ### 1. Manual / Non-realtime update via HTTP PATCH Request
 <code>PATCH /api/v1/vendors/location</code>
@@ -318,3 +418,4 @@ there are 2 types of updating location mechanism in this app:
 />
 
 ### 2. Realtime update via Pusher
+This request is realtime and updated via
