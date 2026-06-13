@@ -7,7 +7,24 @@ topics: ["tech", "college"]
 language: "en"
 ---
 import ParameterTable from "@/components/ui/ParameterTable.astro";
+import Banner from "@/components/ui/Banner.astro";
 
+<Banner title="Disclaimer">
+  You can see a brief explanation about LaperBang
+  <a
+    href="/work/laperbang/"
+    target="_blank"
+    class="font-medium text-blue-400 underline  hover:text-blue-300"
+  >HERE</a>,
+  but I will focus on the technical detail on this blog.
+</Banner>
+<h1>Technical Overview</h1>
+
+LaperBang is built as a real-time geospatial application that combines location tracking, spatial data processing, and event-driven communication.
+
+The main challenge of this project is not only displaying vendors on a map, but creating a system that can handle dynamic vendor movement, process customer demand based on location, detect potential demand areas, and deliver realtime updates efficiently.
+
+The architecture is divided into several main parts:
 
 ## Authentication
 The **user** itself consists of 2 roles:
@@ -21,6 +38,12 @@ The **user** itself consists of 2 roles:
 
 <ParameterTable
   params={[
+		{
+      name: "username",
+      type: "string",
+      required: true,
+      description: "-",
+    },
 		{
       name: "name",
       type: "string",
@@ -400,14 +423,16 @@ Vendor with assigned cluster can accept and reject a cluster.
 
 
 ## Updating Vendor Location
-The vendor itself can update its own location automatically from frontend.
+Location sharing feature requires GPS and it costs two things: Battery and Mobile Data.
 
-There are 2 types of updating location mechanism in this app:
+To make it efficient and doesn't cost that much resourc
+
+So I propose 2 types of updating location mechanism in this app:
 
 ### 1. Manual / Non-realtime update via HTTP PATCH Request
 <code>PATCH /api/v1/vendors/location</code>
 
-> Only use this request to update the vendor location rarely, e.g. updating vendor location on map.
+> Only use this request to update the vendor location rarely, e.g. vendor on static location like mangkal or idle, updating vendor location on map, etc
 
 <ParameterTable
   params={[
@@ -427,4 +452,108 @@ There are 2 types of updating location mechanism in this app:
 />
 
 ### 2. Realtime update via Pusher
-This request is realtime and updated via
+
+This request is realtime and updated via Pusher when the vendor is
+moving or wants to update their location in realtime. Yes I know it
+costs more resource, but that’s the trade off.
+
+Lets for an example in this route:
+
+<code>PUT /api/v1/vendors/location</code>
+
+<ParameterTable
+	params={[
+		{
+			name: "lat",
+			type: "number",
+			required: true,
+			description: "Current vendor latitude",
+		},
+		{
+			name: "lng",
+			type: "number",
+			required: true,
+			description: "Current vendor longitude",
+		}
+	]}
+/>
+
+#### The main idea:
+
+1. Vendor sends their latest GPS coordinate to backend.
+2. Backend stores the latest location into `live_locations`.
+3. Backend broadcasts the location update through Pusher.
+4. Every Customer who follows that Vendor receives the update.
+5. Customer map updates the Vendor marker instantly.
+
+
+### The lifecycle:
+
+1. Vendor sends location update: <code>PUT /api/v1/vendors/location</code>
+2. Express Backend receives the request.
+3. Backend updates: `live_locations`
+4. Backend triggers Pusher event: <br/>  Channel: <code>private-vendor.`{`vendor_id`}`</code>
+5. Customer subscribes to the same channel: <br/> <code>private-vendor.`{`vendor_id`}`</code>
+
+<hr class="line" />
+
+## Vendor location update process:
+
+### 1. Validate GPS coordinate
+
+Backend checks:
+
+- Latitude exists.
+- Longitude exists.
+- Value must be a number.
+
+
+### 2. Prevent unnecessary updates
+
+GPS updates can happen very frequently.
+
+Example:
+
+- 10:00:01
+- 10:00:02
+- 10:00:03
+
+Sending every update is inefficient.
+
+Because of that, backend uses a throttle mechanism.
+
+
+Example rule:
+
+- Minimum update interval: 3 seconds.
+- If update arrives before 3 seconds:
+  - Skip database update.
+  - Skip Pusher broadcast.
+
+
+### 3. Store latest location
+
+The backend updates: `live_locations`
+
+Purpose:
+- The table does not store location history.
+- It only stores the latest known location of a vendor.
+
+
+### 4. Broadcast through Pusher
+
+After database update succeeds:
+
+Channel: <code>private-vendor.`{`vendor_id`}`</code>
+
+Event: <code>vendor.location.updated</code>
+
+
+Example payload:
+
+```json
+{
+  "vendor_id": "vendor-uuid-123",
+  "lat": -6.200000,
+  "lng": 106.816666
+}

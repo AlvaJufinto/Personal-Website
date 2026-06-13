@@ -3,7 +3,6 @@ title: "LaperBang"
 description: "A demand-driven routing platform designed to help mobile street food vendors and consumers connect in real-time using geospatial clustering and smart demand aggregation."
 category:
   - "Side Project"
-  - "Smart City"
   - "Geospatial System"
   - "Real-Time Platform"
   - "Mobile Application"
@@ -12,107 +11,191 @@ tech:
   - "Flutter"
   - "Node.js"
   - "Express.js"
+  - "Pusher"
   - "Supabase"
   - "PostGIS"
-  - "Redis"
-  - "Mapbox"
-  - "Firebase Cloud Messaging"
+  - "OpenStreet Map"
   - "DBSCAN"
 
-pubDate: 2026-06-11
+links:
+ - label: "Mobile App"
+   type: "deployment"
+   url: "https://drive.google.com/drive/folders/19rmixq3s4k9qErzVarf0hrL0Sfwfziz9?usp=sharing"
+ - label: "Customer App Repo"
+   type: "github"
+   url: "https://github.com/mumtazalwan/LaperBang"
+ - label: "Seller App Repo"
+   type: "github"
+   url: "https://github.com/mumtazalwan/LaperBang-Seller"
+ - label: "Backend Repo"
+   type: "github"
+   url: "https://github.com/AlvaJufinto/LaperBang-BE"
+ - label: "Pitchdeck"
+   type: "documentation"
+   url: "https://canva.link/89np65q28a8pb1y"
+ - label: "Video"
+   type: "other"
+   url: "https://drive.google.com/drive/folders/19rmixq3s4k9qErzVarf0hrL0Sfwfziz9?usp=sharing"
+
+pubDate: 2026-06-15
 #updatedDate: 2026-01-01
 isDraft: false
 ---
+import Banner from "@/components/ui/Banner.astro";
 
-## Overview
+<Banner title="Disclaimer">
+   You can see a whole article talking about the detailed architecture of LaperBang <a href="/blog/2026/june/how-i-built-laper-bang-backend-architecture/" target="blank">HERE</a>, but I will focus more on general brief in this section.
+</Banner>
 
-LaperBang is a demand-driven routing platform designed specifically to support mobile street food vendors in real-time.
+# LaperBang Overview
 
-The platform was inspired by a common everyday problem: people often suddenly crave specific street foods or traditional snacks — such as batagor or es doger — but have difficulty locating nearby mobile vendors. LaperBang aims to bridge this information gap by helping consumers discover nearby vendors while simultaneously helping vendors reach actual areas of demand more efficiently.
+LaperBang is a location-based food discovery and vendor calling platform.
 
-The system creates a mutually beneficial ecosystem:
-- Consumers can access desired food vendors more easily
-- Vendors can optimize routes and reduce inefficient roaming
+The main idea is simple:
 
-The platform primarily targets:
-- Traditional mobile food vendors
-- Residential complex communities
-- Urban consumers such as office workers and university students
+> What if customers could tell nearby food vendors what they are craving, and vendors could move closer to real customer demand?
 
----
+Unlike a normal food delivery application, LaperBang does not focus on delivering food from a restaurant to a customer.
 
-## Core Features
+Instead, LaperBang focuses on connecting:
 
-### Craving Signal
+- Customers who have a food craving.
+- Mobile food vendors who are looking for potential customers.
+- Real-time location data between both sides.
 
-Consumers can simply press a button to send a real-time signal indicating that they want a specific type of food or snack.
 
-The system aggregates these individual signals into collective demand data.
+## The Problem
 
-### Smart Demand Clustering
+Many mobile food vendors operate based on assumptions:
 
-Demand signals are processed using geospatial clustering techniques to identify high-demand areas or “hotspots”.
+- They choose a location randomly.
+- They do not know where customers actually need them.
+- Customers often cannot find nearby vendors when they want specific food.
 
-The clustering process is powered by the DBSCAN (Density-Based Spatial Clustering of Applications with Noise) algorithm.
 
-Key behaviors include:
-- Detecting dense consumer request clusters
-- Identifying meaningful demand zones
-- Ignoring isolated requests categorized as noise
+Example:
 
-### Real-Time Vendor Matching
+A customer wants:
 
-Once a hotspot is detected, nearby relevant vendors are matched and notified instantly.
+> "I want iced coffee, but I don't know where the nearest vendor is."
 
-The system helps vendors prioritize areas with actual demand rather than moving randomly without market visibility.
+At the same time:
 
----
+A coffee vendor is moving around but does not know where potential customers are.
 
-## Technical Architecture
 
-The system was designed using a modern geospatial and real-time architecture stack.
+LaperBang tries to solve this by creating a demand-driven system.
 
-### Frontend
 
-- Flutter
+## Core Concept
+
+The application has two main actors:
+
+### Customer
+
+The customer can:
+
+- Discover nearby vendors.
+- View vendor information.
+- Follow vendors for realtime tracking.
+- Send a request when they want a specific food.
+- Create a demand hotspot through clustering.
+
+
+### Vendor
+
+The vendor can:
+
+- Set their availability status.
+- Share their current location.
+- Receive customer demand requests.
+- Accept or reject generated clusters.
+- Move towards areas with higher demand.
+
+
+## How LaperBang Works
+
+The main flow:
+
+1. Customer opens the application.
+2. Backend finds nearby available vendors.
+3. Customer can follow or call a selected vendor.
+4. Customer requests a specific craving.
+5. Multiple nearby requests are grouped using DBSCAN clustering.
+6. Backend assigns the cluster to a suitable vendor.
+7. Vendor decides whether to accept or reject.
+8. Customer receives realtime updates from the vendor location.
+
+
+## Why DBSCAN?
+
+Traditional clustering methods like K-Means require knowing the number of clusters beforehand.
+
+However, customer demand is unpredictable.
+
+A customer hotspot can appear anywhere and anytime.
+
+DBSCAN fits better because it can detect:
+
+- Dense areas of requests.
+- Minimum number of customers required.
+- Maximum distance between requests.
+
+Example:
+
+If several customers request food within a 10 meter radius, the system considers it a potential demand area.
+
+
+## Architecture Overview
+
+The system is built with:
 
 ### Backend
 
-- Node.js
-- Express.js
+Responsible for:
 
-### Database & Spatial Processing
+- Authentication.
+- Vendor management.
+- Request handling.
+- Cluster processing.
+- Location updates.
+- Realtime event broadcasting.
 
-- Supabase
-- PostGIS Extension
-- Redis Cache
 
-### Maps & Navigation
+### Database
 
-- Mapbox
-- OpenStreetMap / Leaflet
+Stores:
 
-### Real-Time Communication
+- Users.
+- Vendor status.
+- Customer requests.
+- Clusters.
+- Follow relationships.
+- Latest vendor locations.
 
-- Firebase Cloud Messaging (FCM)
-- Pusher
 
----
+### Realtime Communication
 
-## Geospatial Clustering System
+Pusher is used for:
+- Vendor location updates.
+- Vendor status updates.
+- Customer realtime tracking.
 
-The clustering mechanism operates through the following workflow:
 
-1. Consumers send craving signals through the application
-2. The server stores location coordinates
-3. DBSCAN analyzes spatial density patterns
-4. High-density request areas are identified as hotspots
-5. Vendors receive real-time notifications for nearby hotspots
+## Design Philosophy
 
-Requests that do not form meaningful spatial density are treated as noise and ignored to avoid inefficient routing recommendations.
+LaperBang is not designed as a social media application.
 
----
+The follow feature does not represent a social relationship.
 
+Instead:
+
+Following a vendor means:
+
+> "I want to receive realtime updates from this vendor."
+
+
+The goal is to create a lightweight realtime demand and supply connection between customers and mobile vendors.
 ## Responsibilities
 
 - Designed the overall system architecture and real-time demand flow
@@ -125,7 +208,7 @@ Requests that do not form meaningful spatial density are treated as noise and ig
   - Vendor matching logic
   - Geospatial visualization systems
 
----
+
 
 ## Impact
 
@@ -138,7 +221,7 @@ Potential benefits include:
 - Improved consumer convenience
 - Better utilization of real-time urban demand data
 
----
+
 
 ## Key Takeaways
 

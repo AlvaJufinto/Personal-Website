@@ -28,6 +28,10 @@
     padding-bottom: 0.5rem;
   }
 
+  .markdown .first {
+    margin-top: 1rem !important;
+  }
+
   .markdown h3 {
     margin-top: 3rem;
     font-size: 1.25rem; /* 20px */
