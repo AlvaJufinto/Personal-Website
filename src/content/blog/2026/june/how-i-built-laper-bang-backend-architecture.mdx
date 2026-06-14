@@ -9,6 +9,8 @@ language: "en"
 import ParameterTable from "@/components/ui/ParameterTable.astro";
 import Banner from "@/components/ui/Banner.astro";
 import Architecture from "@/assets/works/laperbang/architecture.png"
+import DBSCAN from "@/assets/works/laperbang/dbscan.png"
+
 import { Image } from "astro:assets"
 
 
@@ -412,6 +414,8 @@ How it works?
 2. BUT k-means clustering works with choosing: how manyclusters to exist, instead, DBSCAN works choosing the minimum of hotspots and maximum distance between hotspots.
 3. Take this as an example: Epsilon = 0.001 and requests = 2. it means there must be 2 requests within 10 meters range. 
 
+<Image src={DBSCAN} class="h-100 w-auto" alt="App Overview" />
+
 <hr class="line" />
 
 ## Accepting and Rejecting Cluster
@@ -437,7 +441,7 @@ To make it efficient and doesn't cost that much resourc
 So I propose 2 types of updating location mechanism in this app:
 
 ### 1. Manual / Non-realtime update via HTTP PATCH Request
-<code>PATCH /api/v1/vendors/location</code>
+<code>PATCH /api/v1/vendors/location/static</code>
 
 > Only use this request to update the vendor location rarely, e.g. vendor on static location like mangkal or idle, updating vendor location on map, etc
 
@@ -564,3 +568,14 @@ Example payload:
   "lat": -6.200000,
   "lng": 106.816666
 }
+```
+
+## Conclusion
+
+Building LaperBang was not only about creating a map-based application, but about designing a system that can handle real-world dynamic interactions between customers and vendors.
+
+The main challenge was combining multiple technologies such as geospatial processing, realtime communication, and event-driven architecture into one system. By using spatial clustering with DBSCAN, LaperBang can detect potential demand areas based on customer requests and connect them with suitable vendors. Meanwhile, realtime communication through Pusher allows customers to track vendor movement and receive updates efficiently without constantly polling the server.
+
+There are still several areas that can be improved, especially around realtime location optimization, scalability, and handling larger amounts of concurrent users. However, this project provided valuable experience in designing backend architecture for location-based systems, from API design, database structure, clustering algorithms, to realtime event management.
+
+Through LaperBang, I learned that building a scalable application is not only about making features work, but also about understanding trade-offs between performance, cost, complexity, and user experience.
