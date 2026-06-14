@@ -1,6 +1,7 @@
 ---
 title: "LaperBang"
 description: "A demand-driven routing platform designed to help mobile street food vendors and consumers connect in real-time using geospatial clustering and smart demand aggregation."
+heroImage: "@/assets/works/laperbang/banner.png"
 category:
   - "Side Project"
   - "Geospatial System"
@@ -42,10 +43,14 @@ pubDate: 2026-06-15
 isDraft: false
 ---
 import Banner from "@/components/ui/Banner.astro";
+import Overview from "@/assets/works/laperbang/overview.png"
+import EmbeddedPresentation from "@/components/ui/EmbeddedPresentation.astro"
+import { Image } from "astro:assets"
 
 <Banner title="Disclaimer">
    You can see a whole article talking about the detailed architecture of LaperBang <a href="/blog/2026/june/how-i-built-laper-bang-backend-architecture/" target="blank">HERE</a>, but I will focus more on general brief in this section.
 </Banner>
+
 
 # LaperBang Overview
 
@@ -63,6 +68,9 @@ Instead, LaperBang focuses on connecting:
 - Mobile food vendors who are looking for potential customers.
 - Real-time location data between both sides.
 
+<br /> 
+
+<Image src={Overview} alt="App Overview" />
 
 ## The Problem
 
@@ -126,6 +134,7 @@ The main flow:
 7. Vendor decides whether to accept or reject.
 8. Customer receives realtime updates from the vendor location.
 
+<EmbeddedPresentation link="https://www.canva.com/design/DAHMjNyCmqI/aUyDJbae5yPNYsamJIJRpg/view?embed" />
 
 ## Why DBSCAN?
 
@@ -145,57 +154,6 @@ Example:
 
 If several customers request food within a 10 meter radius, the system considers it a potential demand area.
 
-
-## Architecture Overview
-
-The system is built with:
-
-### Backend
-
-Responsible for:
-
-- Authentication.
-- Vendor management.
-- Request handling.
-- Cluster processing.
-- Location updates.
-- Realtime event broadcasting.
-
-
-### Database
-
-Stores:
-
-- Users.
-- Vendor status.
-- Customer requests.
-- Clusters.
-- Follow relationships.
-- Latest vendor locations.
-
-
-### Realtime Communication
-
-Pusher is used for:
-- Vendor location updates.
-- Vendor status updates.
-- Customer realtime tracking.
-
-
-## Design Philosophy
-
-LaperBang is not designed as a social media application.
-
-The follow feature does not represent a social relationship.
-
-Instead:
-
-Following a vendor means:
-
-> "I want to receive realtime updates from this vendor."
-
-
-The goal is to create a lightweight realtime demand and supply connection between customers and mobile vendors.
 ## Responsibilities
 
 - Designed the overall system architecture and real-time demand flow
@@ -207,7 +165,6 @@ The goal is to create a lightweight realtime demand and supply connection betwee
   - Real-time notifications
   - Vendor matching logic
   - Geospatial visualization systems
-
 
 
 ## Impact
@@ -232,3 +189,7 @@ This project strengthened experience in:
 - Mobile-first platform design
 - Event-driven backend workflows
 - Designing scalable demand aggregation systems
+
+
+## Pitchdeck
+<EmbeddedPresentation link="https://www.canva.com/design/DAHJR520seU/jPu4e3JbJZNaGgpgjA5UOQ/view?embed" />

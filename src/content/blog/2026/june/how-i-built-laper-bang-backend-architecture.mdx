@@ -2,12 +2,15 @@
 title: "How I built LaperBang Backend Architecture"
 description: "A technical breakdown of how I designed and built LaperBang backend architecture, including realtime location tracking, geospatial clustering, vendor matching, and event-driven communication."
 pubDate: "June 11, 2026"
-heroImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDhvkvBafpzTkfsGM1b07Uf3GBzz1bIhYtQ&s"
+heroImage: "@/assets/works/laperbang/blog-thumbnail.png"
 topics: ["tech", "college", "Side Project"]
 language: "en"
 ---
 import ParameterTable from "@/components/ui/ParameterTable.astro";
 import Banner from "@/components/ui/Banner.astro";
+import Architecture from "@/assets/works/laperbang/architecture.png"
+import { Image } from "astro:assets"
+
 
 <Banner title="Disclaimer">
   You can see a brief explanation about LaperBang
@@ -18,6 +21,7 @@ import Banner from "@/components/ui/Banner.astro";
   >HERE</a>,
   but I will focus on the technical detail on this blog.
 </Banner>
+
 <h1>Technical Overview</h1>
 
 LaperBang is built as a real-time geospatial application that combines location tracking, spatial data processing, and event-driven communication.
@@ -25,6 +29,9 @@ LaperBang is built as a real-time geospatial application that combines location 
 The main challenge of this project is not only displaying vendors on a map, but creating a system that can handle dynamic vendor movement, process customer demand based on location, detect potential demand areas, and deliver realtime updates efficiently.
 
 The architecture is divided into several main parts:
+
+<Image src={Architecture} class="h-100 w-auto" alt="App Overview" />
+
 
 ## Authentication
 The **user** itself consists of 2 roles:

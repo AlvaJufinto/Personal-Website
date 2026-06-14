@@ -44,6 +44,8 @@ isDraft: false
 ---
 
 import { Image } from "astro:assets";
+import Banner from "@/components/ui/Banner.astro";
+import EmbeddedPresentation from "@/components/ui/EmbeddedPresentation.astro"
 import SatteliteData from "@/assets/2025/oct/gemastik-xviii-2025/satellite-data.png";
 import SampleDataset from "@/assets/2025/oct/gemastik-xviii-2025/dataset-sample.png";
 import EliminationRound from "@/assets/2025/oct/gemastik-xviii-2025/elimination-round.jpg";
@@ -54,13 +56,17 @@ import OnTheSea from "@/assets/2025/oct/gemastik-xviii-2025/on-the-sea.jpg";
 import FourthPlace from "@/assets/2025/oct/gemastik-xviii-2025/4th-place.jpg";
 import ManelaApp from "@/assets/2025/oct/gemastik-xviii-2025/manela-app.jpg";
 
-##### DISCLAIMER: You can see a whole article talking about the competition <a href="/blog/2025/oct/gemastik-xviii-2025/" target="blank">HERE</a>, but I will focus on technical side here.
+<Banner title="Disclaimer">
+ DISCLAIMER: You can see a whole article talking about the competition <a href="/blog/2025/oct/gemastik-xviii-2025/" target="blank">HERE</a>, but I will focus on technical side here.
 <br />
-## Overview
+</Banner>
+
+<h1>Overview</h1>
 
 TemanNelayan (Manela) is a GEMASTIK XVIII project developed collaboratively with <a href="https://www.linkedin.com/in/alwan-athallah-mumtaz/" target="_blank">Alwan Athallah Mumtaz</a>, achieving **4th place** in the competition.
 
 The platform helps fishermen identify potential fishing zones and probable fish species using satellite-derived oceanographic data, analytical processing, and AI-assisted recommendations.
+
 <br />
 
 
@@ -140,3 +146,7 @@ This project strengthened experience in:
 - Backend engineering for analytical platforms
 - Real-world field validation and user testing
 - Building technology solutions for underserved operational environments
+
+## Pitchdeck
+<EmbeddedPresentation link="https://www.canva.com/design/DAGzyeGiS8s/O3uWyo9Rf_t8h4HN3Z5N6w/view?embed" />
+
