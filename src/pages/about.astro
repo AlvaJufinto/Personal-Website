@@ -4,116 +4,253 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 import BaseHead from "@/components/ui/BaseHead.astro";
 import Header from "@/components/ui/Header.astro";
 import Footer from "@/components/ui/Footer.astro";
+import { Icon } from "astro-icon/components";
+
+const socials = [
+  {
+    label: "GitHub",
+    href: "https://github.com/AlvaJufinto",
+    icon: "mdi:github",
+  },
+
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/alva-jufinto/",
+    icon: "mdi:linkedin",
+  },
+
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/alva.jufinto/",
+    icon: "mdi:instagram",
+  },
+];
 ---
 
-<!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead title={`${SITE_TITLE} | About`} description={SITE_DESCRIPTION} />
   </head>
   <body>
     <Header />
     <main class="custom-container">
       <section class="prose prose-slate max-w-none">
+        {/* Hero Section */}
         <div class="mb-12">
           <h1
-            class="font-primary text-3xl font-bold tracking-tight text-slate-900"
+            class="font-primary text-4xl font-bold tracking-tight text-slate-900"
           >
-            About Me
+            Stanislaus Alva Jufinto
           </h1>
-          <p class="font-secondary mt-4 text-lg text-slate-600">
-            Welcome to my personal blog and portfolio! I write about technology,
-            life, faith, and my journey as a Catholic, student, and musician.
+          <p class="font-secondary mt-3 text-xl text-slate-600">
+            Computer Science Student and Software Developer.
           </p>
         </div>
 
         <hr class="line" />
 
+        {/* Main Content */}
         <div class="pt-12">
-          <div class="grid md:grid-cols-2 gap-12 mb-12">
-            <div>
-              <h2 class="font-primary text-2xl font-bold text-slate-900 mb-4">
-                Who am I?
-              </h2>
-              <p class="font-secondary text-slate-700 leading-relaxed">
-                I'm a <span class="font-semibold text-slate-900"
-                  >Computer Science student</span
-                >, church organist, and someone who loves to reflect on life's
-                changes and responsibilities. My writings are a mix of <span
-                  class="font-semibold text-slate-900"
-                  >English and Indonesian</span
-                >, depending on the topic and mood.
-              </p>
-            </div>
-
-            <div>
-              <h2 class="font-primary text-2xl font-bold text-slate-900 mb-4">
-                What do I write?
-              </h2>
-              <ul class="space-y-2 font-secondary text-slate-700">
-                <li class="flex items-start gap-2">
-                  <span class="text-slate-900 font-bold mt-1">#</span>
-                  <span
-                    ><b>Personal Reflections</b> — Life, change, and growth</span
-                  >
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-slate-900 font-bold mt-1">#</span>
-                  <span
-                    ><b>Achievements</b> — Tech competitions & experiences</span
-                  >
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-slate-900 font-bold mt-1">#</span>
-                  <span
-                    ><b>Faith Journey</b> — Catholic reflections & liturgy</span
-                  >
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-slate-900 font-bold mt-1">#</span>
-                  <span><b>Responsibility</b> — Life struggles & gratitude</span
-                  >
-                </li>
-              </ul>
+          {/* Who Am I */}
+          <div class="mb-16">
+            <h2 class="font-primary text-3xl font-bold text-slate-900 mb-6">
+              Who am I?
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8">
+              <div>
+                <h3 class="font-primary text-xl font-bold text-slate-900 mb-3">
+                  As a Student
+                </h3>
+                <p class="font-secondary text-slate-700 leading-relaxed mb-4">
+                  I'm a 2th-year student at <span class="font-semibold"
+                    >Bina Nusantara University</span
+                  >, majoring in Computer Science. I'm passionate about
+                  exploring AI, machine learning, and building scalable,
+                  maintainable software architecture.
+                </p>
+                <p class="font-secondary text-slate-700 leading-relaxed">
+                  I've competed in several national tech competitions, most
+                  notably securing
+                  <span class="font-semibold text-slate-900"
+                    >4th place in GEMASTIK XVIII 2025</span
+                  > in the Software Development category with my team's project on
+                  fishing spot prediction using AI.
+                </p>
+              </div>
+              <div>
+                <h3 class="font-primary text-xl font-bold text-slate-900 mb-3">
+                  Beyond Tech
+                </h3>
+                <p class="font-secondary text-slate-700 leading-relaxed mb-4">
+                  I'm a <span class="font-semibold">pianist and organist</span> at
+                  my local Catholic parish, where I regularly play for Sunday Mass
+                  and special liturgical celebrations.
+                </p>
+                <p class="font-secondary text-slate-700 leading-relaxed">
+                  I'm also a <span class="font-semibold"
+                    >practicing Catholic</span
+                  > on a journey of deeper faith formation. I'm interested in liturgy,
+                  Catholic doctrine, and what it means to live faith intentionally
+                  in the modern world.
+                </p>
+              </div>
             </div>
           </div>
 
-          <div class="mb-12">
-            <h2 class="font-primary text-2xl font-bold text-slate-900 mb-4">
-              Why do I write?
+          {/* What I Write About */}
+          <div class="mb-16">
+            <h2 class="font-primary text-3xl font-bold text-slate-900 mb-6">
+              What do I write about?
             </h2>
-            <p class="font-secondary text-slate-700 leading-relaxed">
-              I started this blog to share my journey, both the ups and downs.
-              Sometimes, there's no lesson, just stories. I believe that <span
-                class="font-semibold text-slate-900"
-                >authentic reflection and vulnerability</span
-              > can create meaning and connection. I hope my experiences can resonate
-              with you, whether you're here for tech, faith, or just a slice of life.
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="p-5 bg-slate-50 border border-slate-200 -lg">
+                <h3
+                  class="font-primary text-lg font-bold text-slate-900 mb-2 flex items-center gap-2"
+                >
+                  Technology & Development
+                </h3>
+                <p
+                  class="font-secondary text-slate-700 text-sm leading-relaxed"
+                >
+                  Software architecture, backend development, building scalable
+                  systems, AI/ML explorations, and reflections on the changing
+                  landscape of software engineering in the age of AI.
+                </p>
+              </div>
+              <div class="p-5 bg-slate-50 border border-slate-200 -lg">
+                <h3
+                  class="font-primary text-lg font-bold text-slate-900 mb-2 flex items-center gap-2"
+                >
+                  Personal Growth & Philosophy
+                </h3>
+                <p
+                  class="font-secondary text-slate-700 text-sm leading-relaxed"
+                >
+                  Life transitions, responsibility, existential questions, and
+                  lessons learned from both victories and struggles.
+                </p>
+              </div>
+              <div class="p-5 bg-slate-50 border border-slate-200 -lg">
+                <h3
+                  class="font-primary text-lg font-bold text-slate-900 mb-2 flex items-center gap-2"
+                >
+                  Faith & Catholic Thought
+                </h3>
+                <p
+                  class="font-secondary text-slate-700 text-sm leading-relaxed"
+                >
+                  My journey as a Catholic, liturgical reflections, Catholic
+                  doctrine, faith formation, and discovering what it means to
+                  live intentionally as a believer.
+                </p>
+              </div>
+              <div class="p-5 bg-slate-50 border border-slate-200 -lg">
+                <h3
+                  class="font-primary text-lg font-bold text-slate-900 mb-2 flex items-center gap-2"
+                >
+                  Achievements & Experiences
+                </h3>
+                <p
+                  class="font-secondary text-slate-700 text-sm leading-relaxed"
+                >
+                  Tech competitions, project retrospectives, internship
+                  insights, and stories from building real-world applications.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* My Skills & Interests */}
+          <div class="mb-16">
+            <h2 class="font-primary text-3xl font-bold text-slate-900 mb-6">
+              What am I interested in?
+            </h2>
+            <div class="space-y-6">
+              <div>
+                <h3 class="font-primary text-lg font-bold text-slate-900 mb-3">
+                  Technology
+                </h3>
+                <div class="flex flex-wrap gap-2">
+                  {
+                    [
+                      "JavaScript/TypeScript",
+                      "React",
+                      "Backend Architecture",
+                      "AI/ML",
+                      "System Design",
+                      "Database Design",
+                      "Frontend Development",
+                      "DevOps",
+                      "Software Engineering",
+                    ].map((skill) => (
+                      <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-secondary ">
+                        {skill}
+                      </span>
+                    ))
+                  }
+                </div>
+              </div>
+              <div>
+                <h3 class="font-primary text-lg font-bold text-slate-900 mb-3">
+                  Broader Interests
+                </h3>
+                <div class="flex flex-wrap gap-2">
+                  {
+                    [
+                      "Philosophy",
+                      "Catholic Theology",
+                      "Liturgy",
+                      "Music Performance",
+                      "Digital Literacy",
+                      "Software Quality",
+                      "Teaching & Mentoring",
+                      "Writing",
+                    ].map((interest) => (
+                      <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-secondary">
+                        {interest}
+                      </span>
+                    ))
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Language Note */}
+          <div class="mb-12 p-4 bg-slate-50 border-l-4 border-slate-400">
+            <p class="font-secondary text-slate-700 text-sm">
+              <span class="font-semibold text-slate-900">Note:</span> I write in both
+              English and Indonesian, depending on the topic and which language feels
+              most natural for expressing the idea. Most technical posts are in English,
+              while personal and faith-related reflections are often in Indonesian.
             </p>
           </div>
 
-          <!--<div class="pt-8">
-            <h2 class="font-primary text-xl font-bold text-slate-900 mb-6">
+          {/* Connect */}
+          <div class="pt-8 border-t border-slate-200">
+            <h2 class="font-primary text-2xl font-bold text-slate-900 mb-6">
               Let's connect!
             </h2>
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a
-                href="mailto:stanislaus.alva@gmail.com"
-                class="font-secondary inline-flex items-center justify-center px-6 py-3 bg-slate-900 text-white font-semibold hover:bg-slate-800 transition-colors"
-              >
-                Email
-              </a>
-              <a
-                href="https://www.linkedin.com/in/stanislausalva/"
-                class="font-secondary inline-flex items-center justify-center px-6 py-3 border-2 border-slate-900 text-slate-900 font-semibold hover:bg-slate-100 transition-colors"
-              >
-                LinkedIn
-              </a>
+            <div class="flex gap-4">
+              {
+                socials.map((social) => (
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    class="font-secondary gap-4 inline-flex items-center justify-center px-4 py-2 border-2 border-slate-400 text-slate-900 font-semibold hover:bg-slate-100 transition-colors"
+                  >
+                    <Icon
+                      name={social.icon}
+                      class="h-4 w-4 transition-transform duration-200"
+                    />
+                    {social.label}
+                  </a>
+                ))
+              }
             </div>
-          </div>-->
+          </div>
         </div>
       </section>
     </main>
-    <Footer />
-  </body>
+  </body><Footer />
 </html>
