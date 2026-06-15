@@ -1,68 +1,64 @@
 ---
 import { Image } from "astro:assets";
-import Tags from "@/components/ui/Tags.astro";
 import FormattedDate from "@/components/ui/FormattedDate.astro";
 
 const { work } = Astro.props;
 ---
 
-<article
-  class="group overflow-hidden border border-slate-200 bg-white transition-colors hover:border-slate-300"
->
-  <a href={`/work/${work.id}/`} class="flex flex-col md:flex-row">
-    <div class="md:w-80 md:min-w-80 p-4">
+<article class="group">
+  <a
+    href={`/work/${work.id}/`}
+    class="flex gap-5 p-3 transition-colors hover:bg-slate-50 md:gap-6"
+  >
+    <div class="w-44 min-w-44 shrink-0 md:w-56 md:min-w-56">
       <div class="relative aspect-video overflow-hidden bg-slate-100">
         {
           work.data.heroImage ? (
             <Image
               src={work.data.heroImage}
               alt={work.data.title}
-              class="absolute inset-0 h-full w-full border border-slate-300 object-cover"
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             />
           ) : (
             <img
               src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop"
               alt={work.data.title}
-              class="absolute inset-0 h-full w-full object-cover"
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             />
           )
         }
       </div>
     </div>
-    <div class="flex flex-1 flex-col justify-between p-5">
-      <div>
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <h2
-              class="font-primary text-xl font-semibold tracking-tight text-slate-900"
-            >
-              {work.data.title}
-            </h2>
-            <p class="font-secondary mt-1 text-xs text-slate-500">
-              {work.data.category.slice(0, 3).join(" · ")}
-              {
-                work.data.category.length > 3 &&
-                  " +" + (work.data.category.length - 3)
-              }
-            </p>
-          </div>
 
-          <p class="font-secondary whitespace-nowrap text-sm text-slate-500">
-            <FormattedDate date={work.data.pubDate} />
-          </p>
-        </div>
-
-        <p
-          class="font-secondary mt-4 max-w-2xl text-sm leading-relaxed text-slate-600"
+    <div class="flex flex-1 flex-col justify-center gap-2 py-1">
+      <div class="flex items-start justify-between gap-4">
+        <h2
+          class="font-primary text-base font-semibold tracking-tight text-slate-900 md:text-lg"
         >
-          {work.data.description}
+          {work.data.title}
+        </h2>
+        <p class="font-secondary shrink-0 text-xs text-slate-400">
+          <FormattedDate date={work.data.pubDate} />
         </p>
       </div>
 
+      <p
+        class="font-secondary line-clamp-2 text-sm leading-relaxed text-slate-500"
+      >
+        {work.data.description}
+      </p>
+
       {
         work.data.tech?.length > 0 && (
-          <div class="mt-6">
-            <Tags tags={work.data.tech} />
+          <div class="mt-1 flex flex-wrap gap-x-3 gap-y-0.5">
+            {work.data.tech.slice(0, 4).map((item: any) => (
+              <span class="font-secondary text-xs text-slate-400">{item}</span>
+            ))}
+            {work.data.tech.length > 4 && (
+              <span class="font-secondary text-xs text-slate-300">
+                +{work.data.tech.length - 4}
+              </span>
+            )}
           </div>
         )
       }

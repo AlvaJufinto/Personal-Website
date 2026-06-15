@@ -1,13 +1,11 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import FormattedDate from "@/components/ui/FormattedDate.astro";
-import Header from "@/components/ui/Header.astro";
-import { SITE_DESCRIPTION, SITE_TITLE, TECH_STACK } from "@/consts";
-import WorkCard from "@/components/Work/WorkCard.astro";
-import Footer from "@/components/ui/Footer.astro";
 import BaseHead from "@/components/ui/BaseHead.astro";
+import Footer from "@/components/ui/Footer.astro";
+import Header from "@/components/ui/Header.astro";
+import WorkCard from "@/components/Work/WorkCard.astro";
 import TechStackTabs from "@/components/Work/TechStackTabs.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 
 const works = (await getCollection("work"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -21,25 +19,53 @@ const works = (await getCollection("work"))
   </head>
   <body>
     <Header />
-    <main class="custom-container">
-      <div class="mb-12">
-        <h1
-          class="font-primary text-3xl font-bold tracking-tight text-slate-900"
-        >
-          Work
-        </h1>
-        <p class="font-secondary mt-4 text-lg text-slate-600 mb-10">
-          My Past Projects and Experiences.
-        </p>
+
+    <main class="custom-container py-12 space-y-20">
+      <!-- Skills section -->
+      <section>
+        <div class="mb-8">
+          <h1
+            class="font-primary text-3xl font-bold tracking-tight text-slate-900"
+          >
+            Skills
+          </h1>
+          <p class="font-secondary mt-4 text-lg text-slate-600 mb-10">
+            Tools I work with.
+          </p>
+        </div>
 
         <TechStackTabs />
+      </section>
 
-        <hr class="mt-12 line" />
-      </div>
-      <div class="space-y-6">
-        {works.map((work) => <WorkCard work={work} slug={work.id} />)}
-      </div>
+      <!-- Work section -->
+      <section>
+        <div class="mb-8">
+          <h1
+            class="font-primary text-3xl font-bold tracking-tight text-slate-900"
+          >
+            Work
+          </h1>
+          <p class="font-secondary mt-4 text-lg text-slate-600 mb-10">
+            My past projects and experiences.
+          </p>
+        </div>
+
+        {
+          works.length > 0 ? (
+            <div class="flex flex-col gap-1">
+              {works.map((work) => (
+                <WorkCard work={work} slug={work.id} />
+              ))}
+            </div>
+          ) : (
+            <p class="font-secondary text-sm text-slate-400">
+              No projects yet.
+            </p>
+          )
+        }
+      </section>
     </main>
+
     <Footer />
   </body>
 </html>

@@ -1,34 +1,48 @@
 ---
 title: "St. Bonaventura Church News Portal"
 description: "Developed a centralized church news and information portal with a custom CMS for St. Bonaventura Catholic Church to support communication, content management, and parish visibility."
+heroImage: "@/assets/works/stbonaventura/thumbnail.png"
 category:
   - "Freelance Project"
   - "CMS Development"
   - "Web Development"
+  - "Full Stack Development"
   - "Organization Website"
 
 tech:
   - "Laravel"
   - "React"
-  - "CMS"
-  - "PostgreSQL"
-  - "Full Stack Development"
+  - "Inertia"
+  - "MySQL"
 
 links:
   - label: "Live Website"
-    url: "https://example.com"
+    url: "http://stbonaventura.org"
     type: "deployment"
+  - label: "Code Repository"
+    url: "https://github.com/AlvaJufinto/st-bonaventura-web"
+    type: "github"
+	
 
 pubDate: 2026-01-21
 #updatedDate: 2023-01-01
 isDraft: false
 ---
+import { Image } from "astro:assets"
+import AdminUI from "@/assets/works/stbonaventura/admin.png"
+import Overview from "@/assets/works/stbonaventura/overview.png"
+
 
 ## Overview
 
 A news and information portal developed for **St. Bonaventura Catholic Church** as part of a paid collaboration with the church’s **KOMSOS (Social Communication)** division and clergy members.
 
 The platform was designed to centralize official church information, improve communication workflows, and support the church’s annual operational plans through a more accessible and structured digital presence.
+
+
+<Image src={Overview} alt="UI Overview" />
+<p class="text-center italic">Website Overview</p>
+
 
 <hr class="line" />
 
@@ -46,15 +60,21 @@ The platform was designed to centralize official church information, improve com
   - Articles and announcements
   - News and event updates
 
+<br />
+<br />
+
+
+<Image src={AdminUI} alt="Admin UI" />
+<p class="text-center italic">Admin UI</p>
+
 <hr class="line" />
 
 ## Tech Stack
 
 - Laravel
 - React
-- PostgreSQL
-- Custom CMS
-- Full Stack Web Development
+- Inertia
+- MySQL
 
 <hr class="line" />
 

@@ -2,16 +2,24 @@
 import { TECH_STACK } from "@/consts";
 ---
 
-<div class="border border-slate-200">
-  <div id="tech-tabs" class="flex overflow-x-auto border-b border-slate-200">
+<div>
+  <div id="tech-tabs" class="mb-6 flex gap-1 overflow-x-auto">
     {
       TECH_STACK.map((tech, index) => (
         <button
-          class={`tech-tab font-primary capitalize px-5 py-3 text-sm font-medium whitespace-nowrap border-b transition ${
+          class:list={[
+            "tech-tab",
+            "font-primary",
+            "capitalize",
+            "cursor-pointer",
+            "px-3 py-1.5",
+            "text-sm",
+            "whitespace-nowrap",
+            "transition-colors",
             index === 0
-              ? "border-slate-900 text-slate-900"
-              : "border-transparent text-slate-500 hover:text-slate-900"
-          }`}
+              ? "bg-slate-900 text-white"
+              : "text-slate-500 hover:text-slate-700 hover:bg-slate-100",
+          ]}
           data-tab={tech.type}
         >
           {tech.type}
@@ -20,30 +28,25 @@ import { TECH_STACK } from "@/consts";
     }
   </div>
 
-  <div class="p-6">
+  <div>
     {
       TECH_STACK.map((tech, index) => (
         <div
           data-content={tech.type}
-          class:list={[
-            "tech-content",
-            "font-secondary",
-            "text-sm",
-            "text-slate-700",
-            index !== 0 && "hidden",
-          ]}
+          class:list={["tech-content", index !== 0 && "hidden"]}
         >
-          <div class="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
             {tech.stack.map((stack) => (
-              <div class="flex items-center gap-3 border border-slate-200 p-3 transition hover:bg-slate-50">
+              <div class="group cursor-pointer flex items-center gap-3 p-3 transition-colors hover:bg-slate-50">
                 <img
                   src={stack.logo}
                   alt={stack.name}
-                  class="h-8 w-8 object-contain"
+                  class="h-7 w-7 object-contain opacity-80 transition-opacity group-hover:opacity-100"
                   loading="lazy"
                 />
-
-                <p class="text-sm text-slate-700">{stack.name}</p>
+                <p class="font-secondary text-sm text-slate-600">
+                  {stack.name}
+                </p>
               </div>
             ))}
           </div>
@@ -56,7 +59,6 @@ import { TECH_STACK } from "@/consts";
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const tabs = document.querySelectorAll<HTMLElement>(".tech-tab");
-
     const contents = document.querySelectorAll<HTMLElement>(".tech-content");
 
     tabs.forEach((tab) => {
@@ -64,19 +66,14 @@ import { TECH_STACK } from "@/consts";
         const target = tab.dataset.tab;
 
         tabs.forEach((t) => {
-          t.classList.remove("border-slate-900", "text-slate-900");
-
-          t.classList.add("border-transparent", "text-slate-500");
+          t.classList.remove("bg-slate-900", "text-white");
+          t.classList.add("text-slate-500");
         });
 
-        tab.classList.remove("border-transparent", "text-slate-500");
+        tab.classList.add("bg-slate-900", "text-white");
+        tab.classList.remove("text-slate-500");
 
-        tab.classList.add("border-slate-900", "text-slate-900");
-
-        contents.forEach((content) => {
-          content.classList.add("hidden");
-        });
-
+        contents.forEach((c) => c.classList.add("hidden"));
         document
           .querySelector<HTMLElement>(`[data-content="${target}"]`)
           ?.classList.remove("hidden");
