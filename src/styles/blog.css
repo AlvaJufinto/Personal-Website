@@ -135,6 +135,11 @@
   }
 }
 
+.footnotes a {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 @media (max-width: 768px) {
   .markdown h1 {
     font-size: 1.875rem;
