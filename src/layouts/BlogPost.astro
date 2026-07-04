@@ -30,11 +30,36 @@ const {
 const allPosts = await getCollection("blog");
 
 const relatedPosts = getRecommendedPosts(post, allPosts, 3);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate ?? pubDate).toISOString(),
+  image: heroImage ? new URL(heroImage.src, Astro.site).href : undefined,
+  keywords: topics.join(", "),
+  mainEntityOfPage: Astro.url.href,
+};
+
+const excerpt = post.body?.replace(/[#*_>`-]/g, "").slice(0, 160);
+
+const wordCount =
+  post.body
+    ?.replace(/```[\s\S]*?```/g, "") // hapus code block
+    .replace(/`.*?`/g, "") // hapus inline code
+    .trim()
+    .split(/\s+/).length || 0;
+
+const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 ---
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description ?? excerpt} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
 
   <body>
@@ -58,16 +83,20 @@ const relatedPosts = getRecommendedPosts(post, allPosts, 3);
       <div class="prose prose-slate max-w-none">
         <div class="mb-8">
           <div class="mb-4">
-            <p class="font-secondary text-slate-500 text-sm">
+            <p
+              class="font-secondary text-slate-500 text-sm flex flex-wrap items-center gap-2"
+            >
               <FormattedDate date={pubDate} />
 
-              {
+              {readingTime && <span>• {readingTime} min read</span>}
+
+              <!--{
                 updatedDate && (
-                  <span class="ml-2">
+                  <span>
                     • Last updated on <FormattedDate date={updatedDate} />
                   </span>
                 )
-              }
+              }-->
             </p>
           </div>
 
