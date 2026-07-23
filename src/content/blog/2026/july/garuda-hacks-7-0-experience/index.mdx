@@ -1,0 +1,77 @@
+---
+title: "Achievement: 1th Place Garuda Hacks 7.0 (30+ hours Hackathon Experience)"
+description: "A short story about a 3 days Hackathon that was held in UMN (Universitas Multimedia Nusantara) by Garuda Hacks."
+pubDate: "July 26, 2026"
+heroImage: "./thumbnail.jpg"
+topics: ["life", "tech", "achivement", "college"]
+---
+
+Last week, my team and I went to UMN (Universitas Multimedia Nusantara) for **Garuda Hacks 7.0**, Southeast Asia's largest hackathon. We started hacking on July 16 at 2 PM and had to stop building by July 17 at 8 PM, exactly 30 hours. Two more days followed for pitching and the award ceremony. In the end, we won **1st Place in the Agriculture & Food Systems Track**. This is the story of those three days: the whiteboards, the 3 AM jokes, a bet with our friends, almost no sleep, and the moment we found out we won.
+
+## The Team
+
+There were four of us: [Abraham Gregorius Anderson Thio](https://www.linkedin.com/in/abrahamgregorius/), [Stanislaus Alva Jufinto](https://www.linkedin.com/in/alva-jufinto/), [Almer Aji Valentino](https://www.linkedin.com/in/almer-aji-valentino-0668a7271/), and [Darrell Richie Wibawa](https://www.linkedin.com/in/darrell-richie-wibawa-707542326/). Abraham and I handled the frontend and backend together, we built the pitch deck as a team, and Almer and Abraham put together the demo video.
+
+## What We Built: Harvey
+
+Indonesia has more than 23 million farming households. When El Niño hit in 2023 to 2024, it wiped out millions of tons of rice production and left hundreds of thousands of hectares in drought. Forecasts say another strong El Niño will likely last into early 2027, with most of the country expecting below normal rainfall right through the important July to October planting season.
+
+Here is the real problem: when water becomes scarce, it is not individual farmers who decide who gets water first. It is the **P3A**, the local farmer water user association. P3A leaders were making that call with no predictive data, no easy way to compare risk across their fields, and nothing to show afterward if their decision was questioned. Every agri-tech tool we found was built for one farmer and one field. Nobody was solving the group level problem.
+
+So we built **Harvey**, a decision support system that helps P3A leaders rank which fields need water most urgently, looking at the whole cluster instead of just one farmer. It uses real time weather and 5 day forecasts, automatically figures out each field's crop growth phase from the planting date, and factors in soil texture, 30 day rainfall history, and land geometry (area, slope, and centroid using Turf.js) to produce a priority ranking.
+
+One thing we were serious about: not making up a risk formula out of nowhere. Harvey's scoring engine is based on **FAO-56**, the standard reference the agriculture world already uses for crop water needs. That mattered a lot in the room. It meant we were not just explaining a black box to the judges, we could actually defend the logic if someone with an agronomy background pushed back. And when we tested it, fields in critical growth phases with sandy soil and low recent rainfall really did rise to the top of the ranking, which is exactly what should happen if the model makes sense.
+
+Honestly, we were also half betting on the idea itself. We were not fully sure Harvey would land well with the judges, since it is a pretty niche and technical problem, but we believed in it enough to keep pushing forward instead of switching to something safer.
+
+## Day One: Small Wins and a Silly Bet
+
+The first hours were whiteboards, arguing about scope, and figuring out what problem we were actually solving before we let ourselves write any code. Once we started building, every time someone fixed a bug or shipped a small feature, the whole team would say the same thing: "small win." We said it so many times it stopped being a joke and just became how we tracked progress.
+
+We did not really need caffeine. Our cortisol levels were already doing that job for us, and we were also pacing ourselves on purpose, since going all out on day one felt like a good way to crash before the final pitch.
+
+Around 3 AM, half asleep and barely able to think straight while still coding, someone made a deal: if we won, I would ask my crush out. It was just a tired joke born from very low sleep and too much adrenaline, but it stuck with us for the rest of the hackathon. 
+
+## The Night We Slept on Chairs
+
+Somewhere between day one and day two, we finally gave in and tried to sleep. We were in the hacking area the whole time, so we just lined up a row of chairs and slept on them. It was maybe two hours, if that. When we woke up, we basically went straight back to coding like zombies, running on no real rest and pure momentum.
+
+That same stretch of night was when we hit our lowest point. By around midnight, we looked at what we had and genuinely thought there was no way we would finish. Twelve plus hours in, and we only had one feature done. A lot of that time had not gone into code at all, it went into arguing over product validation and positioning, mixed with more jokes than was probably helpful.
+
+We seriously thought about pivoting to a different idea. But we had already done a much deeper analysis on Harvey than on any alternative, so switching would have cost us more time than it saved. We decided to stick with it.
+
+We finished anyway. That part still does not fully make sense looking back, but we did it.
+
+## The Bugs AI Could Not Fix
+
+We used AI a lot to move fast, but it had real limits. A few times it just could not fix its own bug, so we had to trace the problem down ourselves. More iterations meant more tokens and more time, and honestly, I still could not tell you how many tokens we burned that weekend.
+
+Two bugs stand out. One was an API endpoint where the request and response properties did not match up, a mismatch the AI never caught on its own, so we had to manually dig through the payloads to find it. The other happened because two of us had built out different features with completely different layouts, and we had to go back and make the whole UI consistent again. Small thing on paper, but it ate a lot of time.
+
+## Staying Up the Night Before Pitch Day
+
+After hacking officially ended on day two at 8 PM, I stayed overnight at a friend's apartment near UMN, still in the BSD area. The problem was, I ended up playing games until around 1 or 2 in the morning instead of sleeping. We still had to be up early, since we were scheduled to pitch around 10 AM and had to be on standby from 9 AM. So that overnight stay from day one to day two, right in the hacking area, was really the only proper rest I got that whole hackathon.
+
+## The Pitch
+
+The final pitch went smoothly. The judges validated the idea itself and gave us direction on where the product could go next, which felt like more than just scoring, it felt like real feedback.
+
+The role split between Abraham and me was obvious to the judges without us explaining it. Abraham owned the business side, I owned the technical side, to the point where a judge pointed at him and said "you will be the one selling this," then pointed at me and said "you will be the one building it." That split carried the whole pitch.
+
+What set Harvey apart, I think, was not a flashy AI gimmick, since we did not lean on one. It was the niche: a specific target market (P3A associations), a specific problem (irrigation prioritization when water is scarce), and a solution backed by an actual paper (FAO-56) instead of a black box.
+
+## Winning, and a Movie After
+
+We heard our name at the closing ceremony and it was pure adrenaline. I genuinely thought we had lost, and then we had not. Huge thanks to [Garuda Hacks](https://www.linkedin.com/company/garudahacks/) and every mentor, judge, and organizer who made it an unforgettable three days.
+
+After the awarding on the last day, I went and watched *The Odyssey* (2026), the new Christopher Nolan film, from around 9 PM to midnight. A pretty fitting way to close out a weekend that felt like its own kind of odyssey.
+
+## What I Took Away From It
+
+Trust your team and trust your leader, even when things look like they are falling apart at midnight. Plan ahead where you can, but also accept that a lot of the real work happens in the messy middle: the product validation, the positioning arguments, the layout fixes nobody plans for.
+
+And if you are heading into your first hackathon, lock in. The adrenaline will carry you further than you expect. Trust your teammates, keep believing in your product even when it looks unfinished at 1 AM, and prepare everything you can before D-day, because once it starts, there is no time left to prepare.
+
+One more lesson from this: use proper git branching and pull requests. In the middle of the rush, it is tempting to just push straight to main, but that is exactly what causes messy merge conflicts when everyone is editing different parts of the app at the same time. Working on separate branches and merging through pull requests makes conflicts much easier to catch and resolve, instead of untangling a broken main branch at 3 AM.
+
+Oh, and the crush thing? That was just a silly deal, don't take it seriously.
