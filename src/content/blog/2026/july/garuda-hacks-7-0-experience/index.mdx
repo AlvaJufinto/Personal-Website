@@ -1,16 +1,24 @@
 ---
-title: "Achievement: 1th Place Garuda Hacks 7.0 (30+ hours Hackathon Experience)"
-description: "A short story about a 3 days Hackathon that was held in UMN (Universitas Multimedia Nusantara) by Garuda Hacks."
+title: "My Own Odyssey: Inside Our 30-Hour Journey to Winning Garuda Hacks 7.0"
+description: "A short story about a 3 days Hackathon that was held in UMN (Universitas Multimedia Nusantara) by Garuda Hacks that ended up being the 1st Place Winner."
 pubDate: "July 26, 2026"
 heroImage: "./thumbnail.jpg"
 topics: ["life", "tech", "achivement", "college"]
 ---
+import { Image } from "astro:assets";
+import EmbeddedPresentation from "@/components/ui/EmbeddedPresentation.astro"
+import DayOne from "@/assets/2026/july/garuda-hacks/day-one-selfie.jpg"
+import BeforePresentation from "@/assets/2026/july/garuda-hacks/before-presentation.jpg"
+import MidnightSelfie from "@/assets/2026/july/garuda-hacks/midnight-hack-selfie.jpg"
+import MidnightHack from "@/assets/2026/july/garuda-hacks/midnight-hack.jpg"
+import MidnightSleep from "@/assets/2026/july/garuda-hacks/midnight-sleep.jpg"
+import WinningCeremony from "@/assets/2026/july/garuda-hacks/winning-ceremony.jpg"
 
 Last week, my team and I went to UMN (Universitas Multimedia Nusantara) for **Garuda Hacks 7.0**, Southeast Asia's largest hackathon. We started hacking on July 16 at 2 PM and had to stop building by July 17 at 8 PM, exactly 30 hours. Two more days followed for pitching and the award ceremony. In the end, we won **1st Place in the Agriculture & Food Systems Track**. This is the story of those three days: the whiteboards, the 3 AM jokes, a bet with our friends, almost no sleep, and the moment we found out we won.
 
 ## The Team
 
-There were four of us: [Abraham Gregorius Anderson Thio](https://www.linkedin.com/in/abrahamgregorius/), [Stanislaus Alva Jufinto](https://www.linkedin.com/in/alva-jufinto/), [Almer Aji Valentino](https://www.linkedin.com/in/almer-aji-valentino-0668a7271/), and [Darrell Richie Wibawa](https://www.linkedin.com/in/darrell-richie-wibawa-707542326/). Abraham and I handled the frontend and backend together, we built the pitch deck as a team, and Almer and Abraham put together the demo video.
+There were four of us: [Abraham Gregorius Anderson Thio](https://www.linkedin.com/in/abrahamgregorius/), [Stanislaus Alva Jufinto](https://www.linkedin.com/in/alva-jufinto/), [Almer Aji Valentino](https://www.linkedin.com/in/almer-aji-valentino-0668a7271/), and [Darrell Richie Wibawa](https://www.linkedin.com/in/darrell-richie-wibawa-707542326/). Abraham and I handled the frontend and backend together, we built the pitch deck as a team, Almer researched about the FAO-56 paper for the Agriculture Formula, and Almer and Abraham put together the demo video.
 
 ## What We Built: Harvey
 
@@ -24,17 +32,37 @@ One thing we were serious about: not making up a risk formula out of nowhere. Ha
 
 Honestly, we were also half betting on the idea itself. We were not fully sure Harvey would land well with the judges, since it is a pretty niche and technical problem, but we believed in it enough to keep pushing forward instead of switching to something safer.
 
+<EmbeddedPresentation link="https://www.canva.com/design/DAHPmuaD2YM/PuFmjWT6gYaussUWIkP6eA/view?embed" />
+
+You can see more about Harvey <a href="https://devpost.com/software/harvey-3kjioh" target="_blank">[Here]</a>
+
+
 ## Day One: Small Wins and a Silly Bet
 
 The first hours were whiteboards, arguing about scope, and figuring out what problem we were actually solving before we let ourselves write any code. Once we started building, every time someone fixed a bug or shipped a small feature, the whole team would say the same thing: "small win." We said it so many times it stopped being a joke and just became how we tracked progress.
+
+<center>
+<Image class="my-8 max-w-full w-120" src={DayOne} alt="Day One Selfie." />
+</center>
 
 We did not really need caffeine. Our cortisol levels were already doing that job for us, and we were also pacing ourselves on purpose, since going all out on day one felt like a good way to crash before the final pitch.
 
 Around 3 AM, half asleep and barely able to think straight while still coding, someone made a deal: if we won, I would ask my crush out. It was just a tired joke born from very low sleep and too much adrenaline, but it stuck with us for the rest of the hackathon. 
 
+<center class="my-8">
+<Image class="max-w-full w-120" src={MidnightHack} alt="Midnight Hack." />
+<i><small>Midnight Hack.</small></i>
+</center>
+
 ## The Night We Slept on Chairs
 
 Somewhere between day one and day two, we finally gave in and tried to sleep. We were in the hacking area the whole time, so we just lined up a row of chairs and slept on them. It was maybe two hours, if that. When we woke up, we basically went straight back to coding like zombies, running on no real rest and pure momentum.
+
+<center>
+<Image class="my-8 max-w-full w-100" src={MidnightSleep} alt="Sleeping on row of chairs" />
+
+</center>
+
 
 That same stretch of night was when we hit our lowest point. By around midnight, we looked at what we had and genuinely thought there was no way we would finish. Twelve plus hours in, and we only had one feature done. A lot of that time had not gone into code at all, it went into arguing over product validation and positioning, mixed with more jokes than was probably helpful.
 
@@ -50,9 +78,14 @@ Two bugs stand out. One was an API endpoint where the request and response prope
 
 ## Staying Up the Night Before Pitch Day
 
-After hacking officially ended on day two at 8 PM, I stayed overnight at a friend's apartment near UMN, still in the BSD area. The problem was, I ended up playing games until around 1 or 2 in the morning instead of sleeping. We still had to be up early, since we were scheduled to pitch around 10 AM and had to be on standby from 9 AM. So that overnight stay from day one to day two, right in the hacking area, was really the only proper rest I got that whole hackathon.
+After hacking officially ended on day two at 8 PM, I stayed overnight at a friend's apartment near UMN, still in the BSD area. The problem was, I ended up playing games until around 1 or 2 in the morning instead of sleeping. We still had to be up early, since we were scheduled to pitch around 10 AM and had to be on standby from 9 AM. But hey, it's far way better cause I got a place to cleaning up and could sleep on a bed.
 
 ## The Pitch
+
+<center class="my-8">
+<Image src={BeforePresentation} alt="Almer Turu" />
+<i><small>Before Presentation Selfie.</small></i>
+</center>
 
 The final pitch went smoothly. The judges validated the idea itself and gave us direction on where the product could go next, which felt like more than just scoring, it felt like real feedback.
 
@@ -64,7 +97,15 @@ What set Harvey apart, I think, was not a flashy AI gimmick, since we did not le
 
 We heard our name at the closing ceremony and it was pure adrenaline. I genuinely thought we had lost, and then we had not. Huge thanks to [Garuda Hacks](https://www.linkedin.com/company/garudahacks/) and every mentor, judge, and organizer who made it an unforgettable three days.
 
-After the awarding on the last day, I went and watched *The Odyssey* (2026), the new Christopher Nolan film, from around 9 PM to midnight. A pretty fitting way to close out a weekend that felt like its own kind of odyssey.
+<iframe class="my-8" style="width:100%; height:400px;" src="https://youtube.com/embed/4cmsRCusc3k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+After the awarding on the last day, I went and watched *The Odyssey* (2026), the new Christopher Nolan film, from around 9 PM to midnight. A pretty fitting way to close out a weekend that felt like its own kind of **Odyssey**.
+
+<center class="my-8">
+<Image src={WinningCeremony} alt="Awarding Ceremony" />
+<i><small>Awarding Ceremony.</small></i>
+</center>
+
 
 ## What I Took Away From It
 
