@@ -37,6 +37,7 @@ const { work } = Astro.props;
         >
           {work.data.title}
         </h2>
+
         <p class="font-secondary shrink-0 text-xs text-slate-400">
           <FormattedDate date={work.data.pubDate} />
         </p>
@@ -51,7 +52,7 @@ const { work } = Astro.props;
       {
         work.data.tech?.length > 0 && (
           <div class="mt-1 flex flex-wrap gap-x-3 gap-y-0.5">
-            {work.data.tech.slice(0, 4).map((item: any) => (
+            {work.data.tech.slice(0, 4).map((item: string) => (
               <span class="font-secondary text-xs text-slate-400">{item}</span>
             ))}
             {work.data.tech.length > 4 && (

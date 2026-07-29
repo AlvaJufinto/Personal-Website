@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
 import BaseHead from "@/components/ui/BaseHead.astro";
@@ -8,6 +7,7 @@ import FormattedDate from "@/components/ui/FormattedDate.astro";
 import Header from "@/components/ui/Header.astro";
 
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
 
 const linkStyles = {
   github: {
@@ -69,9 +69,9 @@ const {
           heroImage && (
             <div class="group mb-16 overflow-hidden border border-slate-200">
               <Image
-                width={1600}
-                height={800}
-                class="h-auto w-full object-cover  transition-transform duration-700 group-hover:scale-[1.02]"
+                class="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                width={1200}
+                height={1200}
                 src={heroImage}
                 alt={title}
               />

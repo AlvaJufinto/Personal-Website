@@ -1,7 +1,7 @@
 ---
-import { Image } from "astro:assets";
 import Tags from "@/components/ui/Tags.astro";
 import FormattedDate from "@/components/ui/FormattedDate.astro";
+import BlogPost from "@/layouts/BlogPost.astro";
 const { post } = Astro.props;
 ---
 
@@ -12,12 +12,10 @@ const { post } = Astro.props;
     {
       post.data.heroImage && (
         <div class="aspect-video overflow-hidden">
-          <Image
-            width={720}
-            height={360}
+          <img
             class="h-full w-full object-cover transition-transform group-hover:scale-105"
-            src={post.data.heroImage}
-            alt=""
+            src={post.data.heroImage.src || post.data.heroImage}
+            alt={post}
           />
         </div>
       )
