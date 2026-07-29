@@ -4,6 +4,7 @@
 // You can import this data from anywhere in your site by using the import keyword.
 
 export const SITE_TITLE = "Alva's";
+export const SITE_URL = "https://alvajufinto.vercel.app";
 export const SITE_DESCRIPTION = "Stanislaus Alva Jufinto Personal Website ";
 export const TECH_STACK = [
   {

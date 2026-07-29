@@ -9,6 +9,8 @@ import Header from "@/components/ui/Header.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
+const SITE_URL = "https://alvajufinto.vercel.app";
+
 const linkStyles = {
   github: {
     icon: "mdi:github",
@@ -57,7 +59,34 @@ const {
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead
+      title={title}
+      description={description}
+      image={heroImage}
+      type="website"
+      publishedTime={pubDate}
+      modifiedTime={updatedDate}
+      tags={[...category, ...tech]}
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "name": title,
+      "description": description,
+      "datePublished": pubDate.toISOString(),
+      "dateModified": (updatedDate ?? pubDate).toISOString(),
+      "image": heroImage ? (typeof heroImage === "string" ? heroImage : heroImage.src) : null,
+      "keywords": [...category, ...tech].join(", "),
+      "url": Astro.url.href,
+      "author": {
+        "@type": "Person",
+        "name": "Stanislaus Alva Jufinto",
+        "url": SITE_URL
+      },
+      "programmingLanguage": tech,
+      "genre": category.join(", "),
+    })} />
   </head>
 
   <body class="bg-white text-slate-900">

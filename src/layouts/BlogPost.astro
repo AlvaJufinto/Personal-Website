@@ -62,7 +62,15 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description ?? excerpt} />
+    <BaseHead
+      title={title}
+      description={description ?? excerpt}
+      image={heroImage}
+      type="article"
+      publishedTime={pubDate}
+      modifiedTime={updatedDate}
+      tags={topics}
+    />
 
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
