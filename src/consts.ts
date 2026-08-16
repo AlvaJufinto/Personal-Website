@@ -12,7 +12,7 @@ export const TECH_STACK = [
     stack: [
       {
         name: "React",
-        logo: "https://cdn.worldvectorlogo.com/logos/react-2.svg",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg",
       },
       {
         name: "Next.js",
@@ -94,7 +94,7 @@ export const TECH_STACK = [
       },
       {
         name: "Supabase",
-        logo: "https://cdn.worldvectorlogo.com/logos/supabase.svg",
+        logo: "https://raw.githubusercontent.com/devicons/devicon/master/icons/supabase/supabase-original.svg",
       },
       {
         name: "SQLite",
