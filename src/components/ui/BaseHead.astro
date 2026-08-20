@@ -47,7 +47,7 @@ const imageUrl =
 
 <meta name="generator" content={Astro.generator} />
 
-<!-- fonts -->
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
@@ -63,6 +63,7 @@ const imageUrl =
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <meta name="author" content={author} />
+
 {tags.length > 0 && <meta name="keywords" content={tags.join(", ")} />}
 
 <!-- Open Graph / Facebook -->
@@ -73,6 +74,7 @@ const imageUrl =
 <meta property="og:image" content={imageUrl} />
 <meta property="og:site_name" content={SITE_TITLE} />
 <meta property="og:locale" content="en_US" />
+
 {
   type === "article" && publishedTime && (
     <meta
@@ -81,6 +83,7 @@ const imageUrl =
     />
   )
 }
+
 {
   type === "article" && modifiedTime && (
     <meta
@@ -89,7 +92,9 @@ const imageUrl =
     />
   )
 }
+
 {type === "article" && <meta property="article:author" content={author} />}
+
 {
   type === "article" &&
     tags.map((tag) => <meta property="article:tag" content={tag} />)
@@ -104,18 +109,24 @@ const imageUrl =
 <meta property="twitter:site" content="@alva_dev" />
 <meta property="twitter:creator" content="@alva_dev" />
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-824260QBLX"
-></script>
-<script>
-  // @ts-ignore
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    // @ts-ignore
-    dataLayer.push(arguments);
-  }
-  // @ts-ignore
-  gtag("js", new Date());
-  // @ts-ignore
-  gtag("config", "G-824260QBLX");
-</script>
+{
+  import.meta.env.PROD && (
+    <>
+      <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-824260QBLX"
+      ></script>
+
+      <script is:inline>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+          window.dataLayer.push(arguments);
+        }
+
+        gtag("js", new Date());
+        gtag("config", "G-824260QBLX");
+      </script>
+    </>
+  )
+}
