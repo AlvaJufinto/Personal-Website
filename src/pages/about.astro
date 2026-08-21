@@ -1,5 +1,4 @@
 ---
-import Layout from "@/layouts/BlogPost.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 import BaseHead from "@/components/ui/BaseHead.astro";
 import Header from "@/components/ui/Header.astro";
@@ -12,17 +11,46 @@ const socials = [
     href: "https://github.com/AlvaJufinto",
     icon: "mdi:github",
   },
-
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/alva-jufinto/",
     icon: "mdi:linkedin",
   },
-
   {
     label: "Instagram",
     href: "https://www.instagram.com/alva.jufinto/",
     icon: "mdi:instagram",
+  },
+];
+
+const achievements = [
+  {
+    year: "2026",
+    title: "1st Place — Garuda Hacks 7.0",
+    subtitle: "Agriculture & Food Systems",
+    description:
+      "Won Garuda Hacks 7.0 Hackathon (Agriculture & Food Systems Track) with Harvey, a decision-support system that helps irrigation managers prioritize water distribution and allocate scarce water resources more effectively.",
+  },
+  {
+    year: "2026",
+    title: "3rd Place — TechSprint Innovation Cup",
+    subtitle: "Business Plan Competition",
+    description:
+      "Presented SAJAK (SahabatPajak), a technology and business concept focused on making tax administration more accessible through automation.",
+  },
+  {
+    year: "2025",
+    title: "4th Place — GEMASTIK XVIII",
+    subtitle: "Software Development",
+    description:
+      "Represented BINUS University at the national finals with TemanNelayan, combining software engineering, data analysis, and marine data to help small-scale fishermen identify safer fishing zones.",
+  },
+  {
+    year: "2025",
+    title: "Top 5 — Pertamuda Seed & Scale",
+    subtitle: "Energy Optimization",
+    description:
+      "Recognized by Pertamina and Danantara Indonesia for HydroSmart, an IoT-based system designed to optimize water use in AI data centers.",
   },
 ];
 ---
@@ -31,226 +59,255 @@ const socials = [
   <head>
     <BaseHead title={`${SITE_TITLE} | About`} description={SITE_DESCRIPTION} />
   </head>
+
   <body>
     <Header />
+
     <main class="custom-container">
       <section class="prose prose-slate max-w-none">
-        {/* Hero Section */}
+        <!-- Hero -->
         <div class="mb-12">
-          <h1
-            class="font-primary text-4xl font-bold tracking-tight text-slate-900"
+          <div
+            class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between"
           >
-            Stanislaus Alva Jufinto
-          </h1>
-          <p class="font-secondary mt-3 text-xl text-slate-600">
-            Computer Science Student and Software Developer.
-          </p>
+            <div class="max-w-3xl">
+              <h1
+                class="font-primary text-3xl font-semibold tracking-tight text-slate-900"
+              >
+                A brief description.
+              </h1>
+
+              <p
+                class="font-secondary mt-4 text-md leading-relaxed text-slate-600"
+              >
+                Builder and problem solver. I like turning real problems into
+                things that people can actually use.
+              </p>
+            </div>
+          </div>
         </div>
 
         <hr class="line" />
 
-        {/* Main Content */}
         <div class="pt-12">
-          {/* Who Am I */}
-          <div class="mb-16">
-            <h2 class="font-primary text-3xl font-bold text-slate-900 mb-6">
-              Who am I?
+          <!-- About -->
+          <section class="mb-20">
+            <h2 class="font-primary mb-6 text-3xl font-semibold text-slate-900">
+              About me.
             </h2>
-            <div class="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 class="font-primary text-xl font-bold text-slate-900 mb-3">
-                  As a Student
-                </h3>
-                <p class="font-secondary text-slate-700 leading-relaxed mb-4">
-                  I'm a 2th-year student at <span class="font-semibold"
-                    >Bina Nusantara University</span
-                  >, majoring in Computer Science. I'm passionate about
-                  exploring AI, machine learning, and building scalable,
-                  maintainable software architecture.
-                </p>
-                <p class="font-secondary text-slate-700 leading-relaxed">
-                  I've competed in several national tech competitions, most
-                  notably securing
-                  <span class="font-semibold text-slate-900"
-                    >4th place in GEMASTIK XVIII 2025</span
-                  > in the Software Development category with my team's project on
-                  fishing spot prediction using AI.
-                </p>
-              </div>
-              <div>
-                <h3 class="font-primary text-xl font-bold text-slate-900 mb-3">
-                  Beyond Tech
-                </h3>
-                <p class="font-secondary text-slate-700 leading-relaxed mb-4">
-                  I'm a <span class="font-semibold">pianist and organist</span> at
-                  my local Catholic parish, where I regularly play for Sunday Mass
-                  and special liturgical celebrations.
-                </p>
-                <p class="font-secondary text-slate-700 leading-relaxed">
-                  I'm also a <span class="font-semibold"
-                    >practicing Catholic</span
-                  > on a journey of deeper faith formation. I'm interested in liturgy,
-                  Catholic doctrine, and what it means to live faith intentionally
-                  in the modern world.
-                </p>
-              </div>
-            </div>
-          </div>
 
-          {/* What I Write About */}
-          <div class="mb-16">
-            <h2 class="font-primary text-3xl font-bold text-slate-900 mb-6">
-              What do I write about?
-            </h2>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="p-5 bg-slate-50 border border-slate-200 -lg">
-                <h3
-                  class="font-primary text-lg font-bold text-slate-900 mb-2 flex items-center gap-2"
-                >
-                  Technology & Development
-                </h3>
-                <p
-                  class="font-secondary text-slate-700 text-sm leading-relaxed"
-                >
-                  Software architecture, backend development, building scalable
-                  systems, AI/ML explorations, and reflections on the changing
-                  landscape of software engineering in the age of AI.
-                </p>
-              </div>
-              <div class="p-5 bg-slate-50 border border-slate-200 -lg">
-                <h3
-                  class="font-primary text-lg font-bold text-slate-900 mb-2 flex items-center gap-2"
-                >
-                  Personal Growth & Philosophy
-                </h3>
-                <p
-                  class="font-secondary text-slate-700 text-sm leading-relaxed"
-                >
-                  Life transitions, responsibility, existential questions, and
-                  lessons learned from both victories and struggles.
-                </p>
-              </div>
-              <div class="p-5 bg-slate-50 border border-slate-200 -lg">
-                <h3
-                  class="font-primary text-lg font-bold text-slate-900 mb-2 flex items-center gap-2"
-                >
-                  Faith & Catholic Thought
-                </h3>
-                <p
-                  class="font-secondary text-slate-700 text-sm leading-relaxed"
-                >
-                  My journey as a Catholic, liturgical reflections, Catholic
-                  doctrine, faith formation, and discovering what it means to
-                  live intentionally as a believer.
-                </p>
-              </div>
-              <div class="p-5 bg-slate-50 border border-slate-200 -lg">
-                <h3
-                  class="font-primary text-lg font-bold text-slate-900 mb-2 flex items-center gap-2"
-                >
-                  Achievements & Experiences
-                </h3>
-                <p
-                  class="font-secondary text-slate-700 text-sm leading-relaxed"
-                >
-                  Tech competitions, project retrospectives, internship
-                  insights, and stories from building real-world applications.
-                </p>
-              </div>
-            </div>
-          </div>
+            <div class="max-w-3xl space-y-5">
+              <p class="font-secondary leading-relaxed text-slate-700">
+                I'm a Computer Science student who enjoys making things. Most of
+                the time, that means writing software, but I've never been
+                particularly interested in technology for its own sake.
+              </p>
 
-          {/* My Skills & Interests */}
-          <div class="mb-16">
-            <h2 class="font-primary text-3xl font-bold text-slate-900 mb-6">
-              What am I interested in?
+              <p class="font-secondary leading-relaxed text-slate-700">
+                What interests me is the problem on the other side of it:
+                understanding what someone actually needs, figuring out what
+                might help, and turning that idea into something real. Sometimes
+                that's a web application. Sometimes it's an AI system, a data
+                model, a hardware project, or a solution that has little to do
+                with code at all.
+              </p>
+
+              <p class="font-secondary leading-relaxed text-slate-700">
+                I enjoy working across disciplines because useful solutions
+                rarely fit neatly into one of them. Building something often
+                means understanding technology, design, business, data, and most
+                importantly, the people who will eventually use it.
+              </p>
+            </div>
+          </section>
+
+          <!-- How I Build -->
+          <section class="mb-20">
+            <h2 class="font-primary mb-6 text-3xl font-semibold text-slate-900">
+              How I build.
             </h2>
-            <div class="space-y-6">
-              <div>
-                <h3 class="font-primary text-lg font-bold text-slate-900 mb-3">
+
+            <div class="max-w-3xl space-y-5">
+              <p class="font-secondary leading-relaxed text-slate-700">
+                I learn by building. Reading and studying are important, but
+                there is something different about trying to make an idea work
+                in the real world. That's where assumptions become obvious, edge
+                cases appear, and the things I thought I understood turn out to
+                be slightly wrong.
+              </p>
+
+              <p class="font-secondary leading-relaxed text-slate-700">
+                I usually start by understanding the problem before deciding on
+                the solution. From there, I like to build, test what I can,
+                learn from what breaks, and keep refining the idea. The
+                technology is part of the process, not the destination.
+              </p>
+
+              <p class="font-secondary leading-relaxed text-slate-700">
+                I'm still learning, and that's probably why I enjoy building so
+                much. Every project gives me another excuse to learn something I
+                didn't know before.
+              </p>
+            </div>
+          </section>
+
+          <!-- Selected Recognition -->
+          <section class="mb-20">
+            <div class="mb-8 flex items-baseline justify-between gap-4">
+              <h2 class="font-primary text-3xl font-semibold text-slate-900">
+                Selected recognition.
+              </h2>
+
+              <span class="font-secondary text-sm text-slate-500">
+                2025–2026
+              </span>
+            </div>
+
+            <div class="space-y-0 border-t border-slate-200">
+              {
+                achievements.map((achievement) => (
+                  <article class="grid gap-4 border-b border-slate-200 py-7 md:grid-cols-[80px_1fr]">
+                    <span class="font-secondary text-sm font-medium text-slate-500">
+                      {achievement.year}
+                    </span>
+
+                    <div>
+                      <h3 class="font-primary text-xl font-semibold text-slate-900">
+                        {achievement.title}
+                      </h3>
+
+                      <p class="font-secondary mt-1 text-sm font-semibold text-slate-600">
+                        {achievement.subtitle}
+                      </p>
+
+                      <p class="font-secondary mt-3 max-w-3xl leading-relaxed text-slate-700">
+                        {achievement.description}
+                      </p>
+                    </div>
+                  </article>
+                ))
+              }
+            </div>
+          </section>
+
+          <!-- Writing -->
+          <section class="mb-20">
+            <h2 class="font-primary mb-6 text-3xl font-semibold text-slate-900">
+              What I write about.
+            </h2>
+
+            <p
+              class="font-secondary mb-8 max-w-3xl leading-relaxed text-slate-700"
+            >
+              This website is also where I keep track of what I'm learning and
+              thinking about. Not everything belongs in a project README.
+            </p>
+
+            <div class="grid gap-6 md:grid-cols-3">
+              <article class="border border-slate-200 bg-slate-50 p-6">
+                <h3
+                  class="font-primary mb-3 text-xl font-semibold text-slate-900"
+                >
                   Technology
                 </h3>
-                <div class="flex flex-wrap gap-2">
-                  {
-                    [
-                      "JavaScript/TypeScript",
-                      "React",
-                      "Backend Architecture",
-                      "AI/ML",
-                      "System Design",
-                      "Database Design",
-                      "Frontend Development",
-                      "DevOps",
-                      "Software Engineering",
-                    ].map((skill) => (
-                      <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-secondary ">
-                        {skill}
-                      </span>
-                    ))
-                  }
-                </div>
-              </div>
-              <div>
-                <h3 class="font-primary text-lg font-bold text-slate-900 mb-3">
-                  Broader Interests
+
+                <p class="font-secondary leading-relaxed text-slate-700">
+                  Things I'm learning, building, and noticing in technology,
+                  from software development and AI to broader changes in how
+                  people create and work with technology.
+                </p>
+              </article>
+
+              <article class="border border-slate-200 bg-slate-50 p-6">
+                <h3
+                  class="font-primary mb-3 text-xl font-semibold text-slate-900"
+                >
+                  Life
                 </h3>
-                <div class="flex flex-wrap gap-2">
-                  {
-                    [
-                      "Philosophy",
-                      "Catholic Theology",
-                      "Liturgy",
-                      "Music Performance",
-                      "Digital Literacy",
-                      "Software Quality",
-                      "Teaching & Mentoring",
-                      "Writing",
-                    ].map((interest) => (
-                      <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-secondary">
-                        {interest}
-                      </span>
-                    ))
-                  }
-                </div>
-              </div>
+
+                <p class="font-secondary leading-relaxed text-slate-700">
+                  Personal reflections, experiences, questions, and whatever
+                  else seems worth thinking about for a little longer than a
+                  passing thought.
+                </p>
+              </article>
+
+              <article class="border border-slate-200 bg-slate-50 p-6">
+                <h3
+                  class="font-primary mb-3 text-xl font-semibold text-slate-900"
+                >
+                  Faith
+                </h3>
+
+                <p class="font-secondary leading-relaxed text-slate-700">
+                  Reflections on my Catholic faith, liturgy, doctrine, and the
+                  ongoing process of figuring out what it means to actually live
+                  what I believe.
+                </p>
+              </article>
             </div>
-          </div>
+          </section>
 
-          {/* Language Note */}
-          <div class="mb-12 p-4 bg-slate-50 border-l-4 border-slate-400">
-            <p class="font-secondary text-slate-700 text-sm">
-              <span class="font-semibold text-slate-900">Note:</span> I write in both
-              English and Indonesian, depending on the topic and which language feels
-              most natural for expressing the idea. Most technical posts are in English,
-              while personal and faith-related reflections are often in Indonesian.
-            </p>
-          </div>
-
-          {/* Connect */}
-          <div class="pt-8 border-t border-slate-200">
-            <h2 class="font-primary text-2xl font-bold text-slate-900 mb-6">
-              Let's connect!
+          <!-- Beyond Building -->
+          <section class="mb-20">
+            <h2 class="font-primary mb-6 text-3xl font-semibold text-slate-900">
+              Outside of building things.
             </h2>
-            <div class="flex gap-4">
+
+            <div class="max-w-3xl space-y-5">
+              <p class="font-secondary leading-relaxed text-slate-700">
+                Technology is a big part of my life, but thankfully, not all of
+                it. I'm also a pianist and organist, and I've spent quite a bit
+                of time playing music, especially in the context of Catholic
+                liturgy.
+              </p>
+
+              <p class="font-secondary leading-relaxed text-slate-700">
+                My Catholic faith is another important part of who I am. It
+                naturally finds its way into some of my writing, especially when
+                I'm trying to make sense of questions that don't have a
+                particularly convenient Stack Overflow answer.
+              </p>
+            </div>
+          </section>
+
+          <!-- Language -->
+          <section class="mb-16 border-l-4 border-slate-400 bg-slate-50 p-5">
+            <p class="font-secondary text-sm leading-relaxed text-slate-700">
+              <span class="font-semibold text-slate-900"
+                >About the writing:</span
+              >
+              I write in both English and Indonesian. I use whichever language feels
+              more natural for the subject and the idea I'm trying to express.
+            </p>
+          </section>
+
+          <!-- Connect -->
+          <section class="border-t border-slate-200 pt-10">
+            <h2 class="font-primary mb-6 text-2xl font-semibold text-slate-900">
+              Let's connect
+            </h2>
+
+            <div class="flex flex-wrap gap-3">
               {
                 socials.map((social) => (
                   <a
                     href={social.href}
                     target="_blank"
-                    class="font-secondary gap-4 inline-flex items-center justify-center px-4 py-2 border-2 border-slate-400 text-slate-900 font-semibold hover:bg-slate-100 transition-colors"
+                    rel="noopener noreferrer"
+                    class="font-secondary inline-flex items-center justify-center gap-2 border-2 border-slate-400 px-4 py-2 font-semibold text-slate-900 transition-colors hover:bg-slate-100"
                   >
-                    <Icon
-                      name={social.icon}
-                      class="h-4 w-4 transition-transform duration-200"
-                    />
+                    <Icon name={social.icon} class="h-4 w-4" />
                     {social.label}
                   </a>
                 ))
               }
             </div>
-          </div>
+          </section>
         </div>
       </section>
     </main>
-  </body><Footer />
+
+    <Footer />
+  </body>
 </html>
