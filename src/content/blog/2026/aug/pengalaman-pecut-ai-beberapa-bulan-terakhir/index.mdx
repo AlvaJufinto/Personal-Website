@@ -1,0 +1,113 @@
+---
+title: "Pengalaman Pecut AI Selama Beberapa Bulan Terakhir."
+description: "Jadi ini yang dirasakan orang eropa pada zaman itu."
+pubDate: "August 26, 2026"
+heroImage: "./assets/thumbnail.png"
+topics: ["tech", "ai"]
+language: "id"
+---
+import { Image } from "astro:assets";
+import Benchmark from "./assets/benchmark.png";
+
+Waktu tahun 2023, AI belum sepintar sekaramg, jadi penggunaan AI hanya sekedar partner untuk ditanyain kalau ada yang lupa-lupa. Paling jauh cuma bisa ditanya setup project, buat codingan *boiler plate*, dan ditanya kalau ada bug/error tertentu. Itupun juga kalau AI-nya ga halu, jadi saya harus *crosscheck* melalui dokumentasinya lagi. Dan dalam 3 tahun terakhir perkembangan AI eksponensial. Bukan cuma disuruh/ditanya tapi udah bisa mikir project kita mau dibawa kemana arahnya. 
+
+Jujur-jujuran saja, dulu saya orangnya juga idealis banget, kalau ada  project harus saya yang pegang minimal 50%-nya atau lebih. Jadi dari awal planning arsitektur, design, implementasi, testing, dan deployment harus saya yang *takeover*. Pakai AI kalau kerjaannya udah repetitif aja, atau ada masalah dengan migrasi data yang jumlahnya ada ratusan bahkan lebih.
+
+Tapi semenjak saya merasakan enaknya ngoding pakai ***Opencode*** dengan model MiniMax-M2.7-highspeed yang harganya ga seberapa itu, damn, idealisme saya langsung runtuh. 
+
+Saya beli tokennya via platform SumoPod supaya bisa pakai layanan API-nya untuk disambung dengan Opencode. Tiap kali beli, saya siapkan budget IDR 100.000, dan kira-kira detailnya begini:
+<div class="overflow-x-auto">
+  <table class="w-full border-collapse text-left text-sm">
+    <thead>
+      <tr class="border-b border-slate-200">
+        <th class="px-4 py-3 font-semibold text-slate-700">Item</th>
+        <th class="px-4 py-3 font-semibold text-slate-700">Value</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr class="border-b border-slate-100">
+        <td class="px-4 py-3 text-slate-600">Input</td>
+        <td class="px-4 py-3 font-medium text-slate-900">$0.03 / 1M tokens</td>
+      </tr>
+
+      <tr class="border-b border-slate-100">
+        <td class="px-4 py-3 text-slate-600">Output</td>
+        <td class="px-4 py-3 font-medium text-slate-900">$0.12 / 1M tokens</td>
+      </tr>
+
+      <tr class="border-b border-slate-100">
+        <td class="px-4 py-3 text-slate-600">Kurs saat ini</td>
+        <td class="px-4 py-3 font-medium text-slate-900">$1 ≈ Rp17.679</td>
+      </tr>
+
+      <tr class="border-b border-slate-100">
+        <td class="px-4 py-3 text-slate-600">Budget</td>
+        <td class="px-4 py-3 font-medium text-slate-900">Rp100.000 ≈ $5,66</td>
+      </tr>
+
+      <tr class="border-b border-slate-100">
+        <td class="px-4 py-3 text-slate-600">Total Input Token</td>
+        <td class="px-4 py-3 font-medium text-slate-900">188,5 juta token</td>
+      </tr>
+
+      <tr>
+        <td class="px-4 py-3 text-slate-600">Total Output Token</td>
+        <td class="px-4 py-3 font-medium text-slate-900">47,1 juta token</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+Gila ga tuh, dengan harga yang sangat murah bisa dapetin token sebanyak itu, (bahkan bisa lebih banyak ketika $1 masih di angka Rp16.000 *or less*).
+
+Saya baru saja menyelesaikan project yang cukup besar, karena harus *rewrite* codingan dari 0 lagi dan migrasi data lama dari ekosistem lama ke aplikasi yang baru. Semua proses dari planning sampai data migration tidak menghabiskan setengah dari 100rb yang saya keluarkan 1 bulan yang lalu.
+
+
+### Tapi ada satu hal yang saya rasakan ketika memakai AI: Satu model saja tidak bisa menyelesaikan semua masalah.
+
+<Image src={Benchmark} class="w-full" alt="Benchmarking" />
+
+Jadi ada satu problem yang temui dari dulu ketika berurusan dengan model-model AI: Claude yang boros token, Gemini yang terlalu lama berpikir dan sering kekurangan context, ChatGPT yang selalu bersikap layaknya "yes-man" ketika dikritisi (dan kadang halusinasi).
+
+Salah satu alasan kenapa saya kurang *utilize* AI pada tahun-tahun sebelumnya karena saya masih *skill issue* dan ga paham tentang problem ginian. Dulu flow saya cuma nanya-nanya ide di ChatGPT, bantuin fix error dengan copas langsung di webnya, and repeat. Belum ada tuh kepikiran install AI Agent, apalagi sampai pakai Hermes Agent dan OpenRouter. Makanya dulu waktu tahap ideation masih **bias**, waktu ngoding kadang halusinasi sendiri karena kurang context, etc.
+
+### Ideation Phase: Claude Sonnet 5
+
+Sampai sejauh ini, menurut saya AI yang paling mantap buat ideation itu Claude, bahkan menurut saya versi gratisan Claude sudah sangat oke untuk handling masalah ini. Ada beberapa kelebihan Claude dibanding GPT waktu ideation: Lebih jago searching di internet dan punya reasoning bagus terhadap context yang sudah dikumpulkannya sendiri, sehingga Claude bisa mengkritisi idea kita atau dirinya sendiri secara mandiri. 
+
+### Design and Implementation Phase: Claude Sonnet 5 and ChatGPT-5.6 Luna 
+
+Nah, waktu udah masuk sini, kita bisa sedikit pindah ke ChatGPT karena Claude boros token. Maksimal pemakaian Claude itu sampai 5x kalau sudah harus generate file README. Maka dari itu biasanya brief utama atau yang esensial saya buat di Claude, selanjutnya saya minta ChatGPT untuk lanjutkan.
+
+### Coding Phase: MiniMax-M2.7 via Opencode
+
+Dilihat dari benchmarking, MiniMax bukanlah Model paling brilian di antara Claude dan GPT. Tapi MiniMax punya harga yang lebih murah per-satu juta tokennya dibanding keduanya. Tapi bagi saya model ini sudah cukup pintar untuk reasoning dan coding dari *scratch* berdasarkan file README.
+
+> Biasanya saya setup projectnya sendiri dengan guide dari AI biar ga boros token.
+
+### Code Review, Testing, and Iterating: Saya Sendiri
+
+Entah kenapa saya masih belum menemukan AI yang suitable untuk masalah code review. Sebenarnya codingan yang digenerate sudah cukup oke, seperti codingan level mid-senior. Tapi yang jadi masalah kalau codingan-nya ga sesuai preferensi saya walaupun semuanya sudah diletakkan di README. Yang belum saya validasi adalah: Apakah masalah ini bisa selesai dengan menggunakan model Opus atau Fable? Guess I'll never know..
+
+Masalah testing juga, walaupun AI bisa dipakai untuk nulis E2E Testing, tapikan E2E Testing cuma bisa cek fungsional utama biar punya automated testing jangka panjang. Nah, saya carinya product testing: Apakah semua fungsi esensial yang diinginkan client itu berjalan dengan lancar? Sampai sejauh ini MiniMax belum bisa mengerjakan tugas tersebut...
+
+### Debugging: Saya Sendiri, dibantu ChatGPT-5.6 Luna dan Gemini 3.6 Flash
+
+Saya agak heran kenapa MiniMax itu bodoh banget untuk urusan debugging (dari pengalaman saya). Bahkan ketika saya sudah memberi tau *sympton*-nya dam *possible cause*-nya, MiniMax masih gagal dalam menemukan *root cause*-nya. 
+
+Di satu sisi, GPT dan Gemini lebih brilian dalam melakukan hal semacam ini, entah kenapa. Waktu saya copy paste codingan yang error atau ada bugnya, mereka bisa langsung paham permasalahan utamanya berasal darimana, dan di saat itu juga langsung difix codingannya.
+
+### Data Migration and Consolidation: Gemini 3.6 Flash
+
+Berdasarkan pengalaman saya, Gemini masih sangat unggul dalam memproses *bulk data*. Selain karena lebih murah dan tidak boros token, Gemini adalah model satu-satunya yang mau memproses data ratusan sekaligus dan mengembalikannya di kolom chat. Berbeda dengan Claude dan GPT yang kebanyakan menolak dan malah memberikan script untuk memproses datanya. Selain itu Gemini juga sangat oke dalam memindahkan dan melakukan konsolidasi data dari source A ke B atau dari format A ke B. Misalnya data dari database tidak sesuai dengan PDF, Gemini bisa bantu untuk memperbaiki data dan formatnya di database. 
+
+### Apa lagi yang bisa saya leverage?
+
+Selama beberapa bulan terakhir saya baru sadar bahwa yang saya lakukan sebenarnya bukan sekadar menggunakan AI untuk coding. Saya mulai membagi pekerjaan menjadi beberapa bagian dan memberikan setiap bagian kepada model yang berbeda.
+
+> Kalau pola seperti ini bisa dilakukan untuk software development, apakah bisa dilakukan untuk pekerjaan lain?
+
+Akhir-akhir ini saya juga tertarik dengan Agent untuk urusan non-coding, yang dimana sekarang saya sedang mengulik **Hermes Agent**. Saya belum terlalu paham tentang konsep-konsep utama di Hermes Agent (seperti skills, memory, cronjob, etc), dan bagaimana cara membuat Hermes membantu pekerjaan saya, atau mungkin orang lain? Karena selain untuk kebutuhan *productivity*, AI Agentic juga bisa dipakai untuk urusan *Business Automation*, bahkan lebih.  
+
+Dan kalau boleh jujur, Hermes masih menjadi mainan baru saya aja sih sejauh ini.
