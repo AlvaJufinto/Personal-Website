@@ -6,6 +6,42 @@
 export const SITE_TITLE = "Alva's";
 export const SITE_URL = "https://alvajufinto.vercel.app";
 export const SITE_DESCRIPTION = "Stanislaus Alva Jufinto Personal Website ";
+
+export const PROFILE = {
+  name: "Stanislaus Alva Jufinto",
+  handle: "alva",
+  role: "Software Engineer / Builder",
+  bio: "Builder and problem solver. I like turning real problems into things that people can actually use.",
+};
+
+export const SOCIALS = [
+  {
+    label: "GitHub",
+    href: "https://github.com/AlvaJufinto",
+    icon: "mdi:github",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/alva-jufinto/",
+    icon: "mdi:linkedin",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/alva.jufinto/",
+    icon: "mdi:instagram",
+  },
+];
+
+export const CONTACT = {
+  email: "alva@example.com",
+};
+
+export const SITE_SECTIONS = [
+  { name: "about", description: "About me" },
+  { name: "projects", description: "Projects and work" },
+  { name: "blog", description: "Blog posts" },
+  { name: "contact", description: "Contact and social links" },
+];
 export const TECH_STACK = [
   {
     type: "frontend",
