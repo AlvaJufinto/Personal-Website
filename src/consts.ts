@@ -6,6 +6,24 @@
 export const SITE_TITLE = "Alva's";
 export const SITE_URL = "https://alvajufinto.vercel.app";
 export const SITE_DESCRIPTION = "Stanislaus Alva Jufinto Personal Website ";
+export const AUTHOR_NAME = "Stanislaus Alva Jufinto";
+export const SOCIALS = [
+  {
+    label: "GitHub",
+    href: "https://github.com/AlvaJufinto",
+    icon: "mdi:github",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/alva-jufinto/",
+    icon: "mdi:linkedin",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/alva.jufinto/",
+    icon: "mdi:instagram",
+  },
+];
 export const TECH_STACK = [
   {
     type: "frontend",

@@ -3,28 +3,13 @@ import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
 import HumanBadge from "@/assets/icons/human-badge.png";
+import { SOCIALS } from "@/consts";
 
 const today = new Date();
 
-const socials = [
-  {
-    label: "GitHub",
-    href: "https://github.com/AlvaJufinto",
-    icon: "mdi:github",
-  },
+---
 
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/alva-jufinto/",
-    icon: "mdi:linkedin",
-  },
-
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/alva.jufinto/",
-    icon: "mdi:instagram",
-  },
-];
+<footer class="mt-32 border-t-2 border-slate-100 pb-10 bg-white">
 ---
 
 <footer class="mt-32 border-t-2 border-slate-100 pb-10 bg-white">
@@ -68,7 +53,7 @@ const socials = [
     <div class="flex flex-col items-end gap-5">
       <div class="flex flex-wrap items-end gap-3 w-full">
         {
-          socials.map((social) => (
+          SOCIALS.map((social) => (
             <a
               href={social.href}
               target="_blank"

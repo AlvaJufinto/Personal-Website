@@ -9,7 +9,7 @@ import Header from "@/components/ui/Header.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
-const SITE_URL = "https://alvajufinto.vercel.app";
+import { SITE_URL, AUTHOR_NAME } from "@/consts";
 
 const linkStyles = {
   github: {
@@ -81,7 +81,7 @@ const {
       "url": Astro.url.href,
       "author": {
         "@type": "Person",
-        "name": "Stanislaus Alva Jufinto",
+        "name": AUTHOR_NAME,
         "url": SITE_URL
       },
       "programmingLanguage": tech,
