@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alvajufinto.vercel.app/sitemap-index.xml

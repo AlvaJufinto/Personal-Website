@@ -5,10 +5,12 @@ import WorkPost from "@/layouts/WorkPost.astro";
 export async function getStaticPaths() {
   const works = await getCollection("work");
 
-  return works.map((work) => ({
-    params: { slug: work.id },
-    props: { work },
-  }));
+  return works
+    .filter((work) => !work.data.isDraft)
+    .map((work) => ({
+      params: { slug: work.id },
+      props: { work },
+    }));
 }
 
 type Props = {

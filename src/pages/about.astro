@@ -1,27 +1,9 @@
 ---
-import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import { SITE_DESCRIPTION, SITE_TITLE, SOCIALS } from "@/consts";
 import BaseHead from "@/components/ui/BaseHead.astro";
 import Header from "@/components/ui/Header.astro";
 import Footer from "@/components/ui/Footer.astro";
 import { Icon } from "astro-icon/components";
-
-const socials = [
-  {
-    label: "GitHub",
-    href: "https://github.com/AlvaJufinto",
-    icon: "mdi:github",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/alva-jufinto/",
-    icon: "mdi:linkedin",
-  },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/alva.jufinto/",
-    icon: "mdi:instagram",
-  },
-];
 
 const achievements = [
   {
@@ -72,13 +54,13 @@ const achievements = [
           >
             <div class="max-w-3xl">
               <h1
-                class="font-primary text-3xl font-semibold tracking-tight text-slate-900"
+                class="font-primary text-3xl font-bold tracking-tight text-slate-900"
               >
                 A brief description.
               </h1>
 
               <p
-                class="font-secondary mt-4 text-md leading-relaxed text-slate-600"
+                class="font-secondary mt-4 text-base leading-relaxed text-slate-600"
               >
                 Builder and problem solver. I like turning real problems into
                 things that people can actually use.
@@ -289,8 +271,7 @@ const achievements = [
             </h2>
 
             <div class="flex flex-wrap gap-3">
-              {
-                socials.map((social) => (
+              {SOCIALS.map((social) => (
                   <a
                     href={social.href}
                     target="_blank"

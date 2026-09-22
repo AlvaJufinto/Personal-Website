@@ -2,7 +2,7 @@
 import "@/styles/global.css";
 import type { ImageMetadata } from "astro";
 import FallbackImage from "@/assets/thumbnail.jpg";
-import { SITE_TITLE } from "@/consts";
+import { SITE_TITLE, AUTHOR_NAME } from "@/consts";
 
 interface Props {
   title: string;
@@ -24,7 +24,7 @@ const {
   type = "website",
   publishedTime,
   modifiedTime,
-  author = "Stanislaus Alva Jufinto",
+  author = AUTHOR_NAME,
   tags = [],
 } = Astro.props;
 
