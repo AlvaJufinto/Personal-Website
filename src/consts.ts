@@ -1,23 +1,13 @@
-/ @format */;
+/** @format */
 
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the import keyword.
 
 export const SITE_TITLE = "Alva's";
 export const SITE_URL = "https://alvajufinto.vercel.app";
-export const SITE_DESCRIPTION = "Stanislaus Alva Jufinto Personal Website ";
-<<<<<<< HEAD
-
-export const PROFILE = {
-  name: "Stanislaus Alva Jufinto",
-  handle: "alva",
-  role: "Software Engineer / Builder",
-  bio: "Builder and problem solver. I like turning real problems into things that people can actually use.",
-};
-
-=======
+export const SITE_DESCRIPTION = "Stanislaus Alva Jufinto Personal Website";
 export const AUTHOR_NAME = "Stanislaus Alva Jufinto";
->>>>>>> ce7d9a6a28022d23b57c7745a05f802d1c8cc426
+
 export const SOCIALS = [
   {
     label: "GitHub",
@@ -35,20 +25,26 @@ export const SOCIALS = [
     icon: "mdi:instagram",
   },
 ];
-<<<<<<< HEAD
 
 export const CONTACT = {
-  email: "alva@example.com",
+  email: "your-email@example.com",
 };
 
 export const SITE_SECTIONS = [
-  { name: "about", description: "About me" },
-  { name: "projects", description: "Projects and work" },
-  { name: "blog", description: "Blog posts" },
-  { name: "contact", description: "Contact and social links" },
+  {
+    label: "Work",
+    href: "/work",
+  },
+  {
+    label: "Blog",
+    href: "/blog",
+  },
+  {
+    label: "About",
+    href: "/about",
+  },
 ];
-=======
->>>>>>> ce7d9a6a28022d23b57c7745a05f802d1c8cc426
+
 export const TECH_STACK = [
   {
     type: "frontend",
