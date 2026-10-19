@@ -1,7 +1,6 @@
 ---
 import Tags from "@/components/ui/Tags.astro";
 import FormattedDate from "@/components/ui/FormattedDate.astro";
-import BlogPost from "@/layouts/BlogPost.astro";
 const { post } = Astro.props;
 ---
 
@@ -11,7 +10,7 @@ const { post } = Astro.props;
   <a href={`/blog/${post.id}/`} class="flex h-full flex-col">
     {
       post.data.heroImage && (
-        <div class="aspect-video overflow-hidden">
+        <div class="aspect-[16:9] overflow-hidden">
           <img
             class="h-full w-full object-cover transition-transform group-hover:scale-105"
             src={post.data.heroImage.src || post.data.heroImage}
