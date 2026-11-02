@@ -1,29 +1,15 @@
 ---
 interface Props {
   title: string;
-  variant?: "warning" | "info";
 }
 
-const { title, variant = "warning" } = Astro.props;
-
-const styles = {
-  warning: {
-    wrapper: "border-yellow-500/20 bg-yellow-500/5",
-    title: "text-yellow-400",
-  },
-  info: {
-    wrapper: "border-blue-500/20 bg-blue-500/5",
-    title: "text-blue-400",
-  },
-};
-
-const style = styles[variant];
+const { title } = Astro.props;
 ---
 
-<div
-  class={`rounded-lg border px-4 pt-4 text-sm text-gray-500 ${style.wrapper}`}
->
-  <div class={`font-semibold ${style.title} text-xl mb-3`}>{title}:</div>
+<aside class="my-7 border-l border-line-strong bg-surface py-4 pl-5 pr-4">
+  <p class="mb-0 font-heading text-sm font-medium text-ink">{title}</p>
 
-  <slot />
-</div>
+  <div class="mt-1.5 text-[0.75rem] leading-[1.7] text-secondary [&_p]:mb-0">
+    <slot />
+  </div>
+</aside>

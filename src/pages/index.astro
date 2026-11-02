@@ -1,12 +1,14 @@
 ---
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+
 import BaseHead from "@/components/ui/BaseHead.astro";
+import BlogCard from "@/components/Blog/BlogCard.astro";
 import Footer from "@/components/ui/Footer.astro";
 import Header from "@/components/ui/Header.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 import ProfileImg from "@/assets/personal/profile.png";
-import { getCollection } from "astro:content";
-import BlogCard from "@/components/Blog/BlogCard.astro";
+import { SITE_DESCRIPTION, SITE_TITLE, SOCIALS } from "@/consts";
 
 const posts = (await getCollection("blog"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -15,55 +17,80 @@ const posts = (await getCollection("blog"))
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
     <Header />
-    <main
-      class="custom-container my-20 flex flex-col-reverse items-center gap-12 py-16 md:flex-row md:items-start md:gap-20 min-h-100vh!"
-    >
-      <div class="space-y-6 max-w-2xl text-center md:text-left">
-        <h1
-          class="font-primary text-3xl md:text-4xl mb-4 md:mb-7 leading-tight"
-        >
-          Hi, I’m Alva - I build systems, products, and ideas into something
-          usable.
-        </h1>
 
-        <p class="font-secondary text-slate-700">
-          I believe in the power of creation and the impact we can have through
-          our work.
-        </p>
+    <main class="shell">
+      <section
+        class="grid gap-y-8 py-12 lg:grid-cols-[1fr_160px] lg:items-center lg:gap-x-14 lg:py-16"
+      >
+        <div class="order-2 lg:order-1">
+          <h1 class="display-text max-w-[22ch]">
+            Hi, I’m Alva - I build systems, products, and ideas into something
+            usable.
+          </h1>
 
-        <p class="font-secondary text-slate-700">
-          This space is where I document what I’m building, what I’m learning,
-          and how I think.
-        </p>
+          <div class="mt-6 max-w-[60ch] space-y-4 text-secondary">
+            <p>
+              I believe in the power of creation and the impact we can have
+              through our work.
+            </p>
 
-        <p class="font-secondary text-slate-700">
-          I'll be sharing my thoughts, projects, and anything else that I find
-          interesting. Stay tuned!
-        </p>
-      </div>
-      <Image
-        src={ProfileImg}
-        class="w-64 max-w-full sm:w-72 md:w-80"
-        alt="Profile picture"
-      />
+            <p>
+              This space is where I document what I’m building, what I’m
+              learning, and how I think.
+            </p>
+
+            <p class="text-[0.9375rem] text-muted">
+              I'll be sharing my thoughts, projects, and anything else that I
+              find interesting. Stay tuned!
+            </p>
+          </div>
+
+          <ul class="mt-7 flex flex-wrap gap-x-5 gap-y-2">
+            {
+              SOCIALS.map((social) => (
+                <li>
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="quiet-link inline-flex items-center gap-1.5 text-sm"
+                  >
+                    <Icon name={social.icon} class="h-3.5 w-3.5" />
+                    {social.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <Image
+          src={ProfileImg}
+          width={320}
+          class="order-1 size-32 rounded-full object-cover lg:order-2 lg:size-40"
+          alt="Portrait of Alva Jufinto"
+        />
+      </section>
+
+      <section class="border-t border-line py-12 md:py-14">
+        <div class="mb-4 flex items-baseline justify-between gap-6">
+          <h2 class="section-title">Recent writing</h2>
+
+          <a href="/blog" class="quiet-link text-sm">All writing</a>
+        </div>
+
+        <div class="divide-y divide-line">
+          {posts.map((post) => <BlogCard post={post} />)}
+        </div>
+      </section>
     </main>
 
-    <div class="custom-container mb-16">
-      <h2
-        class="font-primary text-2xl font-bold tracking-tight text-slate-900 mb-8"
-      >
-        Recent Posts
-      </h2>
-      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => <BlogCard post={post} slug={post.id} />)}
-      </div>
-    </div>
     <Footer />
   </body>
 </html>

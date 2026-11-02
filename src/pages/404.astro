@@ -6,28 +6,30 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <BaseHead title="404 — Page Not Found" description={SITE_DESCRIPTION} />
   </head>
   <body>
     <Header />
-    <main class="custom-container my-20 flex flex-col items-center justify-center min-h-[60vh] text-center">
-      <h1
-        class="font-primary text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-4"
-      >
-        Page not found.
-      </h1>
-      <p class="font-secondary text-slate-600 max-w-md leading-relaxed">
+
+    <main class="measure py-20 md:py-28">
+      <p class="meta">Error 404</p>
+
+      <h1 class="display-text mt-3">Page not found.</h1>
+
+      <p class="mt-5 max-w-[52ch] leading-[1.8] text-secondary">
         The page you're looking for doesn't exist or has been moved.
       </p>
+
       <a
         href="/"
-        class="mt-8 font-secondary inline-flex items-center gap-2 border-2 border-slate-400 px-4 py-2 font-semibold text-slate-900 transition-colors hover:bg-slate-100"
+        class="mt-8 inline-flex items-center gap-2 border-b border-line-strong pb-1 text-sm text-ink hover:decoration-line-strong hover:underline-offset-4"
       >
-        Back to home
+        <span aria-hidden="true">←</span> Back to home
       </a>
     </main>
+
     <Footer />
   </body>
 </html>

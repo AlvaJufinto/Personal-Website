@@ -4,7 +4,7 @@ import BaseHead from "@/components/ui/BaseHead.astro";
 import Footer from "@/components/ui/Footer.astro";
 import Header from "@/components/ui/Header.astro";
 import WorkCard from "@/components/Work/WorkCard.astro";
-import TechStackTabs from "@/components/Work/TechStackTabs.astro";
+import TechStack from "@/components/Work/TechStack.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 
 const works = (await getCollection("work"))
@@ -13,56 +13,42 @@ const works = (await getCollection("work"))
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <BaseHead title={`${SITE_TITLE} | Work`} description={SITE_DESCRIPTION} />
   </head>
   <body>
     <Header />
 
-    <main class="custom-container py-12 space-y-20">
-      <!-- Skills section -->
+    <main class="shell py-14 md:py-20">
       <section>
-        <div class="mb-8">
-          <h1
-            class="font-primary text-3xl font-bold tracking-tight text-slate-900"
-          >
-            Skills
-          </h1>
-          <p class="font-secondary mt-4 text-lg text-slate-600 mb-10">
-            Tools I work with.
-          </p>
-        </div>
+        <h1 class="display-text">Work</h1>
 
-        <TechStackTabs />
-      </section>
-
-      <!-- Work section -->
-      <section>
-        <div class="mb-8">
-          <h1
-            class="font-primary text-3xl font-bold tracking-tight text-slate-900"
-          >
-            Work
-          </h1>
-          <p class="font-secondary mt-4 text-lg text-slate-600 mb-10">
-            My past projects and experiences.
-          </p>
-        </div>
+        <p class="mt-4 max-w-[60ch] text-secondary">
+          My past projects and experiences.
+        </p>
 
         {
           works.length > 0 ? (
-            <div class="flex flex-col gap-1">
+            <div class="mt-10 divide-y divide-line border-y border-line">
               {works.map((work) => (
                 <WorkCard work={work} slug={work.id} />
               ))}
             </div>
           ) : (
-            <p class="font-secondary text-sm text-slate-400">
-              No projects yet.
-            </p>
+            <p class="meta mt-8">No projects yet.</p>
           )
         }
+      </section>
+
+      <section class="mt-20">
+        <h2 class="section-title">Skills</h2>
+
+        <p class="mt-4 max-w-[60ch] text-secondary">Tools I work with.</p>
+
+        <div class="mt-8 border-t border-line pt-8">
+          <TechStack />
+        </div>
       </section>
     </main>
 

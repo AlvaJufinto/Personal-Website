@@ -60,7 +60,8 @@ const wordCount =
 const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 ---
 
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="dark">
   <head>
     <BaseHead
       title={title}
@@ -78,75 +79,48 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 200));
   <body>
     <Header />
 
-    <main class="custom-container">
+    <main class="article-shell">
       {
         heroImage &&
           (typeof heroImage === "string" ? (
-            <img
-              class="border border-slate-200 w-full h-auto"
-              src={heroImage}
-              alt={title}
-            />
+            <img class="article-image" src={heroImage} alt={title} />
           ) : (
-            <Image
-              class="border border-slate-200 w-full h-auto"
-              src={heroImage}
-              alt={title}
-            />
+            <Image class="article-image" src={heroImage} alt={title} />
           ))
       }
 
-      <div class="mt-4 prose prose-slate max-w-none">
-        <div class="mb-8">
-          <div class="mb-4">
-            <p
-              class="font-secondary text-slate-500 text-sm flex flex-wrap items-center gap-2"
-            >
-              <FormattedDate date={pubDate} />
+      <header>
+        <p class="meta flex flex-wrap items-center gap-x-2">
+          <FormattedDate date={pubDate} />
 
-              {readingTime && <span>• {readingTime} min read</span>}
+          {readingTime && <span>· {readingTime} min read</span>}
+        </p>
 
-              <!--{
-                updatedDate && (
-                  <span>
-                    • Last updated on <FormattedDate date={updatedDate} />
-                  </span>
-                )
-              }-->
+        <h1 class="display-text mt-4">{title}</h1>
+
+        {
+          description && (
+            <p class="mt-4 max-w-[58ch] text-[1.0625rem] leading-[1.75] text-secondary">
+              {description}
             </p>
-          </div>
+          )
+        }
 
-          <h1
-            class="font-primary text-3xl font-bold tracking-tight text-slate-900 md:text-4xl mb-4"
-          >
-            {title}
-          </h1>
+        <Tags topics={topics} language={language} />
+      </header>
 
-          {
-            description && (
-              <p class="font-secondary text-lg text-slate-600 leading-relaxed">
-                {description}
-              </p>
-            )
-          }
+      <article class="markdown">
+        <slot />
+      </article>
 
-          <Tags topics={topics} language={language} />
-        </div>
-
-        <div class="markdown border-t border-slate-200 pt-8">
-          <slot />
-        </div>
-      </div>
       {
         relatedPosts.length > 0 && (
-          <section class="mt-16 border-t border-slate-200 pt-8">
-            <h2 class="font-primary text-2xl font-bold mb-6">
-              Related Articles
-            </h2>
+          <section class="mt-16 border-t border-line pt-8">
+            <h2 class="section-title mb-2">Related Articles</h2>
 
-            <div class="grid gap-6 md:grid-cols-3">
+            <div class="divide-y divide-line">
               {relatedPosts.map((post) => (
-                <BlogCard post={post} slug={post.id} />
+                <BlogCard post={post} />
               ))}
             </div>
           </section>

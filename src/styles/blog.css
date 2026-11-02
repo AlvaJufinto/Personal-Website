@@ -1,67 +1,88 @@
+/* Long-form reading styles: article shell + rendered markdown content. */
+
+.article-shell {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding: 56px 24px 100px;
+}
+
+.article-shell > header {
+  margin-bottom: 48px;
+}
+
+.article-shell .article-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin: 0 0 40px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+
 @layer base {
   .markdown {
-    color: rgb(51, 65, 85);
-    font-family: "Intel One Mono", monospace;
+    color: var(--secondary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: none;
   }
+
   .markdown h1,
   .markdown h2,
   .markdown h3,
   .markdown h4,
   .markdown h5,
   .markdown h6 {
+    font-family: var(--font-heading);
+    color: var(--ink);
     margin-bottom: 1rem;
-    color: rgb(15, 23, 42);
-    line-height: 1.2;
-    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.018em;
+    font-weight: 550;
   }
 
   .markdown h1 {
-    margin-top: 5rem;
-    font-size: 1.875rem; /* 30px */
-    letter-spacing: -0.02em;
+    margin-top: 3.5rem;
+    font-size: 1.6rem;
   }
 
   .markdown h2 {
-    margin-top: 4rem;
-    font-size: 1.5rem; /* 24px */
-    letter-spacing: -0.01em;
-    padding-bottom: 0.5rem;
+    margin-top: 3rem;
+    font-size: 1.35rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--line);
   }
 
   .markdown .first {
-    margin-top: 1rem !important;
+    margin-top: 0 !important;
   }
 
   .markdown h3 {
-    margin-top: 3rem;
-    font-size: 1.25rem; /* 20px */
+    margin-top: 2.25rem;
+    font-size: 1.125rem;
   }
 
   .markdown h4 {
-    margin-top: 2rem;
-    font-size: 1.125rem; /* 18px */
-  }
-
-  .markdown h5 {
-    margin-top: 1.5rem;
-    font-size: 1rem; /* 16px */
-  }
-
-  .markdown h6 {
-    margin-top: 1.25rem;
-    font-size: 0.875rem; /* 14px */
-  }
-  .markdown p {
-    font-family: "Intel One Mono", monospace;
-    margin-bottom: 1.25rem;
-    line-height: 1.8;
+    margin-top: 1.75rem;
     font-size: 1rem;
+  }
+
+  .markdown h5,
+  .markdown h6 {
+    margin-top: 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .markdown p {
+    margin: 0 0 1.5rem;
+    line-height: 1.8;
   }
 
   .markdown ul,
   .markdown ol {
-    margin: 1rem 0;
-    padding-left: 2rem;
+    margin: 1.25rem 0;
+    padding-left: 1.35rem;
   }
 
   .markdown ul {
@@ -73,66 +94,111 @@
   }
 
   .markdown li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
+    padding-left: 0.15rem;
+  }
+
+  .markdown li::marker {
+    color: var(--muted);
+  }
+
+  .markdown strong {
+    color: var(--ink);
+    font-weight: 600;
   }
 
   .markdown a {
-    color: rgb(59, 130, 246);
-    text-decoration: none;
-    font-weight: 500;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 4px;
+  }
+
+  .markdown a:hover {
+    text-decoration-color: var(--accent);
   }
 
   .markdown code {
-    font-family: "Intel One Mono", monospace;
-    background: rgb(241, 245, 249);
-    padding: 0.125rem 0.375rem;
-    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--surface);
+    color: var(--ink);
+    padding: 0.1rem 0.35rem;
+    border: 1px solid var(--line);
+    border-radius: 4px;
   }
 
   .markdown pre {
-    padding: 1.25rem;
-    background: rgb(15, 23, 42);
+    padding: 1.25rem 1.35rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
     overflow-x: auto;
-    margin: 1.5rem 0;
-    border-left: 4px solid rgb(59, 130, 246);
+    margin: 1.75rem 0;
   }
 
   .markdown pre code {
     all: unset;
-    font-family: "Intel One Mono", monospace;
-    color: rgb(226, 232, 240);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--ink);
+    line-height: 1.7;
+    white-space: pre;
   }
 
   .markdown blockquote {
-    border-left: 4px solid rgb(59, 130, 246);
+    border-left: 1px solid var(--line-strong);
     padding-left: 1.25rem;
-    margin: 1.5rem 0;
-    color: rgb(100, 116, 139);
-    font-style: italic;
+    margin: 1.75rem 0;
+    color: var(--secondary);
+  }
+
+  .markdown blockquote p {
+    margin-bottom: 0.75rem;
   }
 
   .markdown table {
     width: 100%;
     border-collapse: collapse;
-    margin: 1.5rem 0;
+    margin: 1.75rem 0;
+    font-size: 0.875rem;
   }
 
   .markdown th {
     text-align: left;
-    padding: 0.75rem;
-    background: rgb(241, 245, 249);
-    border-bottom: 2px solid rgb(226, 232, 240);
+    padding: 0.7rem 0.75rem;
+    color: var(--ink);
+    font-weight: 600;
+    border-bottom: 1px solid var(--line-strong);
   }
 
   .markdown td {
-    padding: 0.75rem;
-    border-bottom: 1px solid rgb(226, 232, 240);
+    padding: 0.7rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
   }
 
   .markdown img {
     max-width: 100%;
     height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    margin: 1.75rem 0;
   }
+
+  .markdown hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 2.5rem 0;
+  }
+}
+
+.footnotes {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.8125rem;
+  line-height: 1.7;
 }
 
 .footnotes a {
@@ -140,20 +206,25 @@
   word-break: break-word;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 680px) {
+  .article-shell {
+    padding: 40px 20px 72px;
+  }
+
+  .markdown p,
+  .markdown li {
+    font-size: 0.9375rem;
+  }
+
   .markdown h1 {
-    font-size: 1.875rem;
+    font-size: 1.4rem;
   }
 
   .markdown h2 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
   .markdown h3 {
-    font-size: 1.25rem;
-  }
-
-  .markdown p {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 }

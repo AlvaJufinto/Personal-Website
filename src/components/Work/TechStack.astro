@@ -1,0 +1,19 @@
+---
+import { TECH_STACK } from "@/consts";
+---
+
+<div class="grid gap-y-7 gap-x-8 sm:grid-cols-2">
+  {
+    TECH_STACK.map((group) => (
+      <section>
+        <h3 class="font-heading text-sm font-medium text-ink">{group.type}</h3>
+
+        <ul class="mt-2.5 flex flex-wrap gap-1.5">
+          {group.stack.map((stack) => (
+            <li class="pill">{stack.name}</li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</div>

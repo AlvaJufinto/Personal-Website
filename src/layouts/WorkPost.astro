@@ -57,7 +57,8 @@ const {
 } = Astro.props;
 ---
 
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="dark">
   <head>
     <BaseHead
       title={title}
@@ -69,166 +70,146 @@ const {
       tags={[...category, ...tech]}
     />
 
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "CreativeWork",
-      "name": title,
-      "description": description,
-      "datePublished": pubDate.toISOString(),
-      "dateModified": (updatedDate ?? pubDate).toISOString(),
-      "image": heroImage ? (typeof heroImage === "string" ? heroImage : heroImage.src) : null,
-      "keywords": [...category, ...tech].join(", "),
-      "url": Astro.url.href,
-      "author": {
-        "@type": "Person",
-        "name": AUTHOR_NAME,
-        "url": SITE_URL
-      },
-      "programmingLanguage": tech,
-      "genre": category.join(", "),
-    })} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        name: title,
+        description: description,
+        datePublished: pubDate.toISOString(),
+        dateModified: (updatedDate ?? pubDate).toISOString(),
+        image: heroImage
+          ? typeof heroImage === "string"
+            ? heroImage
+            : heroImage.src
+          : null,
+        keywords: [...category, ...tech].join(", "),
+        url: Astro.url.href,
+        author: {
+          "@type": "Person",
+          name: AUTHOR_NAME,
+          url: SITE_URL,
+        },
+        programmingLanguage: tech,
+        genre: category.join(", "),
+      })}
+    />
   </head>
 
-  <body class="bg-white text-slate-900">
+  <body>
     <Header />
 
-    <main class="custom-container py-12">
-      <article class="mx-auto max-w-4xl">
+    <main class="py-14 md:py-20">
+      {
+        heroImage && (
+          <div class="shell mb-12">
+            <Image
+              class="max-h-[420px] w-full rounded-lg border border-line object-cover"
+              width={1200}
+              src={heroImage}
+              alt={title}
+            />
+          </div>
+        )
+      }
+
+      <article class="measure">
+        <header class="flex items-start gap-5">
+          {
+            logo && (
+              <div class="mt-1 h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-line bg-surface p-2">
+                <Image
+                  src={logo}
+                  alt={`${title} logo`}
+                  width={48}
+                  height={48}
+                  class="h-full w-full object-contain"
+                />
+              </div>
+            )
+          }
+
+          <div class="min-w-0 flex-1">
+            <p class="meta flex flex-wrap items-center gap-x-2">
+              <FormattedDate date={pubDate} />
+              {
+                updatedDate && (
+                  <span>
+                    · updated <FormattedDate date={updatedDate} />
+                  </span>
+                )
+              }
+            </p>
+
+            <h1 class="display-text mt-3">{title}</h1>
+
+            {
+              description && (
+                <p class="mt-4 max-w-[58ch] text-[1.0625rem] leading-[1.75] text-secondary">
+                  {description}
+                </p>
+              )
+            }
+          </div>
+        </header>
+
         {
-          heroImage && (
-            <div class="group mb-16 overflow-hidden border border-slate-200">
-              <Image
-                class="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-                width={1200}
-                height={1200}
-                src={heroImage}
-                alt={title}
-              />
-            </div>
+          (category.length > 0 || tech.length > 0 || links.length > 0) && (
+            <dl class="mt-9 grid gap-x-8 gap-y-6 border-y border-line py-6 sm:grid-cols-2">
+              {category.length > 0 && (
+                <div>
+                  <dt class="label">Topics</dt>
+                  <dd class="mt-2 flex flex-wrap gap-1.5">
+                    {category.map((item) => (
+                      <span class="pill">{item}</span>
+                    ))}
+                  </dd>
+                </div>
+              )}
+
+              {tech.length > 0 && (
+                <div>
+                  <dt class="label">Stack</dt>
+                  <dd class="mt-2 flex flex-wrap gap-1.5">
+                    {tech.map((item) => (
+                      <span class="pill">{item}</span>
+                    ))}
+                  </dd>
+                </div>
+              )}
+
+              {links.length > 0 && (
+                <div class="sm:col-span-2">
+                  <dt class="label">Links</dt>
+                  <dd class="mt-2 flex flex-wrap gap-x-5 gap-y-2">
+                    {links.map((link) => {
+                      const style = linkStyles[link.type] ?? linkStyles.other;
+                      return (
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="inline-flex items-center gap-1.5 text-sm text-ink underline decoration-line-strong underline-offset-4 hover:decoration-accent"
+                        >
+                          <Icon
+                            name={style.icon}
+                            class="h-3.5 w-3.5 shrink-0"
+                          />
+                          {link.label || style.label}
+                        </a>
+                      );
+                    })}
+                  </dd>
+                </div>
+              )}
+            </dl>
           )
         }
 
-        <div class="space-y-16">
-          <section class="border-b border-slate-100 pb-14">
-            <div class="flex items-start gap-5">
-              {
-                logo && (
-                  <div class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 p-2.5">
-                    <Image
-                      src={logo}
-                      alt={`${title} logo`}
-                      width={56}
-                      height={56}
-                      class="h-full w-full object-contain"
-                    />
-                  </div>
-                )
-              }
-
-              <div class="min-w-0 flex-1 pt-1">
-                <div
-                  class="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400"
-                >
-                  <FormattedDate date={pubDate} />
-                  {
-                    updatedDate && (
-                      <span>
-                        · updated <FormattedDate date={updatedDate} />
-                      </span>
-                    )
-                  }
-                </div>
-
-                <h1
-                  class="font-primary text-3xl font-semibold leading-tight tracking-tight text-slate-900 md:text-4xl lg:text-5xl"
-                >
-                  {title}
-                </h1>
-
-                {
-                  description && (
-                    <p class="font-secondary mt-4 max-w-2xl text-lg leading-relaxed text-slate-500">
-                      {description}
-                    </p>
-                  )
-                }
-              </div>
-            </div>
-
-            <div
-              class="mt-10 flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:items-start sm:gap-10"
-            >
-              {
-                category.length > 0 && (
-                  <div>
-                    <p class="font-secondary mb-2 text-xs text-slate-400">
-                      Topics
-                    </p>
-                    <div class="flex flex-wrap gap-x-3 gap-y-1">
-                      {category.map((item) => (
-                        <span class="font-secondary text-sm text-slate-500">
-                          #{item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )
-              }
-
-              {
-                tech.length > 0 && (
-                  <div>
-                    <p class="font-secondary mb-2 text-xs text-slate-400">
-                      Stack
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                      {tech.map((item) => (
-                        <span class="font-secondary rounded bg-slate-50 px-2.5 py-1 text-sm text-slate-600">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )
-              }
-
-              {
-                links.length > 0 && (
-                  <div>
-                    <p class="font-secondary mb-2 text-xs text-slate-400">
-                      Links
-                    </p>
-                    <div class="flex flex-wrap gap-x-4 gap-y-2">
-                      {links.map((link) => {
-                        const style = linkStyles[link.type] ?? linkStyles.other;
-                        return (
-                          <a
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="font-secondary inline-flex items-center gap-1.5 text-sm text-slate-600 underline underline-offset-4 decoration-slate-300 transition hover:text-slate-900 hover:decoration-slate-600"
-                          >
-                            <Icon
-                              name={style.icon}
-                              class="h-3.5 w-3.5 shrink-0"
-                            />
-                            {link.label || style.label}
-                          </a>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )
-              }
-            </div>
-          </section>
-
-          <section>
-            <div class="markdown">
-              <slot />
-            </div>
-          </section>
-        </div>
+        <section class="markdown mt-10">
+          <slot />
+        </section>
       </article>
     </main>
 

@@ -37,7 +37,8 @@ const achievements = [
 ];
 ---
 
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="dark">
   <head>
     <BaseHead title={`${SITE_TITLE} | About`} description={SITE_DESCRIPTION} />
   </head>
@@ -45,248 +46,203 @@ const achievements = [
   <body>
     <Header />
 
-    <main class="custom-container">
-      <section class="prose prose-slate max-w-none">
-        <!-- Hero -->
-        <div class="mb-12">
-          <div
-            class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between"
-          >
-            <div class="max-w-3xl">
-              <h1
-                class="font-primary text-3xl font-bold tracking-tight text-slate-900"
-              >
-                A little about me.
-              </h1>
+    <main class="measure py-14 md:py-20">
+      <header>
+        <h1 class="display-text">A little about me.</h1>
 
-              <p
-                class="font-secondary mt-4 text-base leading-relaxed text-slate-600"
-              >
-                I build software to solve problems, explore ideas, and make
-                things that are useful beyond the screen.
-              </p>
-            </div>
+        <p class="mt-5 leading-[1.8] text-secondary">
+          I build software to solve problems, explore ideas, and make things
+          that are useful beyond the screen.
+        </p>
+      </header>
+
+      <div class="mt-14">
+        <!-- About -->
+        <section class="mb-14">
+          <h2 class="section-title">About me.</h2>
+
+          <div class="mt-5 space-y-4 leading-[1.8]">
+            <p>
+              I'm a Computer Science student and software engineer. I've spent
+              the past few years building web applications, working with
+              different teams, and turning ideas into working software.
+            </p>
+
+            <p>
+              My work has ranged from business applications and internal tools
+              to projects involving machine learning, data, and hardware. I
+              enjoy working across the stack, but I'm just as interested in
+              understanding the problem, the people dealing with it, and whether
+              the solution actually makes a difference.
+            </p>
+
+            <p>
+              I don't have a single area I want to stay in. Software engineering
+              is where I started, but I'm interested in the different ways
+              technology can be applied, especially when a problem requires more
+              than writing code.
+            </p>
           </div>
-        </div>
+        </section>
 
-        <hr class="line" />
+        <!-- How I Build -->
+        <section class="mb-14">
+          <h2 class="section-title">How I work.</h2>
 
-        <div class="pt-12">
-          <!-- About -->
-          <section class="mb-20">
-            <h2 class="font-primary mb-6 text-3xl font-semibold text-slate-900">
-              About me.
-            </h2>
-
-            <div class="max-w-3xl space-y-5">
-              <p class="font-secondary leading-relaxed text-slate-700">
-                I'm a Computer Science student and software engineer. I've spent
-                the past few years building web applications, working with
-                different teams, and turning ideas into working software.
-              </p>
-
-              <p class="font-secondary leading-relaxed text-slate-700">
-                My work has ranged from business applications and internal tools
-                to projects involving machine learning, data, and hardware. I
-                enjoy working across the stack, but I'm just as interested in
-                understanding the problem, the people dealing with it, and
-                whether the solution actually makes a difference.
-              </p>
-
-              <p class="font-secondary leading-relaxed text-slate-700">
-                I don't have a single area I want to stay in. Software
-                engineering is where I started, but I'm interested in the
-                different ways technology can be applied, especially when a
-                problem requires more than writing code.
-              </p>
-            </div>
-          </section>
-
-          <!-- How I Build -->
-          <section class="mb-20">
-            <h2 class="font-primary mb-6 text-3xl font-semibold text-slate-900">
-              How I work.
-            </h2>
-
-            <div class="max-w-3xl space-y-5">
-              <p class="font-secondary leading-relaxed text-slate-700">
-                I tend to learn by building. Working on a project forces me to
-                deal with things that rarely show up in tutorials: unclear
-                requirements, unexpected edge cases, technical trade-offs, and
-                the gap between something that works and something people can
-                rely on.
-              </p>
-
-              <p class="font-secondary leading-relaxed text-slate-700">
-                I usually start by understanding what needs to be solved. From
-                there, I work through the implementation, test the result, and
-                adjust when something doesn't work as expected. I care about the
-                details, but I try not to lose sight of why the thing is being
-                built in the first place.
-              </p>
-
-              <p class="font-secondary leading-relaxed text-slate-700">
-                There's still a lot I haven't learned, and I don't see that as a
-                problem. Each project gives me a reason to go a little further
-                than I did with the last one.
-              </p>
-            </div>
-          </section>
-
-          <!-- Selected Recognition -->
-          <section class="mb-20">
-            <div class="mb-8 flex items-baseline justify-between gap-4">
-              <h2 class="font-primary text-3xl font-semibold text-slate-900">
-                Selected recognition.
-              </h2>
-
-              <span class="font-secondary text-sm text-slate-500">
-                2025–2026
-              </span>
-            </div>
-
-            <div class="space-y-0 border-t border-slate-200">
-              {
-                achievements.map((achievement) => (
-                  <article class="grid gap-4 border-b border-slate-200 py-7 md:grid-cols-[80px_1fr]">
-                    <span class="font-secondary text-sm font-medium text-slate-500">
-                      {achievement.year}
-                    </span>
-
-                    <div>
-                      <h3 class="font-primary text-xl font-semibold text-slate-900">
-                        {achievement.title}
-                      </h3>
-
-                      <p class="font-secondary mt-1 text-sm font-semibold text-slate-600">
-                        {achievement.subtitle}
-                      </p>
-
-                      <p class="font-secondary mt-3 max-w-3xl leading-relaxed text-slate-700">
-                        {achievement.description}
-                      </p>
-                    </div>
-                  </article>
-                ))
-              }
-            </div>
-          </section>
-
-          <!-- Writing -->
-          <section class="mb-20">
-            <h2 class="font-primary mb-6 text-3xl font-semibold text-slate-900">
-              What I write about.
-            </h2>
-
-            <p
-              class="font-secondary mb-8 max-w-3xl leading-relaxed text-slate-700"
-            >
-              I also use this space to write things down. Some are technical
-              notes, others are personal reflections. It's a place for ideas
-              that don't necessarily belong in a project README.
+          <div class="mt-5 space-y-4 leading-[1.8]">
+            <p>
+              I tend to learn by building. Working on a project forces me to
+              deal with things that rarely show up in tutorials: unclear
+              requirements, unexpected edge cases, technical trade-offs, and the
+              gap between something that works and something people can rely on.
             </p>
 
-            <div class="grid gap-6 md:grid-cols-3">
-              <article class="border border-slate-200 bg-slate-50 p-6">
-                <h3
-                  class="font-primary mb-3 text-xl font-semibold text-slate-900"
-                >
-                  Technology
-                </h3>
-
-                <p class="font-secondary leading-relaxed text-slate-700">
-                  Notes on software development, AI, and the tools and ideas I'm
-                  exploring. Sometimes technical, sometimes just an observation
-                  worth writing down.
-                </p>
-              </article>
-
-              <article class="border border-slate-200 bg-slate-50 p-6">
-                <h3
-                  class="font-primary mb-3 text-xl font-semibold text-slate-900"
-                >
-                  Life
-                </h3>
-
-                <p class="font-secondary leading-relaxed text-slate-700">
-                  Experiences, personal reflections, and questions I've been
-                  thinking about. Not everything needs to have a technical
-                  explanation.
-                </p>
-              </article>
-
-              <article class="border border-slate-200 bg-slate-50 p-6">
-                <h3
-                  class="font-primary mb-3 text-xl font-semibold text-slate-900"
-                >
-                  Faith
-                </h3>
-
-                <p class="font-secondary leading-relaxed text-slate-700">
-                  Writing about Catholic faith, liturgy, and doctrine, along
-                  with the questions that come with trying to put belief into
-                  practice.
-                </p>
-              </article>
-            </div>
-          </section>
-
-          <!-- Beyond Building -->
-          <section class="mb-20">
-            <h2 class="font-primary mb-6 text-3xl font-semibold text-slate-900">
-              Outside of work.
-            </h2>
-
-            <div class="max-w-3xl space-y-5">
-              <p class="font-secondary leading-relaxed text-slate-700">
-                Away from a keyboard, I spend much of my time around music. I'm
-                a pianist and organist, and I've been involved in playing music
-                for Catholic liturgy for several years.
-              </p>
-
-              <p class="font-secondary leading-relaxed text-slate-700">
-                My Catholic faith is also a significant part of my life. It
-                shapes some of the things I read, the questions I ask, and
-                occasionally what I write about here.
-              </p>
-            </div>
-          </section>
-
-          <!-- Language -->
-          <section class="mb-16 border-l-4 border-slate-400 bg-slate-50 p-5">
-            <p class="font-secondary text-sm leading-relaxed text-slate-700">
-              <span class="font-semibold text-slate-900"
-                >About the writing:</span
-              >
-              I write in both English and Indonesian, depending on the subject and
-              which language lets me express the idea more naturally.
+            <p>
+              I usually start by understanding what needs to be solved. From
+              there, I work through the implementation, test the result, and
+              adjust when something doesn't work as expected. I care about the
+              details, but I try not to lose sight of why the thing is being
+              built in the first place.
             </p>
-          </section>
 
-          <!-- Connect -->
-          <section class="border-t border-slate-200 pt-10">
-            <h2 class="font-primary mb-6 text-2xl font-semibold text-slate-900">
-              Let's connect.
-            </h2>
+            <p>
+              There's still a lot I haven't learned, and I don't see that as a
+              problem. Each project gives me a reason to go a little further
+              than I did with the last one.
+            </p>
+          </div>
+        </section>
 
-            <div class="flex flex-wrap gap-3">
-              {
-                SOCIALS.map((social) => (
+        <!-- Selected Recognition -->
+        <section class="mb-14">
+          <div class="mb-5 flex items-baseline justify-between gap-4">
+            <h2 class="section-title">Selected recognition.</h2>
+
+            <span class="meta">2025–2026</span>
+          </div>
+
+          <div class="divide-y divide-line border-y border-line">
+            {
+              achievements.map((achievement) => (
+                <article class="grid gap-x-6 gap-y-1 py-6 md:grid-cols-[118px_1fr] md:items-baseline">
+                  <p class="meta">{achievement.year}</p>
+
+                  <div>
+                    <h3 class="font-heading text-[0.9375rem] font-medium text-ink">
+                      {achievement.title}
+                    </h3>
+
+                    <p class="meta mt-1">{achievement.subtitle}</p>
+
+                    <p class="mt-2.5 max-w-[60ch] text-[0.8125rem] leading-[1.75] text-secondary">
+                      {achievement.description}
+                    </p>
+                  </div>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        <!-- Writing -->
+        <section class="mb-14">
+          <h2 class="section-title">What I write about.</h2>
+
+          <p class="mt-5 max-w-[60ch] leading-[1.8]">
+            I also use this space to write things down. Some are technical
+            notes, others are personal reflections. It's a place for ideas that
+            don't necessarily belong in a project README.
+          </p>
+
+          <div class="mt-7 grid gap-4 sm:grid-cols-3">
+            <article class="border border-line px-5 py-4">
+              <h3 class="font-heading text-[0.9375rem] font-medium text-ink">
+                Technology
+              </h3>
+
+              <p class="mt-2 text-[0.8125rem] leading-[1.7] text-secondary">
+                Notes on software development, AI, and the tools and ideas I'm
+                exploring. Sometimes technical, sometimes just an observation
+                worth writing down.
+              </p>
+            </article>
+
+            <article class="border border-line px-5 py-4">
+              <h3 class="font-heading text-[0.9375rem] font-medium text-ink">
+                Life
+              </h3>
+
+              <p class="mt-2 text-[0.8125rem] leading-[1.7] text-secondary">
+                Experiences, personal reflections, and questions I've been
+                thinking about. Not everything needs to have a technical
+                explanation.
+              </p>
+            </article>
+
+            <article class="border border-line px-5 py-4">
+              <h3 class="font-heading text-[0.9375rem] font-medium text-ink">
+                Faith
+              </h3>
+
+              <p class="mt-2 text-[0.8125rem] leading-[1.7] text-secondary">
+                Writing about Catholic faith, liturgy, and doctrine, along with
+                the questions that come with trying to put belief into practice.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Beyond Building -->
+        <section class="mb-14">
+          <h2 class="section-title">Outside of work.</h2>
+
+          <div class="mt-5 space-y-4 leading-[1.8]">
+            <p>
+              Away from a keyboard, I spend much of my time around music. I'm a
+              pianist and organist, and I've been involved in playing music for
+              Catholic liturgy for several years.
+            </p>
+
+            <p>
+              My Catholic faith is also a significant part of my life. It shapes
+              some of the things I read, the questions I ask, and occasionally
+              what I write about here.
+            </p>
+          </div>
+        </section>
+
+        <!-- Language -->
+        <aside class="mb-14 border-l border-line-strong pl-5">
+          <p class="text-[0.75rem] leading-[1.7] text-secondary">
+            <span class="text-ink">About the writing:</span>
+            I write in both English and Indonesian, depending on the subject and which
+            language lets me express the idea more naturally.
+          </p>
+        </aside>
+
+        <!-- Connect -->
+        <section class="border-t border-line pt-10">
+          <h2 class="section-title">Let's connect.</h2>
+
+          <ul class="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+            {
+              SOCIALS.map((social) => (
+                <li>
                   <a
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="font-secondary inline-flex items-center justify-center gap-2 border-2 border-slate-400 px-4 py-2 font-semibold text-slate-900 transition-colors hover:bg-slate-100"
+                    class="quiet-link inline-flex items-center gap-1.5 text-sm"
                   >
-                    <Icon name={social.icon} class="h-4 w-4" />
+                    <Icon name={social.icon} class="h-3.5 w-3.5" />
                     {social.label}
                   </a>
-                ))
-              }
-            </div>
-          </section>
-        </div>
-      </section>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </div>
     </main>
 
     <Footer />

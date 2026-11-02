@@ -3,34 +3,218 @@
 @import "tailwindcss";
 @import "./blog.css";
 
-.font-primary {
-  font-family: "Playfair Display", serif;
+/* Semantic color roles, resolved at runtime from the active theme. */
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+
+  --font-heading: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Figtree", "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    "JetBrains Mono", "SFMono-Regular", "Cascadia Code", Consolas,
+    "Liberation Mono", monospace;
 }
 
-.font-secondary {
-  font-family: "Intel One Mono", monospace;
+:root {
+  --measure: 648px;
+  --shell: 920px;
 }
 
-.custom-container {
-  margin-top: 20px;
-  margin-left: auto; /* mx-auto */
-  margin-right: auto;
-  max-width: 56rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+:root,
+[data-theme="dark"] {
+  --background: #080808;
+  --surface: #111113;
+  --ink: #ecece9;
+  --secondary: #a8a8a4;
+  --muted: #8b8b8f;
+  --line: #1f1f22;
+  --line-strong: #323236;
+  --accent: #e7e5df;
+  color-scheme: dark;
 }
 
+[data-theme="light"] {
+  --background: #fbfbf9;
+  --surface: #f2f2ef;
+  --ink: #141416;
+  --secondary: #52525a;
+  --muted: #6e6e76;
+  --line: #e3e3dd;
+  --line-strong: #cbcbc4;
+  --accent: #1b1b1e;
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--secondary);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--ink);
+    font-family: var(--font-heading);
+    font-weight: 550;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  p,
+  li {
+    overflow-wrap: anywhere;
+  }
+
+  a {
+    color: var(--ink);
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 4px;
+    transition:
+      color 0.15s ease,
+      text-decoration-color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--background);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@layer components {
+  /* Wide container for grids and two-column layouts. */
+  .shell {
+    margin-inline: auto;
+    max-width: var(--shell);
+    padding-inline: 24px;
+  }
+
+  /* Narrow reading measure for prose and single-column pages. */
+  .measure {
+    margin-inline: auto;
+    max-width: var(--measure);
+    padding-inline: 24px;
+  }
+
+  .display-text {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 6vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+  }
+
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 550;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  /* Small muted metadata: dates, periods, labels, counters. */
+  .meta {
+    font-size: 0.75rem;
+    line-height: 1.7;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  .divider {
+    margin: 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  /* Secondary technology / category markers. */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 2px 9px;
+    font-size: 0.6875rem;
+    line-height: 1.6;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .quiet-link {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .quiet-link:hover {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 4px;
+  }
+}
+
+/* Used by existing long-form content as a section separator. */
 .line {
   margin: 2.5rem 0;
   border: none;
-  border-top: 1px solid rgb(226 232 240); /* slate-200 */
+  border-top: 1px solid var(--line);
 }
 
-@media (min-width: 768px) {
-  .custom-container {
-    padding-left: 2rem;
-    padding-right: 2rem;
+@media (max-width: 680px) {
+  .shell,
+  .measure {
+    padding-inline: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
