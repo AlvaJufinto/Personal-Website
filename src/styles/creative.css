@@ -1,0 +1,326 @@
+/* Creative mode: an optional editorial annotation layer over the portfolio.
+ * Everything here is gated on the .notes-open root state and owns no content. */
+
+/* Notes and the column measure anchor to #main / its sections. */
+#main {
+  position: relative;
+}
+
+#main > .section {
+  position: relative;
+  margin-top: var(--section-gap);
+}
+
+/* :first-of-type, not :first-child — .column-measure is the first child of
+ * #main and must not push the intro section into the "later section" rule. */
+#main > .section:first-of-type {
+  margin-top: 0;
+}
+
+/* Dividers sit in the gap itself, so they must not take layout space.
+ * --line-strong rather than --line: in the dark theme --line (#1f1f22) is
+ * ~1.2:1 against the background, which makes the whole layer imperceptible. */
+.notes-open #main > .section:not(:first-of-type)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  top: calc(var(--section-gap) / -2);
+  background: var(--line-strong);
+  pointer-events: none;
+}
+
+.notes-open #main .work-item {
+  outline: 1px solid var(--line-strong);
+  outline-offset: 8px;
+}
+
+@media (max-width: 680px) {
+  .notes-open #main .work-item {
+    outline-offset: var(--gold-space-3);
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * Margin notes
+ * ----------------------------------------------------------------------- */
+
+/* The arrow is decorative, so it lives on a pseudo-element and takes the
+ * note's colour through currentColor. White stroke: mask-mode defaults to
+ * luminance for an SVG source, so a black path would mask itself away. */
+#main .margin-note {
+  --note-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 48'%3E%3Cpath d='M3 39C8 10 34 6 59 17M49 7Q55 13 59 17Q53 18 48 23' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  font-family: var(--font-hand);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-wrap: pretty;
+  overflow-wrap: normal;
+  color: var(--annotation);
+  opacity: 0;
+  visibility: hidden;
+  filter: blur(2px);
+  transform: translateY(6px);
+  pointer-events: none;
+  transition:
+    opacity 220ms ease,
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 280ms ease,
+    height 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    max-height 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin-block 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 320ms;
+}
+
+#main .margin-note b {
+  display: block;
+  font: inherit;
+  font-size: 22px;
+  line-height: 1.2;
+  margin-bottom: 6px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+#main .margin-note::before {
+  content: "";
+  position: absolute;
+  top: var(--note-arrow-top, 20px);
+  width: 58px;
+  height: 44px;
+  background: currentColor;
+  -webkit-mask: var(--note-arrow) center / contain no-repeat;
+  mask: var(--note-arrow) center / contain no-repeat;
+  opacity: 0;
+}
+
+.notes-open #main .margin-note {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  filter: none;
+  transition-delay: 0s;
+}
+
+/* 120ms fade only — a hand-drawn arrow that traces its own path reads as a
+ * loading spinner, not as an annotation. */
+.notes-open #main .margin-note::before {
+  animation: note-arrow-in 120ms ease-out both;
+}
+
+@keyframes note-arrow-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.7;
+  }
+}
+
+/* Set by the studio when its panel would overlap this note. The panel carries
+ * the same measured numbers, so nothing is lost — the margin simply gets out of
+ * the tool's way and returns with the new spec once the panel closes. */
+#main .margin-note.note-clear {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 180ms ease,
+    visibility 0s linear 180ms;
+}
+
+/* Desktop: 170px notes in the outer margin, 62px clear of the column. */
+@media (min-width: 1200px) {
+  #main .margin-note {
+    position: absolute;
+    top: var(--note-top, 0px);
+    width: 170px;
+  }
+
+  #main .note-left {
+    right: calc(100% + 62px);
+  }
+
+  #main .note-right {
+    left: calc(100% + 62px);
+  }
+
+  #main .note-left::before {
+    right: -62px;
+  }
+
+  /* Mirrored so the tip points back at the column it annotates. */
+  #main .note-right::before {
+    left: -62px;
+    transform: scaleX(-1);
+  }
+}
+
+/* Tablet and mobile: the note joins the flow under the content it describes.
+ * Flow means it has to collapse when off, or it would leave blank vertical
+ * space where nothing is visible. */
+@media (max-width: 1199px) {
+  #main .margin-note {
+    position: relative;
+    inset: auto;
+    width: auto;
+    max-width: none;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0 0 0 42px;
+    border: 0;
+  }
+
+  .notes-open #main .margin-note {
+    height: auto;
+    overflow: visible;
+    margin: 16px 0 24px;
+  }
+
+  #main .margin-note::before {
+    left: 0;
+    right: auto;
+    top: 0;
+    width: 32px;
+    height: 36px;
+    transform: rotate(-90deg);
+  }
+
+  @starting-style {
+    .notes-open #main .margin-note {
+      height: 0;
+      margin-block: 0;
+      opacity: 0;
+      filter: blur(2px);
+      transform: translateY(6px);
+    }
+  }
+}
+
+/* height: auto only animates where interpolate-size exists. The fallback
+ * caps at 320px — every note is far shorter — and keeps overflow visible
+ * once open, so a longer note can never be clipped. */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+}
+
+@supports not (interpolate-size: allow-keywords) {
+  @media (max-width: 1199px) {
+    #main .margin-note {
+      height: auto;
+      max-height: 0;
+    }
+
+    .notes-open #main .margin-note {
+      max-height: 320px;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * Column measurement
+ * ----------------------------------------------------------------------- */
+
+/* The rules sit on the edges of the column itself, so the label prints the
+ * width they enclose. That width is read live rather than hardcoded: the studio
+ * can change it, and when the viewport squeezes the column the annotation is
+ * hidden instead of restated — it measures the design column, not the window. */
+#main .column-measure {
+  position: absolute;
+  top: 22px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-left: 1px dashed var(--line-strong);
+  border-right: 1px dashed var(--line-strong);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 220ms ease,
+    visibility 0s linear 220ms;
+}
+
+#main .column-measure span {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  translate: -50% 0;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.notes-open #main .column-measure {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 220ms ease;
+}
+
+/* --------------------------------------------------------------------------
+ * Selection frames on interactive controls
+ * ----------------------------------------------------------------------- */
+
+/* The frame is a real element only while Creative mode is off it stays
+ * transparent, so the reveal can fade instead of popping in with the notes. */
+.selection-control::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 1px solid var(--selection);
+  background:
+    linear-gradient(var(--selection), var(--selection)) 0 0 / 5px 5px no-repeat,
+    linear-gradient(var(--selection), var(--selection)) 100% 0 /
+      5px 5px no-repeat,
+    linear-gradient(var(--selection), var(--selection)) 0 100% /
+      5px 5px no-repeat,
+    linear-gradient(var(--selection), var(--selection)) 100% 100% /
+      5px 5px no-repeat;
+  background-origin: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+
+.notes-open .selection-control::after {
+  opacity: 1;
+}
+
+/* Four controls packed 8px apart on a phone: at -6px the frames merge into one
+ * green band, so the margin shrinks with the room available. */
+@media (max-width: 400px) {
+  .selection-control::after {
+    inset: -2px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * Print
+ * ----------------------------------------------------------------------- */
+
+@media print {
+  #main > .section {
+    margin-top: var(--gold-space-5);
+  }
+
+  /* Same selector shape as the reveal rule, otherwise :not() keeps winning. */
+  .notes-open #main > .section:not(:first-of-type)::before {
+    content: none;
+  }
+
+  .notes-open #main .work-item {
+    outline: none;
+  }
+
+  #main .margin-note,
+  #main .column-measure,
+  .notes-open .selection-control::after {
+    display: none;
+  }
+}

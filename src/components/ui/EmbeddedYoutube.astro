@@ -8,11 +8,11 @@ const { videoId, title = "YouTube video player" } = Astro.props;
 ---
 
 <div
-  style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden; border-radius: 8px; border: 1px solid var(--line);"
+  class="relative mt-[1.6em] mb-[0.9em] aspect-video w-full overflow-hidden rounded-lg border border-line"
 >
   <iframe
     loading="lazy"
-    style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+    class="absolute inset-0 h-full w-full border-0"
     src={`https://www.youtube.com/embed/${videoId}`}
     title={title}
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

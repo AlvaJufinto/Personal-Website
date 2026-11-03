@@ -1,0 +1,14 @@
+---
+/* The dashed rules that mark the reading column, with its width as a label.
+ * Purely decorative, so it stays out of the accessibility tree. The label is
+ * corrected at runtime by the Typeset studio, which can change the width. */
+interface Props {
+  label?: string;
+}
+
+const { label = "600 px" } = Astro.props;
+---
+
+<div class="column-measure" aria-hidden="true">
+  <span data-measure-label>{label}</span>
+</div>

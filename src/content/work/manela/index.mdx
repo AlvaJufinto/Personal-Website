@@ -46,6 +46,7 @@ isDraft: false
 import { Image } from "astro:assets";
 import Banner from "@/components/ui/Banner.astro";
 import EmbeddedPresentation from "@/components/ui/EmbeddedPresentation.astro"
+import MarginNote from "@/components/ui/MarginNote.astro";
 import SatteliteData from "../../blog/2025/oct/gemastik-xviii-2025/assets/satellite-data.png";
 import SampleDataset from "../../blog/2025/oct/gemastik-xviii-2025/assets/dataset-sample.png";
 import EliminationRound from "../../blog/2025/oct/gemastik-xviii-2025/assets/elimination-round.jpg";
@@ -60,6 +61,8 @@ import ManelaApp from "../../blog/2025/oct/gemastik-xviii-2025/assets/manela-app
  DISCLAIMER: You can see a whole article talking about the competition <a href="/blog/2025/oct/gemastik-xviii-2025/" target="_blank" rel="noopener noreferrer">HERE</a>, but I will focus on technical side here.
 <br />
 </Banner>
+
+<MarginNote id="creative-note-2" side="right" lead="02 / Two pages, one event" anchor="prev" arrowTop="10px">The competition story lives on the blog and the engineering lives here. Same GEMASTIK entry, two very different readers.</MarginNote>
 
 <h1>Overview</h1>
 
@@ -89,6 +92,8 @@ The platform helps fishermen identify potential fishing zones and probable fish 
 - Designed and implemented offline-first system strategies.
 - Implemented partial rendering techniques to improve usability on low-end devices.
 - Participated in field testing and validation directly with fishermen.
+
+<MarginNote id="creative-note-3" side="left" lead="03 / Written for a bad signal" anchor="prev" arrowTop="120px">Offline-first stopped being an architecture preference out at sea. Partial rendering came from the same constraint: the phones on those boats are not new.</MarginNote>
 
 <br />
 
@@ -132,6 +137,8 @@ Key outcomes included:
 - Optimizing performance for lower-end mobile devices
 - Achieved approximately 80% validation accuracy during field testing for core predictions and functionalities
 - Securing 4th place at GEMASTIK XVIII 2025
+
+<MarginNote id="creative-note-4" side="right" lead="04 / Eighty percent" anchor="prev" arrowTop="114px">That figure came out of fishermen testing the app at sea, not out of a test suite. It is the number on this page I would quote first.</MarginNote>
 
 <Image src={Strangers} alt="User Testing" />
 

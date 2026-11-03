@@ -6,25 +6,25 @@ const topics = post.data.topics ?? [];
 const language = post.data.language;
 ---
 
-<article class="group">
+<article class="writing-item group">
   <a
     href={`/blog/${post.id}/`}
-    class="grid gap-x-6 gap-y-1.5 py-3.5 md:grid-cols-[110px_1fr] md:items-baseline"
+    class="grid gap-(--gold-space-1) py-(--gold-space-4) text-inherit no-underline min-[680px]:grid-cols-[110px_minmax(0,1fr)] min-[680px]:items-baseline min-[680px]:gap-x-(--gold-space-4)"
   >
-    <p class="meta pt-0.5">
+    <p class="meta min-[680px]:pt-0.5">
       <FormattedDate date={post.data.pubDate} />
     </p>
 
-    <div>
+    <div class="min-w-0">
       <h3
-        class="font-heading text-base font-medium leading-snug tracking-[-0.015em] text-ink group-hover:underline group-hover:decoration-line-strong group-hover:underline-offset-4"
+        class="work-title group-hover:underline group-hover:decoration-line-strong group-hover:underline-offset-4"
       >
         {post.data.title}
       </h3>
 
       {
         post.data.description && (
-          <p class="mt-1.5 line-clamp-2 max-w-[62ch] text-sm leading-relaxed text-secondary">
+          <p class="work-description line-clamp-2 mt-1.5">
             {post.data.description}
           </p>
         )

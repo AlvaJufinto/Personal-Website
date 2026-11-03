@@ -2,18 +2,19 @@
 import BaseHead from "@/components/ui/BaseHead.astro";
 import Header from "@/components/ui/Header.astro";
 import Footer from "@/components/ui/Footer.astro";
+import MarginNote from "@/components/ui/MarginNote.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-proportion="golden">
   <head>
     <BaseHead title="404 — Page Not Found" description={SITE_DESCRIPTION} />
   </head>
   <body>
     <Header />
 
-    <main class="measure py-20 md:py-28">
+    <main id="main" class="measure py-20 md:py-28">
       <p class="meta">Error 404</p>
 
       <h1 class="display-text mt-3">Page not found.</h1>
@@ -28,6 +29,17 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
       >
         <span aria-hidden="true">←</span> Back to home
       </a>
+
+      <MarginNote
+        id="creative-note-1"
+        side="right"
+        lead="01 / On a better route"
+        anchor="prev"
+        arrowTop="2px"
+      >
+        Whatever linked you here pointed at something I moved. That one's on me;
+        the rest of the site is still where you expected it.
+      </MarginNote>
     </main>
 
     <Footer />

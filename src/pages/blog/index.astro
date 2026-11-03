@@ -2,8 +2,10 @@
 import { getCollection } from "astro:content";
 import BaseHead from "@/components/ui/BaseHead.astro";
 import BlogCard from "@/components/Blog/BlogCard.astro";
+import ColumnMeasure from "@/components/ui/ColumnMeasure.astro";
 import Footer from "@/components/ui/Footer.astro";
 import Header from "@/components/ui/Header.astro";
+import MarginNote from "@/components/ui/MarginNote.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 
 const posts = (await getCollection("blog"))
@@ -12,25 +14,49 @@ const posts = (await getCollection("blog"))
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-proportion="golden">
   <head>
     <BaseHead title={`${SITE_TITLE} | Blog`} description={SITE_DESCRIPTION} />
   </head>
   <body>
     <Header />
 
-    <main class="shell py-14 md:py-20">
-      <header>
+    <main id="main" class="folio">
+      <ColumnMeasure />
+
+      <section class="section">
         <h1 class="display-text">Blog</h1>
 
-        <p class="mt-4 max-w-[60ch] text-secondary">
+        <p class="body-copy mt-5">
           Thoughts, insights, and stories from my journey
         </p>
-      </header>
 
-      <div class="mt-10 divide-y divide-line border-t border-line">
-        {posts.map((post) => <BlogCard post={post} />)}
-      </div>
+        <MarginNote
+          id="creative-note-1"
+          side="right"
+          lead="01 / One list, two halves"
+          anchor="prev"
+          arrowTop="6px"
+        >
+          The topics run from database schemas to liturgy. Both turn up in the
+          same week, so both end up on the same page.
+        </MarginNote>
+
+        <div class="mt-5 divide-y divide-line border-t border-line">
+          {posts.map((post) => <BlogCard post={post} />)}
+        </div>
+
+        <MarginNote
+          id="creative-note-2"
+          side="left"
+          lead="02 / What survived"
+          anchor="prev"
+          arrowTop="70px"
+        >
+          Only finished posts make this list. The drafts stay unpublished, out
+          of sight, and occasionally out of guilt.
+        </MarginNote>
+      </section>
     </main>
 
     <Footer />

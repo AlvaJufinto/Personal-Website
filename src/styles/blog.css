@@ -1,30 +1,11 @@
 /* Long-form reading styles: article shell + rendered markdown content. */
 
-.article-shell {
-  max-width: var(--measure);
-  margin-inline: auto;
-  padding: 56px 24px 100px;
-}
-
-.article-shell > header {
-  margin-bottom: 48px;
-}
-
-.article-shell .article-image {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  margin: 0 0 40px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-}
-
 @layer base {
   .markdown {
     color: var(--secondary);
     font-family: var(--font-body);
     font-size: 1rem;
-    line-height: 1.8;
+    line-height: var(--reading-leading);
     max-width: none;
   }
 
@@ -76,7 +57,7 @@
 
   .markdown p {
     margin: 0 0 1.5rem;
-    line-height: 1.8;
+    line-height: var(--reading-leading);
   }
 
   .markdown ul,
@@ -207,10 +188,6 @@
 }
 
 @media (max-width: 680px) {
-  .article-shell {
-    padding: 40px 20px 72px;
-  }
-
   .markdown p,
   .markdown li {
     font-size: 0.9375rem;

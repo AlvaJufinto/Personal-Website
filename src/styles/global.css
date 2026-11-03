@@ -2,8 +2,11 @@
 
 @import "tailwindcss";
 @import "./blog.css";
+@import "./creative.css";
 
-/* Semantic color roles, resolved at runtime from the active theme. */
+/* Semantic color roles, resolved at runtime from the active theme.
+ * Reference-role mapping (CREATIVE_MODE.md 6.1): --paper -> --background,
+ * --ink -> --ink, --soft -> --surface. One color system, not two. */
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
@@ -13,17 +16,39 @@
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
   --color-accent: var(--accent);
+  --color-soft: var(--surface);
+  --color-annotation: var(--annotation);
 
-  --font-heading: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  /* inline: the heading face is swapped at runtime by the Typeset studio, and a
+   * literal value here would be baked into the font-* utilities instead. */
+  --font-heading: var(--face-heading);
   --font-body: "Figtree", "Helvetica Neue", Arial, sans-serif;
+  --font-hand: "Caveat", "Segoe Script", "Bradley Hand", cursive;
   --font-mono:
     "JetBrains Mono", "SFMono-Regular", "Cascadia Code", Consolas,
     "Liberation Mono", monospace;
 }
 
 :root {
+  --face-heading: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+
   --measure: 648px;
-  --shell: 920px;
+
+  /* One gutter shared by the column, the reading measure and anything that has
+   * to line up with them — the phone nav sheet, for instance. */
+  --container-pad: 24px;
+
+  /* The two paragraph leading roles the studio retunes together: portfolio
+   * copy and long-form article prose. */
+  --body-leading: 1.618;
+  --reading-leading: 1.8;
+
+  --leading-display: 1.15;
+  --leading-heading: 1.3;
+  --leading-title: 1.4;
+  --leading-subtitle: 1.35;
+  --leading-body: 1.55;
+  --leading-small: 1.5;
 }
 
 :root,
@@ -36,6 +61,8 @@
   --line: #1f1f22;
   --line-strong: #323236;
   --accent: #e7e5df;
+  --annotation: #9bb1ff;
+  --selection: #7cc98f;
   color-scheme: dark;
 }
 
@@ -48,7 +75,105 @@
   --line: #e3e3dd;
   --line-strong: #cbcbc4;
   --accent: #1b1b1e;
+  --annotation: #4668ce;
+  --selection: #2f7d4e;
   color-scheme: light;
+}
+
+/* Golden is the selected proportion preset; there is no proportion selector. */
+:root[data-proportion="golden"] {
+  --phi: 1.618034;
+
+  --gold-space-1: 0.25rem;
+  --gold-space-2: 0.4045rem;
+  --gold-space-3: 0.6545rem;
+  --gold-space-4: 1.059rem;
+  --gold-space-5: 1.7135rem;
+  --gold-space-6: 2.7725rem;
+  --gold-space-7: 4.486rem;
+
+  --gold-type-small: 0.7862rem;
+  --gold-type-body: 1rem;
+  --gold-type-subtitle: 1.618rem;
+  --gold-type-title: 2.618rem;
+
+  --gold-radius-control: var(--gold-space-2);
+  --gold-radius-surface: var(--gold-space-3);
+  --gold-radius-dialog: var(--gold-space-4);
+
+  --section-gap: var(--gold-space-6);
+  --folio-width: 37.5rem;
+}
+
+/* --------------------------------------------------------------------------
+ * Typeset studio
+ *
+ * Creative mode's styling controls write these attributes before first paint
+ * (src/lib/studio.ts generates both the panel and the bootstrap), so a choice
+ * here can never disagree with a choice in the panel.
+ *
+ * Gated on [data-proportion="golden"]: that is every page except the terminal,
+ * which owns its own typographic world. Two attributes also out-rank the
+ * :root blocks above without !important. The default option of every group
+ * (grotesk / standard / golden / balanced / auto) deliberately has no rule: it
+ * is what :root already declares, so first visit, reset and no-JS all render
+ * identically.
+ * ----------------------------------------------------------------------- */
+
+:root[data-proportion="golden"][data-face="quiet"] {
+  --face-heading: var(--font-body);
+}
+
+:root[data-proportion="golden"][data-face="serif"] {
+  --face-heading:
+    "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia,
+    serif;
+}
+
+:root[data-proportion="golden"][data-face="mono"] {
+  --face-heading: var(--font-mono);
+}
+
+/* The long-form column always trails the portfolio column by 48px, so both
+ * follow one choice. */
+:root[data-proportion="golden"][data-column="narrow"] {
+  --folio-width: 34rem;
+  --measure: 592px;
+}
+
+:root[data-proportion="golden"][data-column="wide"] {
+  --folio-width: 41.25rem;
+  --measure: 708px;
+}
+
+:root[data-proportion="golden"][data-leading="tight"] {
+  --body-leading: 1.45;
+  --reading-leading: 1.618;
+}
+
+:root[data-proportion="golden"][data-leading="open"] {
+  --body-leading: 1.8;
+  --reading-leading: 2;
+}
+
+:root[data-proportion="golden"][data-rhythm="close"] {
+  --section-gap: var(--gold-space-5);
+}
+
+:root[data-proportion="golden"][data-rhythm="airy"] {
+  --section-gap: var(--gold-space-7);
+}
+
+/* "Off" only ever removes motion — it cannot add animation to a system that
+ * asked for reduced motion. Same declaration shape as the media query below,
+ * plus the selector weight the media query gets from *::before / *::after. */
+:root[data-proportion="golden"][data-motion="off"] *,
+:root[data-proportion="golden"][data-motion="off"] *::before,
+:root[data-proportion="golden"][data-motion="off"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }
 
 @layer base {
@@ -61,8 +186,9 @@
     background-color: var(--background);
     color: var(--secondary);
     font-family: var(--font-body);
-    font-size: 0.9375rem;
-    line-height: 1.75;
+    font-size: var(--gold-type-body, 1rem);
+    line-height: var(--leading-body);
+    letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     transition:
@@ -79,7 +205,7 @@
     color: var(--ink);
     font-family: var(--font-heading);
     font-weight: 550;
-    line-height: 1.2;
+    line-height: var(--leading-heading);
     letter-spacing: -0.015em;
     text-wrap: balance;
     overflow-wrap: anywhere;
@@ -118,54 +244,79 @@
 }
 
 @layer components {
-  /* Wide container for grids and two-column layouts. */
-  .shell {
+  /* Portfolio column: the narrow centered editorial measure. */
+  .folio {
     margin-inline: auto;
-    max-width: var(--shell);
-    padding-inline: 24px;
+    max-width: var(--folio-width);
+    padding-inline: var(--container-pad);
   }
 
-  /* Narrow reading measure for prose and single-column pages. */
+  /* Page-level breathing room after the final section. Not a section value. */
+  main.folio {
+    padding-block: var(--gold-space-7) 6.25rem;
+  }
+
+  /* Long-form reading measure, kept separate from the portfolio column. */
   .measure {
     margin-inline: auto;
     max-width: var(--measure);
-    padding-inline: 24px;
+    padding-inline: var(--container-pad);
   }
 
   .display-text {
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 6vw, 3rem);
-    line-height: 1.15;
-    letter-spacing: -0.025em;
+    font-size: clamp(2.058rem, 5vw, var(--gold-type-title));
+    line-height: var(--leading-display);
+    letter-spacing: -0.045em;
     font-weight: 600;
   }
 
   .section-title {
     font-family: var(--font-heading);
-    font-size: 1.5rem;
+    font-size: 1.272rem;
     font-weight: 550;
+    line-height: 1.272;
     letter-spacing: -0.02em;
     color: var(--ink);
   }
 
   /* Small muted metadata: dates, periods, labels, counters. */
   .meta {
-    font-size: 0.75rem;
-    line-height: 1.7;
+    font-size: var(--gold-type-small);
+    line-height: var(--leading-small);
     color: var(--muted);
     font-variant-numeric: tabular-nums;
   }
 
   .label {
-    font-size: 0.6875rem;
-    letter-spacing: 0.06em;
+    font-size: var(--gold-type-small);
+    letter-spacing: 0.02em;
     color: var(--muted);
   }
 
-  .divider {
-    margin: 0;
-    border: 0;
-    border-top: 1px solid var(--line);
+  /* Intro, about and contact copy use the studio-tuned paragraph leading. */
+  .body-copy {
+    font-size: var(--gold-type-body, 1rem);
+    line-height: var(--body-leading);
+    color: var(--secondary);
+  }
+
+  .work-title {
+    font-family: var(--font-heading);
+    font-size: var(--gold-type-body, 1rem);
+    font-weight: 550;
+    line-height: var(--leading-title);
+    color: var(--ink);
+  }
+
+  .work-description {
+    font-size: 0.875rem;
+    line-height: var(--body-leading);
+    color: var(--secondary);
+  }
+
+  [data-proportion="golden"] .work-preview {
+    border-radius: var(--gold-radius-surface);
   }
 
   /* Secondary technology / category markers. */
@@ -175,7 +326,7 @@
     border: 1px solid var(--line);
     border-radius: 999px;
     padding: 2px 9px;
-    font-size: 0.6875rem;
+    font-size: var(--gold-type-small);
     line-height: 1.6;
     color: var(--muted);
     white-space: nowrap;
@@ -192,6 +343,27 @@
     text-decoration-color: var(--line-strong);
     text-underline-offset: 4px;
   }
+
+  /* Interactive controls keep a 44px target; decorative metadata does not. */
+  .socials a {
+    min-height: 44px;
+  }
+
+  /* Section heading that carries a trailing aside or subtitle. */
+  .section-heading.has-subtitle {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--gold-space-3);
+  }
+
+  .section-heading-copy {
+    min-width: 0;
+  }
+
+  .section-heading.has-subtitle > .section-aside {
+    justify-self: end;
+  }
 }
 
 /* Used by existing long-form content as a section separator. */
@@ -202,9 +374,18 @@
 }
 
 @media (max-width: 680px) {
-  .shell,
-  .measure {
-    padding-inline: 20px;
+  :root {
+    --container-pad: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-heading.has-subtitle {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section-heading.has-subtitle > .section-aside {
+    justify-self: start;
   }
 }
 
@@ -216,5 +397,36 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Print: remove interface decoration, keep every piece of real content. */
+@media print {
+  :root,
+  :root[data-theme="dark"] {
+    --background: #fff;
+    --surface: #fff;
+    --ink: #141416;
+    --secondary: #33333a;
+    --muted: #5a5a62;
+    --line: #d4d4ce;
+    --line-strong: #a8a8a2;
+    --accent: #1b1b1e;
+    color-scheme: light;
+  }
+
+  main.folio {
+    padding-block: 0;
+  }
+
+  /* !important: component styles own these controls' screen layout, and the
+   * scoped attribute selectors would otherwise out-rank this override. */
+  .theme-toggle,
+  .creative-switch,
+  .creative-switch-tooltip,
+  .studio-toggle,
+  .studio-panel,
+  .studio-probe {
+    display: none !important;
   }
 }

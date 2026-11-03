@@ -1,0 +1,640 @@
+---
+import { Icon } from "astro-icon/components";
+import { STUDIO_GROUPS } from "@/lib/studio";
+---
+
+<!-- Creative mode's styling surface. The trigger only exists inside the
+     annotation layer, so it is revealed by the same .notes-open state the
+     notes use rather than by markup the page has to remember. -->
+<button
+  id="studio-toggle"
+  type="button"
+  class="studio-toggle selection-control"
+  aria-label="Typeset styling"
+  aria-expanded="false"
+  aria-controls="studio-panel"
+>
+  <Icon name="mdi:format-size" class="h-5 w-5" />
+  <span class="studio-tooltip" aria-hidden="true"
+    >Type, column &amp; rhythm</span
+  >
+</button>
+
+<div
+  id="studio-panel"
+  class="studio-panel"
+  role="dialog"
+  aria-labelledby="studio-title"
+  hidden
+>
+  <header class="studio-head">
+    <h2 id="studio-title" class="studio-title">Typeset</h2>
+    <p class="studio-sub">Applies as you choose, remembered on this device.</p>
+  </header>
+
+  <div class="studio-fields">
+    {
+      STUDIO_GROUPS.map((group) => (
+        <div
+          class="studio-field"
+          role="radiogroup"
+          aria-labelledby={`studio-legend-${group.key}`}
+        >
+          <p class="studio-legend" id={`studio-legend-${group.key}`}>
+            <span class="studio-legend-label">{group.label}</span>
+            {/* No measured value for the face: a computed font-family reports
+                the declared stack, not what actually rendered. The panel title
+                is set in that face, so it is its own readout. */}
+            {group.key !== "face" && (
+              <span class="studio-live" data-studio-live={group.key}>
+                —
+              </span>
+            )}
+          </p>
+
+          <div class="studio-options">
+            {group.options.map((option, index) => {
+              // Three-option rows leave a half-empty grid; the last choice
+              // takes the full width so the hairlines stay continuous.
+              const isWideLast =
+                index === group.options.length - 1 &&
+                group.options.length % 2 === 1;
+
+              return (
+                <label
+                  class:list={[
+                    "studio-option",
+                    { "studio-option-wide": isWideLast },
+                  ]}
+                >
+                  <input
+                    class="studio-input"
+                    type="radio"
+                    name={`studio-${group.key}`}
+                    value={option.value}
+                  />
+                  <span class="studio-option-label">{option.label}</span>
+                  <span class="studio-option-readout">{option.readout}</span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <footer class="studio-foot">
+    <button
+      type="button"
+      id="studio-reset"
+      class="studio-action selection-control"
+    >
+      Reset
+    </button>
+    <button
+      type="button"
+      id="studio-close"
+      class="studio-action selection-control"
+    >
+      Close
+    </button>
+  </footer>
+</div>
+
+<!-- One off-screen element whose computed styles are the live values of every
+     token the studio drives. The panel readouts and the margin-note numbers
+     both come from here, so neither can quote a value the page does not use. -->
+<span class="studio-probe" aria-hidden="true"></span>
+
+<style>
+  /* Hidden until Creative mode is on: the studio is part of that layer. */
+  .studio-toggle {
+    display: none;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 4px;
+    color: var(--muted);
+    background: none;
+    border: 1px solid transparent;
+    border-radius: var(--gold-radius-control);
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  :global(html.notes-open) .studio-toggle {
+    display: inline-flex;
+  }
+
+  .studio-toggle:hover {
+    color: var(--ink);
+    border-color: var(--line);
+  }
+
+  .studio-toggle[aria-expanded="true"] {
+    color: var(--annotation);
+    border-color: var(--line-strong);
+  }
+
+  .studio-toggle:focus-visible {
+    outline: 2px solid var(--annotation);
+    outline-offset: 2px;
+  }
+
+  .studio-tooltip {
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    top: calc(100% + 12px);
+    width: max-content;
+    padding: 7px 10px;
+    border-radius: 6px;
+    background: var(--ink);
+    color: var(--background);
+    font: 12px/1.5 var(--font-body);
+    letter-spacing: 0;
+    opacity: 0;
+    visibility: hidden;
+    translate: -50% 3px;
+    pointer-events: none;
+    transition:
+      opacity 140ms ease,
+      translate 140ms ease,
+      visibility 0s linear 140ms;
+  }
+
+  .studio-toggle:hover .studio-tooltip,
+  .studio-toggle:focus-visible .studio-tooltip {
+    opacity: 1;
+    visibility: visible;
+    translate: -50% 0;
+    transition:
+      opacity 140ms ease,
+      translate 140ms ease,
+      visibility 0s;
+  }
+
+  @media (hover: none) {
+    .studio-toggle:hover .studio-tooltip {
+      opacity: 0;
+      visibility: hidden;
+      translate: -50% 3px;
+    }
+  }
+
+  /* Same edge rule the Creative switch needs: centred here, the bubble would
+   * cross the viewport edge and widen the page. */
+  @media (max-width: 767px) {
+    .studio-tooltip {
+      left: auto;
+      right: 0;
+      translate: 0 3px;
+    }
+
+    .studio-toggle:hover .studio-tooltip,
+    .studio-toggle:focus-visible .studio-tooltip {
+      translate: 0 0;
+    }
+  }
+
+  .studio-panel {
+    position: fixed;
+    z-index: 40;
+    top: 84px;
+    right: 24px;
+    width: 288px;
+    max-height: calc(100vh - 108px);
+    overflow-y: auto;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--gold-radius-dialog);
+    background: var(--surface);
+    box-shadow: 0 20px 44px -22px rgb(0 0 0 / 0.55);
+    color: var(--secondary);
+  }
+
+  @media (max-width: 640px) {
+    .studio-panel {
+      top: auto;
+      right: 12px;
+      bottom: 12px;
+      left: 12px;
+      width: auto;
+      max-height: 62dvh;
+    }
+  }
+
+  .studio-head {
+    padding: 14px 14px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .studio-title {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .studio-sub {
+    margin-top: 4px;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  .studio-fields {
+    padding: 4px 14px 10px;
+  }
+
+  .studio-field {
+    margin: 0;
+    padding: 11px 0 0;
+  }
+
+  .studio-field + .studio-field {
+    margin-top: 11px;
+    border-top: 1px solid var(--line);
+  }
+
+  .studio-legend {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 0 0 7px;
+  }
+
+  .studio-legend-label {
+    font-size: 12px;
+    font-weight: 550;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+
+  .studio-live {
+    font: 10px/1.3 var(--font-mono);
+    letter-spacing: 0;
+    color: var(--annotation);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  /* Hairline grid rather than pill buttons: the panel reads as a type spec
+   * sheet, which is also what makes the numbers in it look like measurements. */
+  .studio-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .studio-option-wide {
+    grid-column: span 2;
+  }
+
+  .studio-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 7px 9px;
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .studio-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .studio-option-label {
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--muted);
+    transition: color 0.15s ease;
+  }
+
+  .studio-option-readout {
+    font: 10px/1.3 var(--font-mono);
+    letter-spacing: 0;
+    color: var(--muted);
+    opacity: 0.66;
+  }
+
+  .studio-option:hover .studio-option-label {
+    color: var(--secondary);
+  }
+
+  .studio-option:has(.studio-input:checked) .studio-option-label {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--annotation);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  .studio-option:has(.studio-input:checked) .studio-option-readout {
+    color: var(--annotation);
+    opacity: 1;
+  }
+
+  .studio-option:has(.studio-input:focus-visible) {
+    outline: 2px solid var(--annotation);
+    outline-offset: -2px;
+  }
+
+  .studio-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 11px 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .studio-action {
+    position: relative;
+    padding: 2px 0;
+    background: none;
+    border: 0;
+    font: 12px/1.4 var(--font-body);
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  .studio-action:hover {
+    color: var(--ink);
+  }
+
+  .studio-action:focus-visible {
+    outline: 2px solid var(--annotation);
+    outline-offset: 2px;
+  }
+
+  .studio-probe {
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    width: var(--folio-width, 37.5rem);
+    margin-top: var(--section-gap, 2.7725rem);
+    font-family: var(--font-heading);
+    font-size: var(--gold-type-body, 1rem);
+    line-height: var(--body-leading, 1.618);
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  import {
+    STUDIO_DEFAULTS,
+    STUDIO_GROUPS,
+    applySettings,
+    clearSettings,
+    isStudioKey,
+    readSettings,
+    writeSettings,
+  } from "@/lib/studio";
+
+  const toggle = document.getElementById("studio-toggle");
+  const panel = document.getElementById("studio-panel");
+  const probe = document.querySelector<HTMLElement>(".studio-probe");
+
+  if (toggle && panel && probe) mount(toggle, panel, probe);
+
+  /** `25.9` not `25.900000000000001`, and no trailing `.0` on whole numbers. */
+  function num(value: number, digits: number) {
+    return String(Number(value.toFixed(digits)));
+  }
+
+  function mount(toggle: HTMLElement, panel: HTMLElement, probe: HTMLElement) {
+    let settings = readSettings();
+
+    interface Facts {
+      type: number;
+      leading: number;
+      ratio: string;
+      column: number;
+      rhythm: number;
+      motion: string;
+    }
+
+    /* The probe carries the live token values, so every number in this file —
+     * panel readouts and margin-note copy alike — is measured, never restated. */
+    function facts(): Facts {
+      const cs = getComputedStyle(probe);
+      const type = Number.parseFloat(cs.fontSize) || 16;
+      const rawLeading = cs.lineHeight;
+      const leading = rawLeading.endsWith("px")
+        ? Number.parseFloat(rawLeading)
+        : Number.parseFloat(rawLeading) * type;
+
+      return {
+        type,
+        leading,
+        ratio:
+          cs.getPropertyValue("--body-leading").trim() ||
+          num(leading / type, 3),
+        column: Number.parseFloat(cs.width),
+        rhythm: Number.parseFloat(cs.marginTop),
+        motion:
+          settings.motion === "off" ||
+          matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "reduced"
+            : "system default",
+      };
+    }
+
+    function setLive(key: string, value: string) {
+      const el = panel.querySelector<HTMLElement>(
+        `[data-studio-live="${key}"]`,
+      );
+      if (el) el.textContent = value;
+    }
+
+    /** Keep the annotation layer honest about the styling it is describing. */
+    function syncNotes(f: Facts) {
+      for (const rules of document.querySelectorAll<HTMLElement>(
+        "#main .column-measure",
+      )) {
+        /* Read #main, not the rules: once they are hidden their own box
+         * collapses to zero, and a zero would keep them hidden forever. */
+        const rendered: any =
+          rules?.parentElement?.getBoundingClientRect().width;
+        // The rules measure the design column. A viewport too narrow for it is
+        // measuring the window, so the annotation has nothing to say: hide it
+        // rather than print a width the page never chose.
+        rules.hidden = Math.abs(rendered - f.column) > 0.5;
+
+        const label = rules.querySelector<HTMLElement>("[data-measure-label]");
+        if (label) label.textContent = `${num(rendered, 0)} px`;
+      }
+
+      for (const fact of document.querySelectorAll<HTMLElement>(
+        "[data-typefact]",
+      )) {
+        const key = fact.dataset.typefact;
+        if (key === "type") fact.textContent = `${Math.round(f.type)}px`;
+        if (key === "leading") fact.textContent = `${num(f.leading, 1)}px`;
+        if (key === "column") fact.textContent = `${num(f.column, 0)}px`;
+      }
+
+      /* A note pinned to a fixed offset stops pointing at its subject the moment
+       * the type reflows, so anchored notes track their target. */
+      for (const note of document.querySelectorAll<HTMLElement>(
+        "#main .margin-note[data-anchor]",
+      )) {
+        const key = note.dataset.anchor ?? "";
+
+        /* "prev" / "next" name the neighbouring block instead of a selector, so
+         * a note written inside a rendered article can point at the heading it
+         * follows without depending on an id that markdown never emits. */
+        const target =
+          key === "prev"
+            ? note.previousElementSibling
+            : key === "next"
+              ? note.nextElementSibling
+              : document.querySelector(key);
+
+        /* The containing block, not the parent: in a long-form body the note
+         * sits inside unpositioned wrappers, so the offset belongs to #main. */
+        const host =
+          (note.offsetParent as HTMLElement | null) ?? note.parentElement;
+        if (!target || !host) continue;
+
+        const top =
+          target.getBoundingClientRect().top - host.getBoundingClientRect().top;
+        note.style.setProperty("--note-top", `${Math.round(top)}px`);
+      }
+
+      syncClearance();
+    }
+
+    /* The panel is a tool laid over the sheet, so a note it would cut mid-word
+     * steps aside rather than being sliced. Which notes do that is measured, not
+     * assumed: a wide window leaves every one of them in place. Only the margin
+     * layout needs it — narrower than 1200px the notes flow under their subject
+     * and an overlapping panel is simply how popovers behave. */
+    function syncClearance() {
+      const inMargin = matchMedia("(min-width: 1200px)").matches;
+      const box =
+        panel.hidden || !inMargin ? null : panel.getBoundingClientRect();
+
+      for (const note of document.querySelectorAll<HTMLElement>(
+        "#main .margin-note",
+      )) {
+        if (!box) {
+          note.classList.remove("note-clear");
+          continue;
+        }
+
+        const r = note.getBoundingClientRect();
+        note.classList.toggle(
+          "note-clear",
+          r.left < box.right &&
+            box.left < r.right &&
+            r.top < box.bottom &&
+            box.top < r.bottom,
+        );
+      }
+    }
+
+    function render() {
+      applySettings(settings);
+
+      for (const group of STUDIO_GROUPS) {
+        for (const input of panel.querySelectorAll<HTMLInputElement>(
+          `input[name="studio-${group.key}"]`,
+        )) {
+          input.checked = input.value === settings[group.key];
+        }
+      }
+
+      const f = facts();
+      setLive("column", `${num(f.column, 0)} px`);
+      setLive("leading", `${num(f.leading, 1)} px · ${f.ratio}`);
+      setLive("rhythm", `${num(f.rhythm, 1)} px`);
+      setLive("motion", f.motion);
+      syncNotes(f);
+    }
+
+    function setOpen(open: boolean) {
+      panel.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      syncClearance();
+    }
+
+    toggle.addEventListener("click", () => setOpen(panel?.hidden as boolean));
+
+    panel
+      .querySelector<HTMLElement>("#studio-close")
+      ?.addEventListener("click", () => {
+        setOpen(false);
+        toggle.focus();
+      });
+
+    panel
+      .querySelector<HTMLElement>("#studio-reset")
+      ?.addEventListener("click", () => {
+        clearSettings();
+        settings = { ...STUDIO_DEFAULTS };
+        render();
+      });
+
+    panel.addEventListener("change", (event) => {
+      const input = event.target as HTMLInputElement;
+      if (input.type !== "radio") return;
+
+      const key = input.name.replace("studio-", "");
+      if (!isStudioKey(key)) return;
+
+      settings = { ...settings, [key]: input.value };
+      writeSettings(settings);
+      render();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || panel.hidden) return;
+      setOpen(false);
+      toggle.focus();
+    });
+
+    // Non-modal, but still a popover: a click anywhere else dismisses it.
+    document.addEventListener("pointerdown", (event) => {
+      if (panel.hidden) return;
+      if (
+        (event.target as HTMLElement)?.closest("#studio-panel, #studio-toggle")
+      )
+        return;
+      setOpen(false);
+    });
+
+    // The trigger only exists in Creative mode, so leaving the mode has to take
+    // the panel with it rather than strand a dialog with no owner.
+    document.addEventListener("creative-mode", (event) => {
+      const detail = (event as CustomEvent<{ open: boolean }>).detail;
+      if (detail && !detail.open) setOpen(false);
+    });
+
+    /* Re-measure on reflow: the rendered column width the label prints and the
+     * anchored note offsets both depend on it. Directly, not in a animation
+     * frame — a backgrounded tab throttles those, and a stale number in an
+     * annotation is worse than one extra layout pass. */
+    addEventListener("resize", render);
+
+    render();
+  }
+</script>

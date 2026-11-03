@@ -6,6 +6,7 @@ import BaseHead from "@/components/ui/BaseHead.astro";
 import Footer from "@/components/ui/Footer.astro";
 import FormattedDate from "@/components/ui/FormattedDate.astro";
 import Header from "@/components/ui/Header.astro";
+import MarginNote from "@/components/ui/MarginNote.astro";
 import Tags from "@/components/ui/Tags.astro";
 import getRecommendedPosts from "@/lib/BlogRecommender";
 import BlogCard from "@/components/Blog/BlogCard.astro";
@@ -61,7 +62,7 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-proportion="golden">
   <head>
     <BaseHead
       title={title}
@@ -79,22 +80,44 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 200));
   <body>
     <Header />
 
-    <main class="article-shell">
+    <main
+      id="main"
+      class="mx-auto max-w-(--measure) px-6 pt-14 pb-25 max-[680px]:px-5 max-[680px]:pt-10 max-[680px]:pb-18"
+    >
       {
         heroImage &&
           (typeof heroImage === "string" ? (
-            <img class="article-image" src={heroImage} alt={title} />
+            <img
+              class="mb-10 aspect-video w-full rounded-lg border border-line object-cover"
+              src={heroImage}
+              alt={title}
+            />
           ) : (
-            <Image class="article-image" src={heroImage} alt={title} />
+            <Image
+              class="mb-10 aspect-video w-full rounded-lg border border-line object-cover"
+              src={heroImage}
+              alt={title}
+            />
           ))
       }
 
-      <header>
+      <header class="mb-12">
         <p class="meta flex flex-wrap items-center gap-x-2">
           <FormattedDate date={pubDate} />
 
           {readingTime && <span>· {readingTime} min read</span>}
         </p>
+
+        <MarginNote
+          id="creative-note-1"
+          side="left"
+          lead="01 / That estimate"
+          anchor="prev"
+          arrowTop="2px"
+        >
+          The minutes are arithmetic, not a stopwatch: two hundred words a
+          minute, and code blocks never counted.
+        </MarginNote>
 
         <h1 class="display-text mt-4">{title}</h1>
 
@@ -117,6 +140,18 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 200));
         relatedPosts.length > 0 && (
           <section class="mt-16 border-t border-line pt-8">
             <h2 class="section-title mb-2">Related Articles</h2>
+
+            <MarginNote
+              id="creative-note-2"
+              side="right"
+              lead="02 / How these three were picked"
+              anchor="prev"
+              arrowTop="0px"
+            >
+              Not chosen by tag alone. A score sorts them: mostly what the
+              writing means to an embedding model, a little topic overlap, a
+              small nudge for anything recent.
+            </MarginNote>
 
             <div class="divide-y divide-line">
               {relatedPosts.map((post) => (

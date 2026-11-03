@@ -1,0 +1,34 @@
+---
+/* One handwritten margin note plus the curved arrow that ties it to the
+ * content it describes. Rendered inside #main, where the annotation layer
+ * positions it: in a .section on the portfolio pages, beside its subject in a
+ * long-form body. */
+interface Props {
+  id: string;
+  side: "left" | "right";
+  lead: string;
+  /** Vertical anchor inside the section, desktop side-margin layout only. */
+  top?: string;
+  /** Arrow offset from the note top, when 20px would miss the target. */
+  arrowTop?: string;
+  /**
+   * Selector for the element this note points at, or "prev" / "next" to point
+   * at the neighbouring block. The studio can reflow the page under a fixed
+   * `top`, so an anchored note re-measures on every render. The keywords exist
+   * because long-form bodies are rendered markdown with no ids to select.
+   */
+  anchor?: string;
+}
+
+const { id, side, lead, top = "0px", arrowTop = "20px", anchor } = Astro.props;
+---
+
+<p
+  class:list={["margin-note", `note-${side}`]}
+  id={id}
+  data-anchor={anchor}
+  style={`--note-top: ${top}; --note-arrow-top: ${arrowTop};`}
+>
+  <b>{lead}</b>
+  <slot />
+</p>

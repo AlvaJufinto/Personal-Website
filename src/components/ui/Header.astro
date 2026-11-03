@@ -1,27 +1,184 @@
 ---
 import { SITE_TITLE } from "@/consts";
+import CreativeSwitch from "./CreativeSwitch.astro";
 import HeaderLink from "./HeaderLink.astro";
+import StyleStudio from "./StyleStudio.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 ---
 
-<header class="border-b border-line">
+<header class="relative border-b border-line">
   <nav
-    class="shell flex flex-wrap items-center justify-between gap-x-6 gap-y-1 py-5"
+    class="folio flex flex-wrap items-center gap-x-6 gap-y-2.5 py-5 max-[400px]:gap-x-3"
+    aria-label="Primary"
   >
     <a
       href="/"
-      class="font-heading text-base font-semibold tracking-[-0.02em] text-ink hover:underline hover:decoration-line-strong hover:underline-offset-4"
+      class="masthead-title font-heading text-[1rem] font-semibold tracking-[-0.02em] text-ink no-underline hover:underline hover:decoration-line-strong hover:underline-offset-4 max-[360px]:text-[0.75rem]"
+      >{SITE_TITLE}</a
     >
-      {SITE_TITLE}
-    </a>
 
-    <div class="flex items-center gap-5">
-      <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/work">Work</HeaderLink>
-      <HeaderLink href="/blog">Blog</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink>
+    <div
+      class="page-controls ml-auto flex flex-wrap items-center justify-end gap-5 max-[400px]:gap-2 max-[360px]:text-[0.75rem]"
+    >
+      <div
+        id="page-links"
+        class="page-links flex items-center gap-5 max-[400px]:gap-2"
+      >
+        <HeaderLink href="/">Home</HeaderLink>
+        <HeaderLink href="/work">Work</HeaderLink>
+        <HeaderLink href="/blog">Blog</HeaderLink>
+        <HeaderLink href="/about">About</HeaderLink>
+      </div>
 
-      <ThemeToggle />
+      <div class="page-tools flex items-center gap-5 max-[400px]:gap-2">
+        <ThemeToggle />
+        <StyleStudio />
+        <CreativeSwitch />
+      </div>
+
+      <button
+        id="nav-toggle"
+        type="button"
+        class="nav-toggle selection-control hidden relative min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-(--gold-radius-control) border border-transparent bg-transparent p-1 text-secondary transition-colors ease-[ease] hover:border-line hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-annotation aria-expanded:border-line-strong aria-expanded:text-ink"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="page-links"
+      >
+        <span class="nav-toggle-glyph" aria-hidden="true"
+          ><span></span><span></span></span
+        >
+      </button>
     </div>
   </nav>
 </header>
+
+<style>
+  /* Two rules rather than three: the bar is drawn in hairlines, and the pair
+   * folds into an X without needing a third line to disappear. */
+  .nav-toggle-glyph {
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 12px;
+  }
+
+  .nav-toggle-glyph span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: currentColor;
+    transition:
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 140ms ease;
+  }
+
+  .nav-toggle-glyph span:first-child {
+    top: 0;
+  }
+
+  .nav-toggle-glyph span:last-child {
+    bottom: 0;
+  }
+
+  .nav-toggle[aria-expanded="true"] .nav-toggle-glyph span:first-child {
+    transform: translateY(5.25px) rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded="true"] .nav-toggle-glyph span:last-child {
+    transform: translateY(-5.25px) rotate(-45deg);
+  }
+
+  /* Phone: the links fold into a sheet under the bar. Gated on .js because a
+   * bar that cannot be opened again would leave the site with no navigation. */
+  @media (max-width: 767px) {
+    :root.js .nav-toggle {
+      display: inline-flex;
+    }
+
+    :root.js .page-links {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
+      z-index: 30;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 6px var(--container-pad) 14px;
+      border-bottom: 1px solid var(--line-strong);
+      background: var(--surface);
+      box-shadow: 0 20px 44px -22px rgb(0 0 0 / 0.55);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition:
+        opacity 180ms ease,
+        transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s linear 220ms;
+    }
+
+    /* The anchors belong to HeaderLink, so this reaches across on purpose:
+       `:deep()` here compiles to an invalid selector and silently does nothing. */
+    :global(:root.js .page-links a) {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      font-size: 1rem;
+    }
+
+    :root.js.nav-open .page-links {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      pointer-events: auto;
+      transition:
+        opacity 180ms ease,
+        transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById("nav-toggle");
+  const links = document.getElementById("page-links");
+
+  if (toggle && links) {
+    const root = document.documentElement;
+
+    const setOpen = (open: boolean) => {
+      root.classList.toggle("nav-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Menu");
+    };
+
+    toggle.addEventListener("click", () =>
+      setOpen(!root.classList.contains("nav-open")),
+    );
+
+    // The sheet is a popover, not a page: any way out of it is the way out.
+    links.addEventListener("click", () => setOpen(false));
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || !root.classList.contains("nav-open"))
+        return;
+      setOpen(false);
+      toggle.focus();
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+      if (!root.classList.contains("nav-open")) return;
+      if ((event.target as HTMLElement)?.closest("#page-links, #nav-toggle"))
+        return;
+      setOpen(false);
+    });
+
+    // Growing back to desktop width has to drop the flag too, or the links come
+    // back already open the next time the bar is narrowed.
+    addEventListener("resize", () => {
+      if (matchMedia("(min-width: 768px)").matches) setOpen(false);
+    });
+  }
+</script>

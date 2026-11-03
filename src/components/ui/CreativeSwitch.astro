@@ -1,0 +1,168 @@
+---
+/* Creative mode switch. The annotation chrome it reveals is layout-only, so
+ * aria-controls names the region whose presentation changes. */
+---
+
+<span class="creative-switch-group">
+  <button
+    id="creative-toggle"
+    type="button"
+    class="creative-switch selection-control"
+    role="switch"
+    aria-label="Creative mode"
+    aria-checked="false"
+    aria-controls="main"
+  >
+    <span class="creative-switch-track"><span></span></span>
+    <span class="creative-switch-tooltip">Editorial annotations</span>
+  </button>
+</span>
+
+<style>
+  .creative-switch-group {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 44px;
+  }
+
+  .creative-switch {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: var(--gold-radius-control);
+    cursor: pointer;
+  }
+
+  .creative-switch:focus-visible {
+    outline: 2px solid var(--annotation);
+    outline-offset: 2px;
+  }
+
+  .creative-switch-track {
+    display: block;
+    position: relative;
+    width: 32px;
+    height: 20px;
+    border: 1px solid var(--muted);
+    border-radius: 999px;
+    background: var(--surface);
+    transition:
+      background-color 240ms ease,
+      border-color 240ms ease;
+  }
+
+  .creative-switch-track > span {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--secondary);
+    transition:
+      translate 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 240ms ease;
+  }
+
+  .creative-switch[aria-checked="true"] .creative-switch-track {
+    background: var(--annotation);
+    border-color: var(--annotation);
+  }
+
+  .creative-switch[aria-checked="true"] .creative-switch-track > span {
+    translate: 12px 0;
+    background: var(--background);
+  }
+
+  .creative-switch-tooltip {
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    top: calc(100% + 12px);
+    width: max-content;
+    padding: 7px 10px;
+    border-radius: 6px;
+    background: var(--ink);
+    color: var(--background);
+    font: 12px/1.5 var(--font-body);
+    letter-spacing: 0;
+    opacity: 0;
+    visibility: hidden;
+    translate: -50% 3px;
+    pointer-events: none;
+    transition:
+      opacity 140ms ease,
+      translate 140ms ease,
+      visibility 0s linear 140ms;
+  }
+
+  .creative-switch:hover .creative-switch-tooltip,
+  .creative-switch:focus-visible .creative-switch-tooltip {
+    opacity: 1;
+    visibility: visible;
+    translate: -50% 0;
+    transition:
+      opacity 140ms ease,
+      translate 140ms ease,
+      visibility 0s;
+  }
+
+  /* Touch devices get no hover dependency; keyboard focus still explains it. */
+  @media (hover: none) {
+    .creative-switch:hover .creative-switch-tooltip {
+      opacity: 0;
+      visibility: hidden;
+      translate: -50% 3px;
+    }
+  }
+
+  /* The switch sits at the right edge of the column, so a centred bubble
+   * hangs out of the viewport and widens the page. Below the point where the
+   * column stops being centred, anchor the bubble to the switch's right edge. */
+  @media (max-width: 767px) {
+    .creative-switch-tooltip {
+      left: auto;
+      right: 0;
+      translate: 0 3px;
+    }
+
+    .creative-switch:hover .creative-switch-tooltip,
+    .creative-switch:focus-visible .creative-switch-tooltip {
+      translate: 0 0;
+    }
+  }
+</style>
+
+<script>
+  import { writeOpen } from "@/lib/creative";
+
+  const toggle = document.getElementById("creative-toggle");
+
+  if (toggle) {
+    /* The head bootstrap owns the root class, so the switch reports it rather
+     * than reading the store again — the two can never disagree. */
+    toggle.setAttribute(
+      "aria-checked",
+      String(document.documentElement.classList.contains("notes-open")),
+    );
+
+    toggle.addEventListener("click", () => {
+      const next = toggle.getAttribute("aria-checked") !== "true";
+
+      toggle.setAttribute("aria-checked", String(next));
+      document.documentElement.classList.toggle("notes-open", next);
+      writeOpen(next);
+
+      // The Typeset studio lives inside this layer and has to come down with it.
+      document.dispatchEvent(
+        new CustomEvent("creative-mode", { detail: { open: next } }),
+      );
+    });
+  }
+</script>

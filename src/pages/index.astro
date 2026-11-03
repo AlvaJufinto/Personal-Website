@@ -5,8 +5,10 @@ import { Icon } from "astro-icon/components";
 
 import BaseHead from "@/components/ui/BaseHead.astro";
 import BlogCard from "@/components/Blog/BlogCard.astro";
+import ColumnMeasure from "@/components/ui/ColumnMeasure.astro";
 import Footer from "@/components/ui/Footer.astro";
 import Header from "@/components/ui/Header.astro";
+import MarginNote from "@/components/ui/MarginNote.astro";
 import ProfileImg from "@/assets/personal/profile.png";
 import { SITE_DESCRIPTION, SITE_TITLE, SOCIALS } from "@/consts";
 
@@ -17,77 +19,138 @@ const posts = (await getCollection("blog"))
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-proportion="golden">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
     <Header />
 
-    <main class="shell">
-      <section
-        class="grid gap-y-8 py-12 lg:grid-cols-[1fr_160px] lg:items-center lg:gap-x-14 lg:py-16"
-      >
-        <div class="order-2 lg:order-1">
-          <h1 class="display-text max-w-[22ch]">
-            Hi, I’m Alva - I build systems, products, and ideas into something
-            usable.
-          </h1>
+    <main id="main" class="folio">
+      <ColumnMeasure />
 
-          <div class="mt-6 max-w-[60ch] space-y-4 text-secondary">
-            <p>
-              I believe in the power of creation and the impact we can have
-              through our work.
-            </p>
-
-            <p>
-              This space is where I document what I’m building, what I’m
-              learning, and how I think.
-            </p>
-
-            <p class="text-[0.9375rem] text-muted">
-              I'll be sharing my thoughts, projects, and anything else that I
-              find interesting. Stay tuned!
-            </p>
-          </div>
-
-          <ul class="mt-7 flex flex-wrap gap-x-5 gap-y-2">
-            {
-              SOCIALS.map((social) => (
-                <li>
-                  <a
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="quiet-link inline-flex items-center gap-1.5 text-sm"
-                  >
-                    <Icon name={social.icon} class="h-3.5 w-3.5" />
-                    {social.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-
+      <section class="section">
         <Image
           src={ProfileImg}
           width={320}
-          class="order-1 size-32 rounded-full object-cover lg:order-2 lg:size-40"
+          class="h-32 w-32 rounded-full object-cover min-[680px]:h-40 min-[680px]:w-40"
           alt="Portrait of Alva Jufinto"
         />
+
+        <MarginNote
+          id="creative-note-1"
+          side="left"
+          lead="01 / Name and place"
+          anchor="prev"
+          arrowTop="34px"
+        >
+          The portrait is here so this page doesn't open like documentation. The
+          lines under it are the short version of the About page.
+        </MarginNote>
+
+        <h1 class="display-text mt-6">
+          Hi, I’m Alva - I build systems, products, and ideas into something
+          usable.
+        </h1>
+
+        <MarginNote
+          id="creative-note-2"
+          side="right"
+          lead="02 / Three nouns"
+          anchor="prev"
+          arrowTop="34px"
+        >
+          Systems, products, ideas. One job title has never covered all three at
+          once, so the headline doesn't try.
+        </MarginNote>
+
+        <div class="body-copy mt-5 space-y-4">
+          <p>
+            I believe in the power of creation and the impact we can have
+            through our work.
+          </p>
+
+          <p>
+            This space is where I document what I’m building, what I’m learning,
+            and how I think.
+          </p>
+
+          <p class="text-muted">
+            I'll be sharing my thoughts, projects, and anything else that I find
+            interesting. Stay tuned!
+          </p>
+        </div>
+
+        <MarginNote
+          id="creative-note-3"
+          side="right"
+          lead="03 / Room to breathe"
+          top="196px"
+          anchor="#main .body-copy"
+        >
+          I like giving words a little room to breathe. The type is <span
+            data-typefact="type">16px</span
+          > with a <span data-typefact="leading">25.9px</span> line height, and I
+          keep the column at <span data-typefact="column">600px</span>. Easier
+          on the eyes, especially when you're here for a while.
+        </MarginNote>
+
+        <ul class="socials mt-6 flex flex-wrap gap-x-5 gap-y-2">
+          {
+            SOCIALS.map((social) => (
+              <li>
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="quiet-link inline-flex items-center gap-1.5"
+                >
+                  <Icon name={social.icon} class="h-3.5 w-3.5 shrink-0" />
+                  {social.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <MarginNote
+          id="creative-note-4"
+          side="left"
+          lead="04 / No form"
+          anchor="prev"
+          arrowTop="6px"
+        >
+          There's no contact form anywhere on this site. Whichever link you
+          choose, the same person reads it.
+        </MarginNote>
       </section>
 
-      <section class="border-t border-line py-12 md:py-14">
-        <div class="mb-4 flex items-baseline justify-between gap-6">
-          <h2 class="section-title">Recent writing</h2>
+      <section class="section">
+        <div class="section-heading has-subtitle">
+          <h2 class="section-title section-heading-copy">Recent writing</h2>
 
-          <a href="/blog" class="quiet-link text-sm">All writing</a>
+          <a
+            href="/blog"
+            class="section-aside quiet-link selection-control relative"
+          >
+            All writing
+          </a>
         </div>
 
-        <div class="divide-y divide-line">
+        <div class="mt-5 divide-y divide-line border-t border-line">
           {posts.map((post) => <BlogCard post={post} />)}
         </div>
+
+        <MarginNote
+          id="creative-note-5"
+          side="right"
+          lead="05 / Only the newest"
+          anchor="prev"
+          arrowTop="30px"
+        >
+          I only keep the three latest posts here. The rest are over on the
+          writing page, whenever you're in the mood for more.
+        </MarginNote>
       </section>
     </main>
 

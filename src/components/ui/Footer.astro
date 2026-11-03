@@ -8,9 +8,9 @@ import { SOCIALS } from "@/consts";
 const today = new Date();
 ---
 
-<footer class="mt-24 border-t border-line py-12">
+<footer class="border-t border-line py-12">
   <div
-    class="shell flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between"
+    class="folio flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between"
   >
     <div class="max-w-md">
       <p class="label">Portfolio</p>
@@ -27,7 +27,7 @@ const today = new Date();
     </div>
 
     <div class="flex flex-col items-start gap-5 lg:items-end">
-      <ul class="flex flex-wrap gap-x-5 gap-y-2">
+      <ul class="socials flex flex-wrap gap-x-5 gap-y-2">
         {
           SOCIALS.map((social) => (
             <li>
