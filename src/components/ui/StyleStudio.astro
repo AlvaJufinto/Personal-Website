@@ -1,6 +1,24 @@
 ---
 import { Icon } from "astro-icon/components";
-import { STUDIO_GROUPS } from "@/lib/studio";
+import { STUDIO_GROUPS, STUDIO_PRESETS } from "@/lib/studio";
+
+/* Panel organisation: presets first, then the existing groups under loose
+ * section headings, then the inspector. Ordering lives here — STUDIO_GROUPS
+ * stays the single source of truth for the settings themselves. */
+const panelSections: { label: string; keys: string[] }[] = [
+  { label: "Typography", keys: ["face", "leading"] },
+  { label: "Layout", keys: ["column", "rhythm"] },
+  { label: "Motion", keys: ["motion"] },
+];
+
+const inspectorOptions: { key: string; label: string }[] = [
+  { key: "outlines", label: "Outlines" },
+  { key: "dimensions", label: "Dimensions" },
+  { key: "spacing", label: "Spacing" },
+  { key: "ruler", label: "Ruler" },
+  { key: "columns", label: "Column guides" },
+  { key: "baseline", label: "Line grid" },
+];
 ---
 
 <!-- Creative mode's styling surface. The trigger only exists inside the
@@ -42,55 +60,150 @@ import { STUDIO_GROUPS } from "@/lib/studio";
   </header>
 
   <div class="studio-fields">
-    {
-      STUDIO_GROUPS.map((group) => (
-        <div
-          class="studio-field"
-          role="radiogroup"
-          aria-labelledby={`studio-legend-${group.key}`}
-        >
-          <p class="studio-legend" id={`studio-legend-${group.key}`}>
-            <span class="studio-legend-label">{group.label}</span>
-            {/* No measured value for the face: a computed font-family reports
-                the declared stack, not what actually rendered. The panel title
-                is set in that face, so it is its own readout. */}
-            {group.key !== "face" && (
-              <span class="studio-live" data-studio-live={group.key}>
-                —
+    <div class="studio-block">
+      <p class="studio-legend">
+        <span class="studio-legend-label">Presets</span>
+        <span class="studio-live" id="studio-preset-state">—</span>
+      </p>
+
+      <div class="studio-presets" role="radiogroup" aria-label="Presets">
+        {
+          STUDIO_PRESETS.map((preset) => (
+            <label class="studio-preset" data-preset={preset.id}>
+              <input
+                class="studio-input"
+                type="radio"
+                name="studio-preset"
+                value={preset.id}
+              />
+              <span
+                class="studio-preset-preview"
+                aria-hidden="true"
+                data-face={preset.settings.face}
+                data-column={preset.settings.column}
+                data-leading={preset.settings.leading}
+                data-rhythm={preset.settings.rhythm}
+              >
+                <span class="preset-heading">Ag</span>
+                <span class="preset-line" />
+                <span class="preset-line" />
+                <span class="preset-gap" aria-hidden="true" />
+                <span class="preset-line" />
+                <span class="preset-line preset-line-short" />
               </span>
-            )}
-          </p>
+              <span class="studio-preset-label">{preset.label}</span>
+              <span class="studio-preset-desc">{preset.description}</span>
+            </label>
+          ))
+        }
+      </div>
+    </div>
 
-          <div class="studio-options">
-            {group.options.map((option, index) => {
-              // Three-option rows leave a half-empty grid; the last choice
-              // takes the full width so the hairlines stay continuous.
-              const isWideLast =
-                index === group.options.length - 1 &&
-                group.options.length % 2 === 1;
+    {
+      panelSections.map((section) => (
+        <div class="studio-block">
+          <p class="studio-block-title">{section.label}</p>
 
-              return (
-                <label
-                  class:list={[
-                    "studio-option",
-                    { "studio-option-wide": isWideLast },
-                  ]}
-                >
-                  <input
-                    class="studio-input"
-                    type="radio"
-                    name={`studio-${group.key}`}
-                    value={option.value}
-                  />
-                  <span class="studio-option-label">{option.label}</span>
-                  <span class="studio-option-readout">{option.readout}</span>
-                </label>
-              );
-            })}
-          </div>
+          {section.keys.map((key) => {
+            const group = STUDIO_GROUPS.find((g) => g.key === key)!;
+
+            return (
+              <div
+                class="studio-field"
+                role="radiogroup"
+                aria-labelledby={`studio-legend-${group.key}`}
+              >
+                <p class="studio-legend" id={`studio-legend-${group.key}`}>
+                  <span class="studio-legend-label">{group.label}</span>
+                  {/* No measured value for the face: a computed font-family
+                      reports the declared stack, not what actually rendered.
+                      The panel title is set in that face, so it is its own
+                      readout. */}
+                  {group.key !== "face" && (
+                    <span class="studio-live" data-studio-live={group.key}>
+                      —
+                    </span>
+                  )}
+                </p>
+
+                <div class="studio-options">
+                  {group.options.map((option, index) => {
+                    // Three-option rows leave a half-empty grid; the last
+                    // choice takes the full width so the hairlines stay
+                    // continuous.
+                    const isWideLast =
+                      index === group.options.length - 1 &&
+                      group.options.length % 2 === 1;
+
+                    return (
+                      <label
+                        class:list={[
+                          "studio-option",
+                          { "studio-option-wide": isWideLast },
+                        ]}
+                      >
+                        <input
+                          class="studio-input"
+                          type="radio"
+                          name={`studio-${group.key}`}
+                          value={option.value}
+                        />
+                        <span class="studio-option-label">{option.label}</span>
+                        <span class="studio-option-readout">
+                          {option.readout}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
       ))
     }
+
+    <div class="studio-block">
+      <p class="studio-legend">
+        <span class="studio-legend-label">Inspector</span>
+        <span class="studio-live" id="studio-inspector-state">Off</span>
+      </p>
+
+      <p class="studio-inspector-copy">
+        Measure the page itself: click a section to read its layout below.
+      </p>
+
+      <label class="studio-toggle-row">
+        <span class="studio-toggle-row-label">Inspector</span>
+        <input
+          class="studio-switch-input"
+          type="checkbox"
+          id="inspector-master"
+        />
+        <span class="studio-switch" aria-hidden="true"><span></span></span>
+      </label>
+
+      <div class="studio-inspector-options">
+        {
+          inspectorOptions.map((option) => (
+            <label class="studio-toggle-row">
+              <span class="studio-toggle-row-label">{option.label}</span>
+              <input
+                class="studio-switch-input"
+                type="checkbox"
+                data-inspector={option.key}
+              />
+              <span class="studio-switch" aria-hidden="true">
+                <span />
+              </span>
+            </label>
+          ))
+        }
+      </div>
+
+      <div class="studio-inspector-info" id="studio-inspector-info" hidden>
+      </div>
+    </div>
   </div>
 
   <footer class="studio-foot">
@@ -116,368 +229,22 @@ import { STUDIO_GROUPS } from "@/lib/studio";
      both come from here, so neither can quote a value the page does not use. -->
 <span class="studio-probe" aria-hidden="true"></span>
 
-<style>
-  /* Hidden until Creative mode is on: the studio is part of that layer. */
-  .studio-toggle {
-    display: none;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    min-width: 44px;
-    min-height: 44px;
-    padding: 4px;
-    color: var(--muted);
-    background: none;
-    border: 1px solid transparent;
-    border-radius: var(--gold-radius-control);
-    cursor: pointer;
-    transition:
-      color 0.15s ease,
-      border-color 0.15s ease;
-  }
-
-  :global(html.notes-open) .studio-toggle {
-    display: inline-flex;
-  }
-
-  .studio-toggle:hover {
-    color: var(--ink);
-    border-color: var(--line);
-  }
-
-  .studio-toggle[aria-expanded="true"] {
-    color: var(--annotation);
-    border-color: var(--line-strong);
-  }
-
-  .studio-toggle:focus-visible {
-    outline: 2px solid var(--annotation);
-    outline-offset: 2px;
-  }
-
-  .studio-tooltip {
-    position: absolute;
-    z-index: 5;
-    left: 50%;
-    top: calc(100% + 12px);
-    width: max-content;
-    padding: 7px 10px;
-    border-radius: 6px;
-    background: var(--ink);
-    color: var(--background);
-    font: 12px/1.5 var(--font-body);
-    letter-spacing: 0;
-    opacity: 0;
-    visibility: hidden;
-    translate: -50% 3px;
-    pointer-events: none;
-    transition:
-      opacity 140ms ease,
-      translate 140ms ease,
-      visibility 0s linear 140ms;
-  }
-
-  .studio-toggle:hover .studio-tooltip,
-  .studio-toggle:focus-visible .studio-tooltip {
-    opacity: 1;
-    visibility: visible;
-    translate: -50% 0;
-    transition:
-      opacity 140ms ease,
-      translate 140ms ease,
-      visibility 0s;
-  }
-
-  @media (hover: none) {
-    .studio-toggle:hover .studio-tooltip {
-      opacity: 0;
-      visibility: hidden;
-      translate: -50% 3px;
-    }
-  }
-
-  /* Same edge rule the Creative switch needs: centred here, the bubble would
-   * cross the viewport edge and widen the page. */
-  @media (max-width: 767px) {
-    .studio-tooltip {
-      left: auto;
-      right: 0;
-      translate: 0 3px;
-    }
-
-    .studio-toggle:hover .studio-tooltip,
-    .studio-toggle:focus-visible .studio-tooltip {
-      translate: 0 0;
-    }
-  }
-
-  .studio-panel {
-    position: fixed;
-    z-index: 40;
-    top: 84px;
-    right: 24px;
-    width: 288px;
-    max-height: calc(100vh - 108px);
-    overflow-y: auto;
-    border: 1px solid var(--line-strong);
-    border-radius: var(--gold-radius-dialog);
-    background: var(--surface);
-    box-shadow: 0 20px 44px -22px rgb(0 0 0 / 0.55);
-    color: var(--secondary);
-    /* Declared always, suppressed while the pointer is held — see the
-     * [data-studio-dragging] rule below. A glide only ever means the dock. */
-    transition:
-      left 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      top 280ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  @media (max-width: 640px) {
-    .studio-panel {
-      top: auto;
-      right: 12px;
-      bottom: 12px;
-      left: 12px;
-      width: auto;
-      max-height: 62dvh;
-    }
-  }
-
-  /* The head is also the drag handle. `touch-action` is scoped here rather than
-   * to the panel so the fields below keep their own touch behaviour, and the
-   * grab cursor only promises what the pointer can actually do at this width. */
-  .studio-head {
-    padding: 14px 14px 12px;
-    border-bottom: 1px solid var(--line);
-    cursor: grab;
-    touch-action: none;
-    user-select: none;
-  }
-
-  .studio-head:focus-visible {
-    outline: 2px solid var(--annotation);
-    outline-offset: -2px;
-  }
-
-  .studio-panel[data-studio-dragging] {
-    transition: none;
-    user-select: none;
-  }
-
-  .studio-panel[data-studio-dragging] .studio-head {
-    cursor: grabbing;
-  }
-
-  /* The same glide the dock uses; the site-wide reduce rules would already cut
-   * it, this only stops the panel from depending on another file for it. */
-  @media (prefers-reduced-motion: reduce) {
-    .studio-panel {
-      transition: none;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .studio-head {
-      cursor: default;
-      touch-action: auto;
-      user-select: text;
-    }
-  }
-
-  .studio-title {
-    font-family: var(--font-heading);
-    font-size: 1.125rem;
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-
-  .studio-sub {
-    margin-top: 4px;
-    font-size: 11px;
-    line-height: 1.45;
-    color: var(--muted);
-  }
-
-  .studio-fields {
-    padding: 4px 14px 10px;
-  }
-
-  .studio-field {
-    margin: 0;
-    padding: 11px 0 0;
-  }
-
-  .studio-field + .studio-field {
-    margin-top: 11px;
-    border-top: 1px solid var(--line);
-  }
-
-  .studio-legend {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
-    margin: 0 0 7px;
-  }
-
-  .studio-legend-label {
-    font-size: 12px;
-    font-weight: 550;
-    letter-spacing: 0.01em;
-    color: var(--ink);
-  }
-
-  .studio-live {
-    font: 10px/1.3 var(--font-mono);
-    letter-spacing: 0;
-    color: var(--annotation);
-    font-variant-numeric: tabular-nums;
-    text-align: right;
-  }
-
-  /* Hairline grid rather than pill buttons: the panel reads as a type spec
-   * sheet, which is also what makes the numbers in it look like measurements. */
-  .studio-options {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-  }
-
-  .studio-option-wide {
-    grid-column: span 2;
-  }
-
-  .studio-option {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 7px 9px;
-    background: var(--surface);
-    cursor: pointer;
-  }
-
-  .studio-input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .studio-option-label {
-    font-size: 12px;
-    line-height: 1.3;
-    color: var(--muted);
-    transition: color 0.15s ease;
-  }
-
-  .studio-option-readout {
-    font: 10px/1.3 var(--font-mono);
-    letter-spacing: 0;
-    color: var(--muted);
-    opacity: 0.66;
-  }
-
-  .studio-option:hover .studio-option-label {
-    color: var(--secondary);
-  }
-
-  .studio-option:has(.studio-input:checked) .studio-option-label {
-    color: var(--ink);
-    text-decoration: underline;
-    text-decoration-color: var(--annotation);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 4px;
-  }
-
-  .studio-option:has(.studio-input:checked) .studio-option-readout {
-    color: var(--annotation);
-    opacity: 1;
-  }
-
-  .studio-option:has(.studio-input:focus-visible) {
-    outline: 2px solid var(--annotation);
-    outline-offset: -2px;
-  }
-
-  .studio-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding: 11px 14px;
-    border-top: 1px solid var(--line);
-  }
-
-  .studio-action {
-    position: relative;
-    padding: 2px 0;
-    background: none;
-    border: 0;
-    font: 12px/1.4 var(--font-body);
-    color: var(--muted);
-    cursor: pointer;
-    transition: color 0.15s ease;
-  }
-
-  .studio-action:hover {
-    color: var(--ink);
-  }
-
-  .studio-action:focus-visible {
-    outline: 2px solid var(--annotation);
-    outline-offset: 2px;
-  }
-
-  .studio-probe {
-    position: fixed;
-    top: -9999px;
-    left: -9999px;
-    width: var(--folio-width, 37.5rem);
-    margin-top: var(--section-gap, 2.7725rem);
-    font-family: var(--font-heading);
-    font-size: var(--gold-type-body, 1rem);
-    line-height: var(--body-leading, 1.618);
-    pointer-events: none;
-  }
-</style>
-
 <script>
   import {
     STUDIO_DEFAULTS,
     STUDIO_GROUPS,
+    STUDIO_PRESETS,
     applySettings,
     clearSettings,
     isStudioKey,
+    matchPreset,
     readSettings,
+    readStudioUIState,
     writeSettings,
+    writeStudioUIState,
   } from "@/lib/studio";
-
-  /** A free panel's edge never sits closer than this to the viewport. */
-  const VIEWPORT_MARGIN = 12;
-  /** Where a docked panel rests — the 24px the CSS already placed it at. */
-  const EDGE_OFFSET = 24;
-  /** Docking zone as a share of the width, so it is 96px at 1200px, bounded. */
-  const SNAP_ZONE_RATIO = 0.15;
-  const SNAP_ZONE_MIN = 120;
-  const SNAP_ZONE_MAX = 200;
-  /** Keyboard step; Shift takes four of them. */
-  const KEY_STEP = 16;
-  /** Below this the panel is a bottom sheet and owns no position of its own. */
-  const SHEET_LAYOUT = "(max-width: 640px)";
-
-  type DockState = "floating" | "left" | "right";
-
-  /* Idempotent rather than assumed-once: the panel is one per page today, and a
-   * second mount — a re-run script, a future client-side navigation — must not
-   * stack a second set of handlers onto the same head. */
-  const dragBound = new WeakSet<HTMLElement>();
+  import { mountInspector, type OverlayName } from "@/lib/inspector";
+  import { mountStudioDrag, SHEET_LAYOUT } from "@/lib/studio-drag";
 
   const toggle = document.getElementById("studio-toggle");
   const panel = document.getElementById("studio-panel");
@@ -492,6 +259,23 @@ import { STUDIO_GROUPS } from "@/lib/studio";
 
   function mount(toggle: HTMLElement, panel: HTMLElement, probe: HTMLElement) {
     let settings = readSettings();
+
+    /* The DOM is the source of truth — the open flag and every checkbox. */
+    function persistUI() {
+      const master = panel.querySelector<HTMLInputElement>("#inspector-master");
+      const overlays: Record<string, boolean> = {};
+      for (const input of panel.querySelectorAll<HTMLInputElement>(
+        "[data-inspector]",
+      )) {
+        const name = input.dataset.inspector;
+        if (name) overlays[name] = input.checked;
+      }
+      writeStudioUIState({
+        open: !panel.hidden,
+        inspecting: !!master?.checked,
+        overlays,
+      });
+    }
 
     interface Facts {
       type: number;
@@ -622,6 +406,40 @@ import { STUDIO_GROUPS } from "@/lib/studio";
       }
     }
 
+    /* The inspector is a sibling concern, not a second settings system: it
+     * reads the same probe facts() measures and never writes a token. */
+    const inspector = mountInspector({
+      getFacts: facts,
+      infoPanel: document.getElementById("studio-inspector-info"),
+    });
+
+    function setInspecting(on: boolean) {
+      const master = panel.querySelector<HTMLInputElement>("#inspector-master");
+      if (master) master.checked = on;
+      inspector.setActive(on);
+      const state = document.getElementById("studio-inspector-state");
+      if (state) state.textContent = on ? "On" : "Off";
+      for (const input of panel.querySelectorAll<HTMLInputElement>(
+        "[data-inspector]",
+      )) {
+        input.disabled = !on;
+      }
+      persistUI();
+    }
+
+    /* A hand-tuned configuration that no longer matches a preset reads as its
+     * own state ("Custom") rather than keeping the last preset lit. */
+    function syncPresetState() {
+      const preset = matchPreset(settings);
+      const state = document.getElementById("studio-preset-state");
+      if (state) state.textContent = preset ? preset.label : "Custom";
+      for (const input of panel.querySelectorAll<HTMLInputElement>(
+        'input[name="studio-preset"]',
+      )) {
+        input.checked = input.value === preset?.id;
+      }
+    }
+
     function render() {
       applySettings(settings);
 
@@ -639,14 +457,26 @@ import { STUDIO_GROUPS } from "@/lib/studio";
       setLive("rhythm", `${num(f.rhythm, 1)} px`);
       setLive("motion", f.motion);
       syncNotes(f);
+      syncPresetState();
+      // Overlays quote the same token values, so a settings change has to
+      // re-measure them too — column guides and the line grid both depend on it.
+      inspector.refresh();
     }
 
     function setOpen(open: boolean) {
       panel.hidden = !open;
       toggle.setAttribute("aria-expanded", String(open));
+
+      if (open && !matchMedia(SHEET_LAYOUT).matches) {
+        requestAnimationFrame(() => {
+          panel
+            .querySelector<HTMLElement>("[data-studio-handle]")
+            ?.focus({ preventScroll: true });
+        });
+      }
+
       syncClearance();
     }
-
     toggle.addEventListener("click", () => setOpen(panel?.hidden as boolean));
 
     panel
@@ -666,7 +496,29 @@ import { STUDIO_GROUPS } from "@/lib/studio";
 
     panel.addEventListener("change", (event) => {
       const input = event.target as HTMLInputElement;
+
+      if (input.id === "inspector-master") {
+        setInspecting(input.checked);
+        return;
+      }
+
+      const overlay = input.dataset.inspector;
+      if (overlay) {
+        inspector.setOverlay(overlay as OverlayName, input.checked);
+        persistUI();
+        return;
+      }
+
       if (input.type !== "radio") return;
+
+      if (input.name === "studio-preset") {
+        const preset = STUDIO_PRESETS.find((p) => p.id === input.value);
+        if (!preset) return;
+        settings = { ...preset.settings };
+        writeSettings(settings);
+        render();
+        return;
+      }
 
       const key = input.name.replace("studio-", "");
       if (!isStudioKey(key)) return;
@@ -680,16 +532,6 @@ import { STUDIO_GROUPS } from "@/lib/studio";
       if (event.key !== "Escape" || panel.hidden) return;
       setOpen(false);
       toggle.focus();
-    });
-
-    // Non-modal, but still a popover: a click anywhere else dismisses it.
-    document.addEventListener("pointerdown", (event) => {
-      if (panel.hidden) return;
-      if (
-        (event.target as HTMLElement)?.closest("#studio-panel, #studio-toggle")
-      )
-        return;
-      setOpen(false);
     });
 
     // The trigger only exists in Creative mode, so leaving the mode has to take
@@ -709,232 +551,39 @@ import { STUDIO_GROUPS } from "@/lib/studio";
      * annotation is worse than one extra layout pass. */
     addEventListener("resize", render);
 
+    /* Restore how the tool was left this visit. Settings come back via
+     * localStorage pre-paint; this only restores the panel + inspector UI. The
+     * panel only auto-opens when Creative mode is on — without it the trigger is
+     * hidden and a floating panel would have no owner. */
+    const ui = readStudioUIState();
+    const open =
+      ui?.open === true &&
+      document.documentElement.classList.contains("notes-open");
+    const inspecting = open === true && ui?.inspecting === true;
+
+    if (ui?.overlays) {
+      for (const input of panel.querySelectorAll<HTMLInputElement>(
+        "[data-inspector]",
+      )) {
+        const name = input.dataset.inspector;
+        if (name && typeof ui.overlays[name] === "boolean") {
+          input.checked = ui.overlays[name];
+        }
+      }
+    }
+
+    setOpen(open);
+    setInspecting(inspecting);
+
+    // Seed the inspector's own overlay map from the restored checkboxes. Safe
+    // while inactive too: setOverlay only records the choice until refresh.
+    for (const input of panel.querySelectorAll<HTMLInputElement>(
+      "[data-inspector]",
+    )) {
+      const name = input.dataset.inspector;
+      if (name) inspector.setOverlay(name as OverlayName, input.checked);
+    }
+
     render();
-  }
-
-  /* ------------------------------------------------------------------
-   * Floating window: the head drags the panel anywhere in the viewport, and
-   * releasing it near a horizontal edge lets that edge take it.
-   * ---------------------------------------------------------------- */
-
-  function mountStudioDrag(panel: HTMLElement, onMove: () => void) {
-    const handle = panel.querySelector<HTMLElement>("[data-studio-handle]");
-    if (!handle || dragBound.has(panel)) return;
-    dragBound.add(panel);
-
-    interface Drag {
-      pointerId: number;
-      /** Pointer-to-window offset, taken at drag start so nothing jumps. */
-      dx: number;
-      dy: number;
-      width: number;
-      height: number;
-    }
-
-    const isSheet = () => matchMedia(SHEET_LAYOUT).matches;
-
-    /* The layout viewport, not `innerWidth`: the scrollbar is excluded from the
-     * containing block a fixed panel is placed in, and it is that edge the dock
-     * has to line up with for 24px to mean 24px. */
-    const viewport = () => ({
-      width: document.documentElement.clientWidth,
-      height: document.documentElement.clientHeight,
-    });
-
-    let drag: Drag | null = null;
-    let frame = 0;
-    let pointer = { x: 0, y: 0 };
-
-    function box() {
-      const r = panel.getBoundingClientRect();
-      return { left: r.left, top: r.top, width: r.width, height: r.height };
-    }
-
-    /* The position the panel was last *written* to, not the one it is still
-     * gliding through: a second arrow key before the glide lands measures from
-     * the intention, so keystrokes add up instead of chasing their own tail.
-     * A grab still measures where the panel visually is — see pointerdown. */
-    function targetBox() {
-      const r = box();
-      return {
-        left: panel.style.left ? Number.parseFloat(panel.style.left) : r.left,
-        top: panel.style.top ? Number.parseFloat(panel.style.top) : r.top,
-        width: r.width,
-        height: r.height,
-      };
-    }
-
-    /** Swap the CSS `top`/`right` anchor for explicit coordinates. Measuring
-     * the rendered box first makes the swap visually a no-op, which is what
-     * lets those same properties animate the snap afterwards. */
-    function toCoordinates() {
-      if (panel.style.left) return;
-      const r = box();
-      panel.style.right = "auto";
-      panel.style.bottom = "auto";
-      panel.style.left = `${r.left}px`;
-      panel.style.top = `${r.top}px`;
-    }
-
-    /** Position clamped to the viewport, from the panel's real dimensions. */
-    function place(left: number, top: number, width: number, height: number) {
-      const { width: vw, height: vh } = viewport();
-      const maxX = Math.max(VIEWPORT_MARGIN, vw - width - VIEWPORT_MARGIN);
-      const maxY = Math.max(VIEWPORT_MARGIN, vh - height - VIEWPORT_MARGIN);
-      panel.style.left = `${Math.min(Math.max(left, VIEWPORT_MARGIN), maxX)}px`;
-      panel.style.top = `${Math.min(Math.max(top, VIEWPORT_MARGIN), maxY)}px`;
-    }
-
-    function dock(state: DockState) {
-      if (panel.dataset.studioDock !== state) panel.dataset.studioDock = state;
-    }
-
-    /** The side whose zone the panel is in, or null when it is dropped free.
-     * Horizontal only: the height the user chose is left alone. */
-    function edgeZone(left: number, width: number): DockState | null {
-      const vw = viewport().width;
-      const zone = Math.round(
-        Math.min(SNAP_ZONE_MAX, Math.max(SNAP_ZONE_MIN, vw * SNAP_ZONE_RATIO)),
-      );
-      const fromRight = vw - (left + width);
-      if (fromRight <= zone && fromRight <= left) return "right";
-      if (left <= zone) return "left";
-      return null;
-    }
-
-    function dockOffset(state: "left" | "right", width: number) {
-      return state === "right"
-        ? viewport().width - width - EDGE_OFFSET
-        : EDGE_OFFSET;
-    }
-
-    /* `dragging` is what keeps the declared transition off while the pointer
-     * moves; dropping it before the final position is written is what lets that
-     * same transition carry the panel to the edge. */
-    function endDrag() {
-      /* A release can outrun the frame it was queued for: settle on the newest
-       * pointer position, not the last painted one. */
-      if (frame) {
-        cancelAnimationFrame(frame);
-        frame = 0;
-        moveToPointer();
-      }
-
-      drag = null;
-      delete panel.dataset.studioDragging;
-      if (isSheet()) return;
-
-      const { left, top, width, height } = targetBox();
-      const state = edgeZone(left, width);
-      if (state) place(dockOffset(state, width), top, width, height);
-      dock(state ?? "floating");
-      onMove();
-    }
-
-    /** The newest pointer position, applied once per frame, not once per event. */
-    function moveToPointer() {
-      frame = 0;
-      if (!drag) return;
-      place(pointer.x - drag.dx, pointer.y - drag.dy, drag.width, drag.height);
-      dock("floating");
-      onMove();
-    }
-
-    handle.addEventListener("pointerdown", (event) => {
-      if (drag || event.button !== 0 || isSheet()) return;
-
-      const { left, top, width, height } = box();
-      toCoordinates();
-      drag = {
-        pointerId: event.pointerId,
-        dx: event.clientX - left,
-        dy: event.clientY - top,
-        width,
-        height,
-      };
-      pointer = { x: event.clientX, y: event.clientY };
-      panel.dataset.studioDragging = "";
-      /* Capture keeps the stream coming once the pointer outruns the head, and
-       * ends with the pointer, so a lost contact cannot strand a half-drag. */
-      handle.setPointerCapture(event.pointerId);
-      handle.focus({ preventScroll: true });
-      event.preventDefault();
-    });
-
-    handle.addEventListener("pointermove", (event) => {
-      if (!drag || event.pointerId !== drag.pointerId) return;
-      event.preventDefault();
-      pointer = { x: event.clientX, y: event.clientY };
-      if (!frame) frame = requestAnimationFrame(moveToPointer);
-    });
-
-    handle.addEventListener("pointerup", (event) => {
-      if (drag && event.pointerId === drag.pointerId) endDrag();
-    });
-
-    handle.addEventListener("pointercancel", (event) => {
-      if (drag && event.pointerId === drag.pointerId) endDrag();
-    });
-
-    handle.addEventListener("keydown", (event) => {
-      if (drag || isSheet() || event.ctrlKey || event.metaKey || event.altKey)
-        return;
-
-      const step = event.shiftKey ? KEY_STEP * 4 : KEY_STEP;
-      const nudge: Record<string, readonly [number, number]> = {
-        ArrowLeft: [-step, 0],
-        ArrowRight: [step, 0],
-        ArrowUp: [0, -step],
-        ArrowDown: [0, step],
-      };
-
-      const { left, top, width, height } = targetBox();
-      const delta = nudge[event.key];
-
-      if (delta) {
-        event.preventDefault();
-        toCoordinates();
-        place(left + delta[0], top + delta[1], width, height);
-        /* Named by proximity, like a release: a panel nudged to the edge is a
-         * docked panel, but nothing gets pulled sideways unasked. */
-        const moved = targetBox();
-        dock(edgeZone(moved.left, moved.width) ?? "floating");
-      } else if (event.key === "Home" || event.key === "End") {
-        event.preventDefault();
-        const state = event.key === "Home" ? "left" : "right";
-        toCoordinates();
-        place(dockOffset(state, width), top, width, height);
-        dock(state);
-      } else {
-        return;
-      }
-
-      onMove();
-    });
-
-    addEventListener("resize", () => {
-      if (drag || panel.hidden) return;
-
-      if (isSheet()) {
-        /* The sheet reclaims its own edges, and the coordinates that would
-         * fight them go with it. */
-        for (const edge of ["left", "top", "right", "bottom"] as const)
-          panel.style.removeProperty(edge);
-        delete panel.dataset.studioDock;
-        return;
-      }
-
-      const state = panel.dataset.studioDock as DockState | undefined;
-      if (!state) return;
-
-      const { left, top, width, height } = targetBox();
-      place(
-        state === "floating" ? left : dockOffset(state, width),
-        top,
-        width,
-        height,
-      );
-      onMove();
-    });
   }
 </script>

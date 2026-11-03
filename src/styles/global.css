@@ -3,6 +3,7 @@
 @import "tailwindcss";
 @import "./blog.css";
 @import "./creative.css";
+@import "./studio.css";
 
 /* Semantic color roles, resolved at runtime from the active theme.
  * Reference-role mapping (CREATIVE_MODE.md 6.1): --paper -> --background,

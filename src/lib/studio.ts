@@ -84,6 +84,79 @@ export const STUDIO_DEFAULTS: StudioSettings = {
   motion: "auto",
 };
 
+/* Named configurations over the same option values the groups already offer.
+ * A preset never introduces a value the CSS does not know: each `settings`
+ * object reuses option values, so applying one is indistinguishable from
+ * choosing the same radios by hand. Editorial is the site default on purpose —
+ * first visit, Reset and the Editorial preset all agree. */
+export interface StudioPreset {
+  id: string;
+  label: string;
+  description: string;
+  settings: StudioSettings;
+}
+
+export const STUDIO_PRESETS: StudioPreset[] = [
+  {
+    id: "editorial",
+    label: "Editorial",
+    description: "Balanced column, golden leading",
+    settings: {
+      face: "grotesk",
+      column: "standard",
+      leading: "golden",
+      rhythm: "balanced",
+      motion: "auto",
+    },
+  },
+  {
+    id: "classic",
+    label: "Classic",
+    description: "Serif face, generous spacing",
+    settings: {
+      face: "serif",
+      column: "standard",
+      leading: "open",
+      rhythm: "airy",
+      motion: "auto",
+    },
+  },
+  {
+    id: "compact",
+    label: "Compact",
+    description: "Narrow column, tight leading",
+    settings: {
+      face: "quiet",
+      column: "narrow",
+      leading: "tight",
+      rhythm: "close",
+      motion: "auto",
+    },
+  },
+  {
+    id: "spacious",
+    label: "Spacious",
+    description: "Wide column, airy rhythm",
+    settings: {
+      face: "grotesk",
+      column: "wide",
+      leading: "open",
+      rhythm: "airy",
+      motion: "auto",
+    },
+  },
+];
+
+/** The preset whose settings match exactly, or null when the current settings
+ * were arrived at by hand and match no single preset. */
+export function matchPreset(settings: StudioSettings): StudioPreset | null {
+  return (
+    STUDIO_PRESETS.find((preset) =>
+      STUDIO_GROUPS.every((group) => preset.settings[group.key] === settings[group.key]),
+    ) ?? null
+  );
+}
+
 export function isStudioKey(value: string): value is StudioKey {
   return STUDIO_GROUPS.some((group) => group.key === value);
 }
@@ -134,6 +207,41 @@ export function clearSettings(): void {
 export function applySettings(settings: StudioSettings): void {
   for (const group of STUDIO_GROUPS) {
     document.documentElement.dataset[group.key] = settings[group.key];
+  }
+}
+
+/* --- Session-scoped UI state -------------------------------------------
+ * Settings (above) persist in localStorage across visits. This is the other,
+ * shorter-lived half: how the panel was left — open/closed, the inspector's
+ * master switch, and each overlay toggle — so navigating the portfolio inside
+ * one visit does not collapse the tool. Session rather than local storage, for
+ * the same reason Creative mode is: a fresh tab starts from the plain sheet. */
+
+export const STUDIO_UI_STORAGE_KEY = "porto:studio-ui";
+
+export interface StudioUIState {
+  open: boolean;
+  inspecting: boolean;
+  overlays: Record<string, boolean>;
+}
+
+export function readStudioUIState(): StudioUIState | null {
+  try {
+    const parsed = JSON.parse(
+      sessionStorage.getItem(STUDIO_UI_STORAGE_KEY) ?? "null",
+    );
+    if (!parsed || typeof parsed !== "object") return null;
+    return parsed as StudioUIState;
+  } catch {
+    return null;
+  }
+}
+
+export function writeStudioUIState(state: StudioUIState): void {
+  try {
+    sessionStorage.setItem(STUDIO_UI_STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Storage unavailable (private mode): the panel still works for this page.
   }
 }
 

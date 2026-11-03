@@ -320,7 +320,234 @@
 
   #main .margin-note,
   #main .column-measure,
-  .notes-open .selection-control::after {
+  .notes-open .selection-control::after,
+  #studio-overlay,
+  #studio-ruler {
     display: none;
   }
+}
+
+/* --------------------------------------------------------------------------
+ * Inspector overlays
+ *
+ * The studio's inspector draws its measurement layer here because the elements
+ * are created at runtime, outside Astro's scoped-styles reach. Everything is
+ * pointer-events: none — it is a read-only layer over the page, never part of
+ * its layout. Colours reuse the annotation tokens; nothing here affects
+ * dimensions, flow, margins, padding or scroll.
+ * ----------------------------------------------------------------------- */
+
+:root {
+  /* Baseline-grid line colour, kept barely above the background. */
+  --inspector-grid: color-mix(in srgb, var(--annotation) 7%, transparent);
+}
+
+/* A section becomes an inspection target: the standard crosshair, not a custom
+ * cursor, signals that clicking will select rather than follow a link. */
+html.studio-inspect #main > .section,
+html.studio-inspect #main > article,
+html.studio-inspect #main > header,
+html.studio-inspect #main > section {
+  cursor: crosshair;
+}
+
+#studio-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 35;
+  pointer-events: none;
+}
+
+.so-outline {
+  position: absolute;
+  border: 1px dashed var(--annotation);
+  opacity: 0.5;
+}
+
+.so-selected {
+  position: absolute;
+  border: 1px solid var(--annotation);
+  background: color-mix(in srgb, var(--annotation) 8%, transparent);
+}
+
+.so-selected-label {
+  position: absolute;
+  height: 18px;
+  padding: 0 6px;
+  border: 1px solid var(--annotation);
+  background: var(--surface);
+  color: var(--annotation);
+  font: 10px/16px var(--font-mono);
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.so-dim-w,
+.so-dim-h {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 0 4px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--muted);
+  font: 10px/14px var(--font-mono);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.so-gap {
+  position: absolute;
+  width: 2px;
+  background: var(--annotation);
+  opacity: 0.5;
+}
+
+.so-gap-label {
+  position: absolute;
+  left: 6px;
+  transform: translateY(-50%);
+  padding: 0 4px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--annotation);
+  font: 9px/14px var(--font-mono);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.so-column {
+  position: absolute;
+  width: 1px;
+  background: var(--annotation);
+  opacity: 0.8;
+}
+
+.so-column-label {
+  position: absolute;
+  transform: translateX(-50%);
+  padding: 0 5px;
+  border: 1px solid var(--annotation);
+  background: var(--surface);
+  color: var(--annotation);
+  font: 10px/14px var(--font-mono);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.so-baseline {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+/* --- Rulers --------------------------------------------------------- */
+
+#studio-ruler {
+  position: fixed;
+  inset: 0;
+  z-index: 36;
+  pointer-events: none;
+}
+
+.so-ruler-h {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 18px;
+  background: color-mix(in srgb, var(--background) 92%, transparent);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.so-ruler-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 18px;
+  background: color-mix(in srgb, var(--background) 92%, transparent);
+  border-right: 1px solid var(--line-strong);
+}
+
+.so-ruler-h .so-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line-strong);
+}
+
+.so-ruler-v .so-tick {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.so-tick-label {
+  position: absolute;
+  font: 8px/11px var(--font-mono);
+  letter-spacing: 0;
+  color: var(--secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.so-ruler-h .so-tick-label {
+  top: 3px;
+}
+
+.so-tick-label-v {
+  left: 2px;
+}
+
+/* --- Selected-section readout --------------------------------------- */
+
+.so-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font: 11px/1.5 var(--font-mono);
+  letter-spacing: 0;
+  color: var(--secondary);
+}
+
+.so-info-table caption {
+  padding-bottom: 6px;
+  text-align: left;
+  font: 12px/1.4 var(--font-body);
+  font-weight: 550;
+  color: var(--ink);
+}
+
+.so-info-table th,
+.so-info-table td {
+  padding: 3px 0;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.so-info-table th {
+  width: 46%;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.so-info-table td {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.so-info-note {
+  margin: 6px 0 0;
+  font: 9px/1.4 var(--font-mono);
+  letter-spacing: 0;
+  color: var(--muted);
 }
