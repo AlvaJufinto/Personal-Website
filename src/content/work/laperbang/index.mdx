@@ -52,7 +52,7 @@ import { Image } from "astro:assets"
    You can see a whole article talking about the detailed architecture of LaperBang <a href="/blog/2026/june/how-i-built-laper-bang-backend-architecture/" target="_blank" rel="noopener noreferrer">HERE</a>, but I will focus more on general brief in this section.
 </Banner>
 
-<MarginNote id="creative-note-2" side="left" lead="02 / The long version" anchor="prev" arrowTop="14px">A full article covers the backend behind this. The short version stays here so the idea reads before the code does.</MarginNote>
+<MarginNote id="creative-note-2" side="left" lead="02 / The long version" anchor="prev" arrowTop="14px">The idea first, the code in the article.</MarginNote>
 
 
 ## LaperBang Overview
@@ -137,13 +137,13 @@ The main flow:
 7. Vendor decides whether to accept or reject.
 8. Customer receives realtime updates from the vendor location.
 
-<MarginNote id="creative-note-3" side="right" lead="03 / Step five" anchor="prev" arrowTop="152px">Eight steps, and the fifth carries the whole idea: separate cravings turning into one place worth driving to.</MarginNote>
+<MarginNote id="creative-note-3" side="right" lead="03 / Step five" anchor="prev" arrowTop="152px">Step 5 is the whole idea.</MarginNote>
 
 <EmbeddedPresentation link="https://www.canva.com/design/DAHMjNyCmqI/aUyDJbae5yPNYsamJIJRpg/view?embed" />
 
 ## Why DBSCAN?
 
-<MarginNote id="creative-note-4" side="left" lead="04 / Not K-Means" anchor="prev" arrowTop="4px">K-Means asks how many clusters to expect. Street demand never answers that in advance, so the algorithm can't be handed the number.</MarginNote>
+<MarginNote id="creative-note-4" side="left" lead="04 / Not K-Means" anchor="prev" arrowTop="4px">DBSCAN, because nobody pre-counts hunger.</MarginNote>
 
 Traditional clustering methods like K-Means require knowing the number of clusters beforehand.
 
