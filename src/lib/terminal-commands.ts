@@ -29,6 +29,11 @@ type BlogItem = {
   pubDate?: string;
 };
 
+type StackGroup = {
+  type: string;
+  stack: Array<{ name: string }>;
+};
+
 type TerminalData = {
   siteTitle?: string;
   siteUrl?: string;
@@ -38,6 +43,7 @@ type TerminalData = {
   sections?: unknown;
   work?: WorkItem[];
   blog?: BlogItem[];
+  stack?: StackGroup[];
 };
 
 type CommandContext = {
@@ -110,6 +116,30 @@ function getSiteUrl(): string {
 
 function getSlug(item: WorkItem | BlogItem): string {
   return item.slug.replace(/^\/+|\/+$/g, "");
+}
+
+function normalizeSections(
+  sections: unknown,
+): Array<{ label: string; href: string }> {
+  if (!Array.isArray(sections)) {
+    return [];
+  }
+
+  return sections.flatMap((section) => {
+    if (typeof section === "string") {
+      return [{ label: section, href: `/${section}` }];
+    }
+
+    if (section && typeof section === "object") {
+      const object = section as Record<string, unknown>;
+      const label = typeof object.label === "string" ? object.label : "";
+      const href = typeof object.href === "string" ? object.href : "";
+
+      return label ? [{ label, href }] : [];
+    }
+
+    return [];
+  });
 }
 
 function getProfileValue(key: string): string {
@@ -498,28 +528,18 @@ function createCommands(): Command[] {
       name: "ls",
       description: "list website sections",
       run: ({ print }) => {
-        const sections = data.sections;
+        const sections = normalizeSections(data.sections);
 
-        if (Array.isArray(sections)) {
-          print([
-            heading("site"),
-            ...sections.map((section, index) =>
-              list(
-                String(index + 1).padStart(2, "0"),
-                typeof section === "string" ? section : JSON.stringify(section),
-              ),
-            ),
-          ]);
-
-          return;
-        }
+        const entries = [{ label: "home", href: "/" }, ...sections];
 
         print([
           heading("site"),
-          list("01", "about"),
-          list("02", "work"),
-          list("03", "blog"),
-          list("04", "contact"),
+          ...entries.map((entry, index) =>
+            list(
+              String(index + 1).padStart(2, "0"),
+              `${entry.label}  ${entry.href}`,
+            ),
+          ),
         ]);
       },
     },
@@ -528,14 +548,19 @@ function createCommands(): Command[] {
       name: "tree",
       description: "show website structure",
       run: ({ print }) => {
+        const sections = normalizeSections(data.sections);
+
+        const routes = [
+          "/",
+          ...sections.map((entry) => entry.href),
+          "/terminal",
+        ];
+
         print([
           heading("website"),
-          line("├── /"),
-          line("├── /about"),
-          line("├── /work"),
-          line("├── /blog"),
-          line("├── /contact"),
-          line("└── /terminal"),
+          ...routes.map((route, index) =>
+            line(`${index === routes.length - 1 ? "└──" : "├──"} ${route}`),
+          ),
         ]);
       },
     },
@@ -793,7 +818,9 @@ function createCommands(): Command[] {
         }
 
         const entries = Object.entries(contact).filter(
-          ([, value]) => typeof value === "string" || typeof value === "number",
+          ([, value]) =>
+            (typeof value === "string" && value.trim().length > 0) ||
+            typeof value === "number",
         );
 
         if (!entries.length) {
@@ -818,13 +845,18 @@ function createCommands(): Command[] {
       aliases: ["tech", "skills"],
       description: "show technology stack",
       run: ({ print }) => {
-        const stack =
-          getProfileValue("stack") ||
-          getProfileValue("technologies") ||
-          getProfileValue("skills");
+        const groups = data.stack ?? [];
 
-        if (stack) {
-          print([heading("stack"), line(stack)]);
+        if (groups.length) {
+          const output: OutputLine[] = [heading("stack")];
+
+          for (const group of groups) {
+            const items = group.stack.map((item) => item.name).filter(Boolean);
+
+            output.push(line(group.type), dim(items.join("  ·  ")));
+          }
+
+          print(output);
           return;
         }
 
@@ -1104,7 +1136,7 @@ export function initTerminal(terminalData: TerminalData): void {
   const welcome: OutputLine[] = [
     heading("TERMINAL"),
     spacer(),
-    line("Welcome. Type `help` to see available commands."),
+    line("Welcome. Type `help` for commands · `exit` to leave."),
   ];
 
   print(welcome);

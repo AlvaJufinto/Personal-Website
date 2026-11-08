@@ -34,7 +34,7 @@ export const STUDIO_GROUPS: StudioGroup[] = [
       { value: "grotesk", label: "Bricolage", readout: "variable grotesque" },
       { value: "quiet", label: "Figtree", readout: "the body face" },
       { value: "serif", label: "Old serif", readout: "Palatino, Georgia" },
-      { value: "mono", label: "Monospace", readout: "system terminal" },
+      { value: "mono", label: "Monospace", readout: "JetBrains Mono" },
     ],
   },
   {
@@ -68,7 +68,7 @@ export const STUDIO_GROUPS: StudioGroup[] = [
     key: "motion",
     label: "Motion",
     options: [
-      { value: "auto", label: "System", readout: "honour reduce" },
+      { value: "auto", label: "System", readout: "respects reduce-motion" },
       { value: "off", label: "Off", readout: "0.01 ms" },
     ],
   },
@@ -100,7 +100,7 @@ export const STUDIO_PRESETS: StudioPreset[] = [
   {
     id: "editorial",
     label: "Editorial",
-    description: "Balanced column, golden leading",
+    description: "Standard column, golden leading",
     settings: {
       face: "grotesk",
       column: "standard",
@@ -112,7 +112,7 @@ export const STUDIO_PRESETS: StudioPreset[] = [
   {
     id: "classic",
     label: "Classic",
-    description: "Serif face, generous spacing",
+    description: "Old serif, open & airy",
     settings: {
       face: "serif",
       column: "standard",

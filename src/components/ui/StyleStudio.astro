@@ -28,13 +28,13 @@ const inspectorOptions: { key: string; label: string }[] = [
   id="studio-toggle"
   type="button"
   class="studio-toggle selection-control"
-  aria-label="Typeset styling"
+  aria-label="Design controls"
   aria-expanded="false"
   aria-controls="studio-panel"
 >
   <Icon name="mdi:format-size" class="h-5 w-5" />
   <span class="studio-tooltip" aria-hidden="true"
-    >Type, column &amp; rhythm</span
+    >Design controls</span
   >
 </button>
 
@@ -55,8 +55,8 @@ const inspectorOptions: { key: string; label: string }[] = [
     aria-label="Move panel"
     title="Drag to move · arrow keys to nudge · Home and End dock to an edge"
   >
-    <h2 id="studio-title" class="studio-title">Typeset</h2>
-    <p class="studio-sub">Applies as you choose, remembered on this device.</p>
+    <h2 id="studio-title" class="studio-title">Design</h2>
+    <p class="studio-sub">Face, column, leading, rhythm &amp; motion, applied live.</p>
   </header>
 
   <div class="studio-fields">
@@ -467,15 +467,24 @@ const inspectorOptions: { key: string; label: string }[] = [
       panel.hidden = !open;
       toggle.setAttribute("aria-expanded", String(open));
 
-      if (open && !matchMedia(SHEET_LAYOUT).matches) {
-        requestAnimationFrame(() => {
-          panel
-            .querySelector<HTMLElement>("[data-studio-handle]")
-            ?.focus({ preventScroll: true });
-        });
+      if (open) {
+        // The saved dock is applied only once the panel has a real box, so the
+        // first open — at mount or via the toggle — lands it where it was left.
+        restoreDock();
+
+        if (!matchMedia(SHEET_LAYOUT).matches) {
+          requestAnimationFrame(() => {
+            panel
+              .querySelector<HTMLElement>("[data-studio-handle]")
+              ?.focus({ preventScroll: true });
+          });
+        }
       }
 
       syncClearance();
+      // The open flag rides along with the panel, so navigating with it open
+      // brings it back open — and closed brings it back closed.
+      persistUI();
     }
     toggle.addEventListener("click", () => setOpen(panel?.hidden as boolean));
 
@@ -543,7 +552,7 @@ const inspectorOptions: { key: string; label: string }[] = [
 
     /* Bound before the reflow listener below: the panel is back inside the
      * viewport before the annotations decide what it overlaps. */
-    mountStudioDrag(panel, syncClearance);
+    const restoreDock = mountStudioDrag(panel, syncClearance);
 
     /* Re-measure on reflow: the rendered column width the label prints and the
      * anchored note offsets both depend on it. Directly, not in a animation

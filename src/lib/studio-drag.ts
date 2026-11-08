@@ -20,6 +20,40 @@ export const SHEET_LAYOUT = "(max-width: 640px)";
 
 type DockState = "floating" | "left" | "right";
 
+/** Where the panel last rested in this session, so navigating the portfolio
+ * does not drop it back on the default right edge. Session rather than local
+ * storage, like the panel's open state: a fresh tab starts from the plain
+ * sheet. */
+const DOCK_STORAGE_KEY = "porto:studio-dock";
+
+interface SavedDock {
+  dock: DockState;
+  left: number;
+  top: number;
+}
+
+function readSavedDock(): SavedDock | null {
+  try {
+    const parsed = JSON.parse(sessionStorage.getItem(DOCK_STORAGE_KEY) ?? "null");
+    if (!parsed || typeof parsed !== "object") return null;
+    const { dock, left, top } = parsed as Partial<SavedDock>;
+    if (dock !== "floating" && dock !== "left" && dock !== "right") return null;
+    if (typeof left !== "number" || typeof top !== "number") return null;
+    if (!Number.isFinite(left) || !Number.isFinite(top)) return null;
+    return { dock, left, top };
+  } catch {
+    return null;
+  }
+}
+
+function writeSavedDock(saved: SavedDock): void {
+  try {
+    sessionStorage.setItem(DOCK_STORAGE_KEY, JSON.stringify(saved));
+  } catch {
+    // Storage unavailable (private mode): the position still holds for this page.
+  }
+}
+
 /* Idempotent rather than assumed-once: the panel is one per page today, and a
  * second mount — a re-run script, a future client-side navigation — must not
  * stack a second set of handlers onto the same head. */
@@ -27,7 +61,7 @@ const dragBound = new WeakSet<HTMLElement>();
 
 export function mountStudioDrag(panel: HTMLElement, onMove: () => void) {
   const handle = panel.querySelector<HTMLElement>("[data-studio-handle]");
-  if (!handle || dragBound.has(panel)) return;
+  if (!handle || dragBound.has(panel)) return () => {};
   dragBound.add(panel);
 
   interface Drag {
@@ -116,6 +150,19 @@ export function mountStudioDrag(panel: HTMLElement, onMove: () => void) {
       : EDGE_OFFSET;
   }
 
+  /* Capture where the panel ended up. A docked edge stores its edge, and the
+   * explicit left/top come from `targetBox`, so the restore only has to trust
+   * the saved numbers after re-measuring the viewport. */
+  function savePosition() {
+    if (isSheet() || panel.hidden) return;
+    const { left, top } = targetBox();
+    writeSavedDock({
+      dock: (panel.dataset.studioDock as DockState | undefined) ?? "right",
+      left,
+      top,
+    });
+  }
+
   /* `dragging` is what keeps the declared transition off while the pointer
    * moves; dropping it before the final position is written is what lets that
    * same transition carry the panel to the edge. */
@@ -137,6 +184,7 @@ export function mountStudioDrag(panel: HTMLElement, onMove: () => void) {
     if (state) place(dockOffset(state, width), top, width, height);
     dock(state ?? "floating");
     onMove();
+    savePosition();
   }
 
   /** The newest pointer position, applied once per frame, not once per event. */
@@ -218,6 +266,7 @@ export function mountStudioDrag(panel: HTMLElement, onMove: () => void) {
     }
 
     onMove();
+    savePosition();
   });
 
   addEventListener("resize", () => {
@@ -243,5 +292,21 @@ export function mountStudioDrag(panel: HTMLElement, onMove: () => void) {
       height,
     );
     onMove();
+    savePosition();
   });
+
+  /** Reapply where the panel was left earlier this visit. Called once the
+   * panel is visible — its box must be real before left/top are meaningful. */
+  function restoreDock() {
+    if (isSheet() || panel.hidden) return;
+    const saved = readSavedDock();
+    if (!saved) return;
+    const { width, height } = box();
+    const left =
+      saved.dock === "floating" ? saved.left : dockOffset(saved.dock, width);
+    place(left, saved.top, width, height);
+    dock(saved.dock);
+  }
+
+  return restoreDock;
 }

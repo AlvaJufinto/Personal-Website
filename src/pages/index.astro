@@ -10,7 +10,7 @@ import Footer from "@/components/ui/Footer.astro";
 import Header from "@/components/ui/Header.astro";
 import MarginNote from "@/components/ui/MarginNote.astro";
 import ProfileImg from "@/assets/personal/profile.png";
-import { SITE_DESCRIPTION, SITE_TITLE, SOCIALS } from "@/consts";
+import { CONTACT, SITE_DESCRIPTION, SITE_TITLE, SOCIALS } from "@/consts";
 
 const posts = (await getCollection("blog"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -90,6 +90,16 @@ const posts = (await getCollection("blog"))
           <span data-typefact="leading">25.9px</span> leading,
           <span data-typefact="column">600px</span> column.
         </MarginNote>
+
+        <a
+          href={CONTACT.resume}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-6 inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line px-4 py-1.5 text-sm text-ink no-underline transition-colors hover:border-line-strong"
+        >
+          View CV
+          <Icon name="mdi:arrow-top-right" class="h-3.5 w-3.5 shrink-0" />
+        </a>
 
         <ul class="socials mt-6 flex flex-wrap gap-x-5 gap-y-2">
           {

@@ -27,7 +27,16 @@ export const SOCIALS = [
 ];
 
 export const CONTACT = {
-  email: "your-email@example.com",
+  email: "stanislaus.alva.jufinto@gmail.com",
+  resume:
+    "https://drive.google.com/file/d/1mH9nJnWVxj1Q4hKkJxzcjlMCGp-IAUGo/view?usp=sharing",
+};
+
+export const PROFILE = {
+  name: AUTHOR_NAME,
+  role: "Computer Science student & software engineer",
+  location: "Jakarta, Indonesia",
+  bio: "I build software, experiment with ideas, and occasionally get carried away with figuring out how things work.",
 };
 
 export const SITE_SECTIONS = [

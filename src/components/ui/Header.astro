@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import { SITE_TITLE } from "@/consts";
 import CreativeSwitch from "./CreativeSwitch.astro";
 import HeaderLink from "./HeaderLink.astro";
@@ -34,6 +35,13 @@ import ThemeToggle from "./ThemeToggle.astro";
         <ThemeToggle />
         <StyleStudio />
         <CreativeSwitch />
+        <a
+          href="/terminal"
+          class="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-(--gold-radius-control) border border-transparent bg-transparent p-1 text-muted transition-colors ease-[ease] hover:border-line hover:text-ink"
+          aria-label="Open terminal"
+        >
+          <Icon name="mdi:console" class="h-4 w-4" />
+        </a>
       </div>
 
       <button
