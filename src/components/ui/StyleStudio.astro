@@ -33,9 +33,7 @@ const inspectorOptions: { key: string; label: string }[] = [
   aria-controls="studio-panel"
 >
   <Icon name="mdi:format-size" class="h-5 w-5" />
-  <span class="studio-tooltip" aria-hidden="true"
-    >Design controls</span
-  >
+  <span class="studio-tooltip" aria-hidden="true">Design controls</span>
 </button>
 
 <div
@@ -45,9 +43,7 @@ const inspectorOptions: { key: string; label: string }[] = [
   aria-labelledby="studio-title"
   hidden
 >
-  <!-- The head is the grab surface: it is the one region of the panel with
-       nothing to click, so a pointer down here can never be mistaken for a
-       choice. Keyboard moves are the same element, focused rather than held. -->
+  <!-- Header is the drag handle and stays outside the scrolling region. -->
   <header
     class="studio-head"
     data-studio-handle
@@ -56,9 +52,12 @@ const inspectorOptions: { key: string; label: string }[] = [
     title="Drag to move · arrow keys to nudge · Home and End dock to an edge"
   >
     <h2 id="studio-title" class="studio-title">Design</h2>
-    <p class="studio-sub">Face, column, leading, rhythm &amp; motion, applied live.</p>
+    <p class="studio-sub">
+      Face, column, leading, rhythm &amp; motion, applied live.
+    </p>
   </header>
 
+  <!-- Only this section scrolls. -->
   <div class="studio-fields">
     <div class="studio-block">
       <p class="studio-legend">
@@ -115,6 +114,7 @@ const inspectorOptions: { key: string; label: string }[] = [
               >
                 <p class="studio-legend" id={`studio-legend-${group.key}`}>
                   <span class="studio-legend-label">{group.label}</span>
+
                   {/* No measured value for the face: a computed font-family
                       reports the declared stack, not what actually rendered.
                       The panel title is set in that face, so it is its own
@@ -163,6 +163,7 @@ const inspectorOptions: { key: string; label: string }[] = [
       ))
     }
 
+    <!-- Inspector -->
     <div class="studio-block">
       <p class="studio-legend">
         <span class="studio-legend-label">Inspector</span>
@@ -206,6 +207,7 @@ const inspectorOptions: { key: string; label: string }[] = [
     </div>
   </div>
 
+  <!-- Footer stays outside the scrolling region. -->
   <footer class="studio-foot">
     <button
       type="button"
@@ -214,6 +216,7 @@ const inspectorOptions: { key: string; label: string }[] = [
     >
       Reset
     </button>
+
     <button
       type="button"
       id="studio-close"
@@ -229,6 +232,28 @@ const inspectorOptions: { key: string; label: string }[] = [
      both come from here, so neither can quote a value the page does not use. -->
 <span class="studio-probe" aria-hidden="true"></span>
 
+<style>
+  /* 1. Panel tidak boleh bisa di-scroll sama sekali, bahkan programatik */
+  .studio-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: clip; /* ganti dari hidden */
+  }
+
+  /* 2. Input tersembunyi harus nempel di row-nya sendiri */
+  .studio-toggle-row {
+    position: relative;
+  }
+
+  .studio-fields {
+    position: relative; /* jaga-jaga untuk .studio-input lain */
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+</style>
+
 <script>
   import {
     STUDIO_DEFAULTS,
@@ -243,6 +268,7 @@ const inspectorOptions: { key: string; label: string }[] = [
     writeSettings,
     writeStudioUIState,
   } from "@/lib/studio";
+
   import { mountInspector, type OverlayName } from "@/lib/inspector";
   import { mountStudioDrag, SHEET_LAYOUT } from "@/lib/studio-drag";
 
@@ -263,13 +289,16 @@ const inspectorOptions: { key: string; label: string }[] = [
     /* The DOM is the source of truth — the open flag and every checkbox. */
     function persistUI() {
       const master = panel.querySelector<HTMLInputElement>("#inspector-master");
+
       const overlays: Record<string, boolean> = {};
+
       for (const input of panel.querySelectorAll<HTMLInputElement>(
         "[data-inspector]",
       )) {
         const name = input.dataset.inspector;
         if (name) overlays[name] = input.checked;
       }
+
       writeStudioUIState({
         open: !panel.hidden,
         inspecting: !!master?.checked,
@@ -292,6 +321,7 @@ const inspectorOptions: { key: string; label: string }[] = [
       const cs = getComputedStyle(probe);
       const type = Number.parseFloat(cs.fontSize) || 16;
       const rawLeading = cs.lineHeight;
+
       const leading = rawLeading.endsWith("px")
         ? Number.parseFloat(rawLeading)
         : Number.parseFloat(rawLeading) * type;
@@ -316,6 +346,7 @@ const inspectorOptions: { key: string; label: string }[] = [
       const el = panel.querySelector<HTMLElement>(
         `[data-studio-live="${key}"]`,
       );
+
       if (el) el.textContent = value;
     }
 
@@ -328,12 +359,14 @@ const inspectorOptions: { key: string; label: string }[] = [
          * collapses to zero, and a zero would keep them hidden forever. */
         const rendered: any =
           rules?.parentElement?.getBoundingClientRect().width;
+
         // The rules measure the design column. A viewport too narrow for it is
         // measuring the window, so the annotation has nothing to say: hide it
         // rather than print a width the page never chose.
         rules.hidden = Math.abs(rendered - f.column) > 0.5;
 
         const label = rules.querySelector<HTMLElement>("[data-measure-label]");
+
         if (label) label.textContent = `${num(rendered, 0)} px`;
       }
 
@@ -341,6 +374,7 @@ const inspectorOptions: { key: string; label: string }[] = [
         "[data-typefact]",
       )) {
         const key = fact.dataset.typefact;
+
         if (key === "type") fact.textContent = `${Math.round(f.type)}px`;
         if (key === "leading") fact.textContent = `${num(f.leading, 1)}px`;
         if (key === "column") fact.textContent = `${num(f.column, 0)}px`;
@@ -367,10 +401,12 @@ const inspectorOptions: { key: string; label: string }[] = [
          * sits inside unpositioned wrappers, so the offset belongs to #main. */
         const host =
           (note.offsetParent as HTMLElement | null) ?? note.parentElement;
+
         if (!target || !host) continue;
 
         const top =
           target.getBoundingClientRect().top - host.getBoundingClientRect().top;
+
         note.style.setProperty("--note-top", `${Math.round(top)}px`);
       }
 
@@ -384,6 +420,7 @@ const inspectorOptions: { key: string; label: string }[] = [
      * and an overlapping panel is simply how popovers behave. */
     function syncClearance() {
       const inMargin = matchMedia("(min-width: 1200px)").matches;
+
       const box =
         panel.hidden || !inMargin ? null : panel.getBoundingClientRect();
 
@@ -396,6 +433,7 @@ const inspectorOptions: { key: string; label: string }[] = [
         }
 
         const r = note.getBoundingClientRect();
+
         note.classList.toggle(
           "note-clear",
           r.left < box.right &&
@@ -415,15 +453,20 @@ const inspectorOptions: { key: string; label: string }[] = [
 
     function setInspecting(on: boolean) {
       const master = panel.querySelector<HTMLInputElement>("#inspector-master");
+
       if (master) master.checked = on;
+
       inspector.setActive(on);
+
       const state = document.getElementById("studio-inspector-state");
       if (state) state.textContent = on ? "On" : "Off";
+
       for (const input of panel.querySelectorAll<HTMLInputElement>(
         "[data-inspector]",
       )) {
         input.disabled = !on;
       }
+
       persistUI();
     }
 
@@ -431,8 +474,10 @@ const inspectorOptions: { key: string; label: string }[] = [
      * own state ("Custom") rather than keeping the last preset lit. */
     function syncPresetState() {
       const preset = matchPreset(settings);
+
       const state = document.getElementById("studio-preset-state");
       if (state) state.textContent = preset ? preset.label : "Custom";
+
       for (const input of panel.querySelectorAll<HTMLInputElement>(
         'input[name="studio-preset"]',
       )) {
@@ -452,12 +497,15 @@ const inspectorOptions: { key: string; label: string }[] = [
       }
 
       const f = facts();
+
       setLive("column", `${num(f.column, 0)} px`);
       setLive("leading", `${num(f.leading, 1)} px · ${f.ratio}`);
       setLive("rhythm", `${num(f.rhythm, 1)} px`);
       setLive("motion", f.motion);
+
       syncNotes(f);
       syncPresetState();
+
       // Overlays quote the same token values, so a settings change has to
       // re-measure them too — column guides and the line grid both depend on it.
       inspector.refresh();
@@ -482,10 +530,12 @@ const inspectorOptions: { key: string; label: string }[] = [
       }
 
       syncClearance();
+
       // The open flag rides along with the panel, so navigating with it open
       // brings it back open — and closed brings it back closed.
       persistUI();
     }
+
     toggle.addEventListener("click", () => setOpen(panel?.hidden as boolean));
 
     panel
@@ -512,6 +562,7 @@ const inspectorOptions: { key: string; label: string }[] = [
       }
 
       const overlay = input.dataset.inspector;
+
       if (overlay) {
         inspector.setOverlay(overlay as OverlayName, input.checked);
         persistUI();
@@ -522,7 +573,9 @@ const inspectorOptions: { key: string; label: string }[] = [
 
       if (input.name === "studio-preset") {
         const preset = STUDIO_PRESETS.find((p) => p.id === input.value);
+
         if (!preset) return;
+
         settings = { ...preset.settings };
         writeSettings(settings);
         render();
@@ -530,6 +583,7 @@ const inspectorOptions: { key: string; label: string }[] = [
       }
 
       const key = input.name.replace("studio-", "");
+
       if (!isStudioKey(key)) return;
 
       settings = { ...settings, [key]: input.value };
@@ -539,6 +593,7 @@ const inspectorOptions: { key: string; label: string }[] = [
 
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape" || panel.hidden) return;
+
       setOpen(false);
       toggle.focus();
     });
@@ -547,15 +602,19 @@ const inspectorOptions: { key: string; label: string }[] = [
     // the panel with it rather than strand a dialog with no owner.
     document.addEventListener("creative-mode", (event) => {
       const detail = (event as CustomEvent<{ open: boolean }>).detail;
+
       if (detail && !detail.open) setOpen(false);
     });
 
     /* Bound before the reflow listener below: the panel is back inside the
      * viewport before the annotations decide what it overlaps. */
     const restoreDock = mountStudioDrag(panel, syncClearance);
+    new ResizeObserver(() => {
+      if (!panel.hidden) restoreDock();
+    }).observe(panel);
 
     /* Re-measure on reflow: the rendered column width the label prints and the
-     * anchored note offsets both depend on it. Directly, not in a animation
+     * anchored note offsets both depend on it. Directly, not in an animation
      * frame — a backgrounded tab throttles those, and a stale number in an
      * annotation is worse than one extra layout pass. */
     addEventListener("resize", render);
@@ -565,9 +624,11 @@ const inspectorOptions: { key: string; label: string }[] = [
      * panel only auto-opens when Creative mode is on — without it the trigger is
      * hidden and a floating panel would have no owner. */
     const ui = readStudioUIState();
+
     const open =
       ui?.open === true &&
       document.documentElement.classList.contains("notes-open");
+
     const inspecting = open === true && ui?.inspecting === true;
 
     if (ui?.overlays) {
@@ -575,6 +636,7 @@ const inspectorOptions: { key: string; label: string }[] = [
         "[data-inspector]",
       )) {
         const name = input.dataset.inspector;
+
         if (name && typeof ui.overlays[name] === "boolean") {
           input.checked = ui.overlays[name];
         }
@@ -590,7 +652,10 @@ const inspectorOptions: { key: string; label: string }[] = [
       "[data-inspector]",
     )) {
       const name = input.dataset.inspector;
-      if (name) inspector.setOverlay(name as OverlayName, input.checked);
+
+      if (name) {
+        inspector.setOverlay(name as OverlayName, input.checked);
+      }
     }
 
     render();

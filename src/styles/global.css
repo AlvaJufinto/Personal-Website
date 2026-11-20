@@ -177,6 +177,27 @@
   scroll-behavior: auto !important;
 }
 
+:root::-webkit-scrollbar,
+.studio-fields::-webkit-scrollbar {
+  width: 6px;
+}
+
+:root::-webkit-scrollbar-track,
+.studio-fields::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:root::-webkit-scrollbar-thumb,
+.studio-fields::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 999px;
+}
+
+:root::-webkit-scrollbar-thumb:hover,
+.studio-fields::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;

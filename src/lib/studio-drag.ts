@@ -34,7 +34,9 @@ interface SavedDock {
 
 function readSavedDock(): SavedDock | null {
   try {
-    const parsed = JSON.parse(sessionStorage.getItem(DOCK_STORAGE_KEY) ?? "null");
+    const parsed = JSON.parse(
+      sessionStorage.getItem(DOCK_STORAGE_KEY) ?? "null",
+    );
     if (!parsed || typeof parsed !== "object") return null;
     const { dock, left, top } = parsed as Partial<SavedDock>;
     if (dock !== "floating" && dock !== "left" && dock !== "right") return null;
@@ -307,6 +309,15 @@ export function mountStudioDrag(panel: HTMLElement, onMove: () => void) {
     place(left, saved.top, width, height);
     dock(saved.dock);
   }
+
+  /* Panel height changes without any window resize (inspector info appears,
+   * a section is selected), so the clamp has to follow the panel's own size. */
+  new ResizeObserver(() => {
+    if (drag || panel.hidden || isSheet() || !panel.style.left) return;
+    const { left, top, width, height } = targetBox();
+    place(left, top, width, height);
+    onMove();
+  }).observe(panel);
 
   return restoreDock;
 }

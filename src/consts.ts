@@ -19,11 +19,11 @@ export const SOCIALS = [
     href: "https://www.linkedin.com/in/alva-jufinto/",
     icon: "mdi:linkedin",
   },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/alva.jufinto/",
-    icon: "mdi:instagram",
-  },
+  //{
+  //  label: "Instagram",
+  //  href: "https://www.instagram.com/alva.jufinto/",
+  //  icon: "mdi:instagram",
+  //},
 ];
 
 export const CONTACT = {
